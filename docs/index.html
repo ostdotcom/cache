@@ -100,7 +100,22 @@
 
 
     <section class="readme-section">
-        <article><h1>OpenST Cache</h1></article>
+        <article><h1>OpenST-Cache</h1><p>OpenST Cache is the central cache implementation for all OpenST products and can easily be plugged-in. 
+It contains three caching engines. Decision of which caching engine to use is governed by an ENV variable 
+'OST_CACHING_ENGINE'. Caching engines implemented are:</p>
+<ul>
+<li>Memcached</li>
+<li>Redis</li>
+<li>In-process</li>
+</ul>
+<h1>Install OpenST Cache</h1><pre class="prettyprint source lang-bash"><code>npm install @openstfoundation/openst-cache --save</code></pre><h1>Set EVN Variables</h1><h5>Select the desired caching engine and default TTL:</h5><pre class="prettyprint source lang-bash"><code>export OST_CACHING_ENGINE='redis' # Possible values are - 'none', 'redis', 'memcached'
+export OST_DEFAULT_TTL=3600 # In seconds</code></pre><h5>Redis specific ENV variables</h5><pre class="prettyprint source lang-bash"><code>export OST_REDIS_HOST='127.0.0.1'
+export OST_REDIS_PORT=6379
+export OST_REDIS_PASS=st123 # Redis authentication password defined as &quot;requirepass&quot; 
+export OST_REDIS_TLS_ENABLED=0 # Possible values are 1 and 0</code></pre><h5>Memcached specific ENV variables</h5><pre class="prettyprint source lang-bash"><code>export OST_MEMCACHE_SERVERS='127.0.0.1:11211' # comma seperated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'</code></pre><h1>Example:</h1><pre class="prettyprint source lang-js"><code>const openSTCache = require('@openstfoundation/openst-cache')
+  , cacheImplementer = openSTCache.cache;
+cacheImplementer.set('testKey', 'testValue');
+cacheImplementer.get('testKey');</code></pre></article>
     </section>
 
 
