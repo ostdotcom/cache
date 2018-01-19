@@ -17,5 +17,5 @@ const OpenSTCacheManagement = function () {
   oThis.cache = cache;
 };
 
-module.exports = new OpenSTCacheManagement;
+module.exports = new OpenSTCacheManagement();
 

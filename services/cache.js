@@ -13,7 +13,7 @@
  * @constructor
  *
  */
-const Cache = module.exports = function () {};
+const Cache = function () {};
 
 const rootPrefix = ".."
   , cacheConfig = require(rootPrefix + '/config/cache');
@@ -27,9 +27,11 @@ if (cacheConfig.CACHING_ENGINE == 'redis') {
 }	else if (cacheConfig.CACHING_ENGINE == 'none') {
   implementer = require(rootPrefix + '/lib/cache/in_memory');
 } else {
-  throw('invalid CACHING_ENGINE');
+  throw('invalid caching engine or not defined');
 }
 
 Cache.prototype = {
   implementer: implementer
 };
+
+module.exports = new Cache().implementer;

@@ -7,10 +7,12 @@
  * @class OpenSTKeys
  * @constructor
  */
-const OpenSTKeys = module.exports = function () {
+const OpenSTKeys = function () {
+
+  const oThis = this;
 
   // openST cache key namespace
-  namespace: "openst_"
+  oThis.namespace = "openst_";
 
 };
 
@@ -112,3 +114,5 @@ OpenSTKeys.prototype = {
 
 };
 
+
+module.exports = new OpenSTKeys();
