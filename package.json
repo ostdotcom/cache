@@ -1,5 +1,5 @@
 {
-  "name": "openst-cache",
+  "name": "@openstfoundation/openst-cache",
   "version": "1.0.0-beta.1",
   "private": true,
   "description": "OpenST Cache ",
