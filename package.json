@@ -3,7 +3,14 @@
   "version": "1.0.0-beta.1",
   "private": true,
   "description": "OpenST Cache Management",
-  "keywords": ["openst", "OST", "simpletoken", "memcached", "redis", "cache"],
+  "keywords": [
+    "openst",
+    "OST",
+    "simpletoken",
+    "memcached",
+    "redis",
+    "cache"
+  ],
   "homepage": "https://simpletoken.org",
   "author": "OpenST Ltd.",
   "license": "GNU LESSER GENERAL PUBLIC LICENSE",

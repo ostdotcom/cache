@@ -4,21 +4,17 @@
  *
  * This implementation is very specific to OpenST branded tokens and ST' related cache keys.<br><br>
  *
- */
-
-/**
- *
+ * @class OpenSTKeys
  * @constructor
- *
  */
-const BrandedToken = module.exports = function () {
+const OpenSTKeys = module.exports = function () {
 
   // openST cache key namespace
   namespace: "openst_bt_"
 
 };
 
-BrandedToken.prototype = {
+OpenSTKeys.prototype = {
 
   /**
    * @ignore
@@ -36,7 +32,7 @@ BrandedToken.prototype = {
    * @param {Integer} chainId - Branded Token deployed on chain id
    * @param {String} btAddress - address of branded token ERC20 contract
    *
-   * @return {String} - cache key
+   * @return {String}
    *
    */
   btName: function (chainId, btAddress) {
@@ -50,7 +46,7 @@ BrandedToken.prototype = {
    * @param {Integer} chainId - Branded Token deployed on chain id
    * @param {String} btAddress - address of branded token ERC20 contract
    *
-   * @return {String} - cache key
+   * @return {String}
    *
    */
   btSymbol: function (chainId, btAddress) {
@@ -64,7 +60,7 @@ BrandedToken.prototype = {
    * @param {Integer} chainId - Branded Token deployed on chain id
    * @param {String} btAddress - address of branded token ERC20 contract
    *
-   * @return {String} - cache key
+   * @return {String}
    *
    */
   btDecimals: function (chainId, btAddress) {
@@ -78,7 +74,7 @@ BrandedToken.prototype = {
    * @param {Integer} chainId - Branded Token deployed on chain id
    * @param {String} btAddress - address of branded token ERC20 contract
    *
-   * @return {String} - cache key
+   * @return {String}
    *
    */
   btUUID: function (chainId, btAddress) {
@@ -93,7 +89,7 @@ BrandedToken.prototype = {
    * @param {String} btAddress - address of branded token ERC20 contract
    * @param {String} address - address whose balance cache key need to be generated
    *
-   * @return {String} - cache key
+   * @return {String}
    *
    */
   btBalance: function(chainId, btAddress, address) {
@@ -107,7 +103,7 @@ BrandedToken.prototype = {
    * @param {Integer} chainId - Branded Token deployed on chain id
    * @param {String} address - address whose balance cache key need to be generated
    *
-   * @return {String} - cache key
+   * @return {String}
    *
    */
   stPrimeBalance: function(chainId, address) {
