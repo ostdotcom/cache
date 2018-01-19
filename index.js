@@ -6,7 +6,7 @@
 
 const rootPrefix = "."
   , version = require(rootPrefix + '/package.json').version
-  , cacheImplementer = require(rootPrefix + '/lib/cache/implementer')
+  , cache = require(rootPrefix + '/services/cache')
   , openSTKeys = require(rootPrefix + '/services/openst_keys');
 
 const OpenSTCacheManagement = function () {
@@ -14,7 +14,7 @@ const OpenSTCacheManagement = function () {
 
   oThis.version = version;
   oThis.openSTKeys = openSTKeys;
-  oThis.cache = cacheImplementer;
+  oThis.cache = cache;
 };
 
 module.exports = OpenSTCacheManagement;
