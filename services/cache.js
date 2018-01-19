@@ -16,15 +16,15 @@
 const Cache = module.exports = function () {};
 
 const rootPrefix = ".."
-  , coreConstants = require(rootPrefix + '/config/core_constants');
+  , cacheConfig = require(rootPrefix + '/config/cache');
 
 var implementer = null;
 
-if (coreConstants.CACHING_ENGINE == 'redis') {
+if (cacheConfig.CACHING_ENGINE == 'redis') {
   implementer = require(rootPrefix + '/lib/cache/redis');
-} else if(coreConstants.CACHING_ENGINE == 'memcached'){
+} else if(cacheConfig.CACHING_ENGINE == 'memcached'){
   implementer = require(rootPrefix + '/lib/cache/memcached');
-}	else if (coreConstants.CACHING_ENGINE == 'none') {
+}	else if (cacheConfig.CACHING_ENGINE == 'none') {
   implementer = require(rootPrefix + '/lib/cache/in_memory');
 } else {
   throw('invalid CACHING_ENGINE');

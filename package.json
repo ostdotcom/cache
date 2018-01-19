@@ -1,8 +1,8 @@
 {
-  "name": "openst-cache-management",
+  "name": "openst-cache",
   "version": "1.0.0-beta.1",
   "private": true,
-  "description": "OpenST Cache Management",
+  "description": "OpenST Cache ",
   "keywords": [
     "openst",
     "OST",
@@ -16,10 +16,10 @@
   "license": "GNU LESSER GENERAL PUBLIC LICENSE",
   "repository": {
     "type": "git",
-    "url": "https://github.com/OpenSTFoundation/openst-cache-management.git"
+    "url": "https://github.com/OpenSTFoundation/openst-cache.git"
   },
   "bugs": {
-    "url": "https://github.com/OpenSTFoundation/openst-cache-management/issues"
+    "url": "https://github.com/OpenSTFoundation/openst-cache/issues"
   },
   "scripts": {
     "start": "index.js"

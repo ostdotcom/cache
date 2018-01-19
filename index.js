@@ -1,5 +1,5 @@
 /**
- * Index File of openst-platform node module
+ * Index File for openst-cache
  */
 
 "use strict";
@@ -17,5 +17,5 @@ const OpenSTCacheManagement = function () {
   oThis.cache = cache;
 };
 
-module.exports = OpenSTCacheManagement;
+module.exports = new OpenSTCacheManagement;
 

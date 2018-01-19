@@ -11,7 +11,7 @@
   "plugins": [],
   "recurseDepth": 5,
   "templates": {
-    "systemName"            : "OpenST Cache Management",
+    "systemName"            : "OpenST Cache",
     "footer"                : "<style>.copyright, .jsdoc-message, footer { color: #555555;} footer { border-color:#eeeeee;} }</style>",
     "copyright"             : "Copyright 2017 OpenST Ltd.",
     "includeDate"           : false,

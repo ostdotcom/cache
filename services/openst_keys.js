@@ -10,7 +10,7 @@
 const OpenSTKeys = module.exports = function () {
 
   // openST cache key namespace
-  namespace: "openst_bt_"
+  namespace: "openst_"
 
 };
 
@@ -19,11 +19,10 @@ OpenSTKeys.prototype = {
   /**
    * @ignore
    */
-  _getCacheKeyForProperty: function (chainId, btAddress, propName) {
-    // Internal Method. Returns key name to be used for caching properties of ERC20 contract like
-    // * name, symbol, decimals, reserve etc.
+  _getCacheKeyForProperty: function (chainId, tokenIdentifier, propName) {
+    // Internal Method. Returns key name to be used for caching properties of ERC20 contract and different balances
     const oThis = this;
-    return oThis.namespace + chainId + "_" + btAddress.toLowerCase() + "_prop_" + propName.toLowerCase();
+    return oThis.namespace + chainId + "_" + tokenIdentifier.toLowerCase() + "_prop_" + propName.toLowerCase();
   },
 
   /**
