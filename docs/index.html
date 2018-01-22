@@ -106,7 +106,7 @@ It contains three caching engines. Decision of which caching engine to use is go
 <ul>
 <li>Memcached</li>
 <li>Redis</li>
-<li>In-process</li>
+<li>In-process (use with single threaded process in development mode only)</li>
 </ul>
 <h1>Install OpenST Cache</h1><pre class="prettyprint source lang-bash"><code>npm install @openstfoundation/openst-cache --save</code></pre><h1>Set EVN Variables</h1><h5>Select the desired caching engine and default TTL:</h5><pre class="prettyprint source lang-bash"><code>export OST_CACHING_ENGINE='redis' # Possible values are - 'none', 'redis', 'memcached'
 export OST_DEFAULT_TTL=3600 # In seconds</code></pre><h5>Redis specific ENV variables</h5><pre class="prettyprint source lang-bash"><code>export OST_REDIS_HOST='127.0.0.1'

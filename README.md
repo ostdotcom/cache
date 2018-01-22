@@ -7,7 +7,7 @@ It contains three caching engines. Decision of which caching engine to use is go
 
 * Memcached
 * Redis
-* In-process
+* In-process (use with single threaded process in development mode only)
 
 # Install OpenST Cache
 
