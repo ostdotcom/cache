@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>OpenST Cache Class: inMemoryCache</title>
+	<title>OpenST Cache Class: redisCache</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,14 +33,14 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-lib_cache_in_memory.html">lib/cache/in_memory</a></li><li><a href="module-lib_cache_memcached.html">lib/cache/memcached</a></li><li><a href="module-lib_cache_redis.html">lib/cache/redis</a></li>
+					<li><a href="module-lib_cache.html">lib/cache</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache_in_memory-inMemoryCache.html">lib/cache/in_memory~inMemoryCache</a></li><li><a href="module-lib_cache_memcached-memcachedCache.html">lib/cache/memcached~memcachedCache</a></li><li><a href="module-lib_cache_redis-redisCache.html">lib/cache/redis~redisCache</a></li><li><a href="OpenSTKeys.html">OpenSTKeys</a></li>
+					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache-inMemoryCache.html">lib/cache~inMemoryCache</a></li><li><a href="module-lib_cache-memcachedCache.html">lib/cache~memcachedCache</a></li><li><a href="module-lib_cache-redisCache.html">lib/cache~redisCache</a></li><li><a href="OpenSTKeys.html">OpenSTKeys</a></li>
 				</ul>
 			</li>
 			
@@ -72,15 +72,15 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: inMemoryCache</h1>
+	<h1 class="page-title">Class: redisCache</h1>
 <section>
 
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-lib_cache_in_memory.html">lib/cache/in_memory</a>~</span>
+            <span class="ancestors"><a href="module-lib_cache.html">lib/cache</a>~</span>
         
-        inMemoryCache
+        redisCache
         </h2>
         
     
@@ -93,7 +93,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="inMemoryCache"><span class="type-signature"></span>new inMemoryCache()</h4>
+    <h4 class="name" id="redisCache"><span class="type-signature"></span>new redisCache()</h4>
     
     
 </dt>
@@ -101,7 +101,7 @@
 
     
     <div class="description">
-        Constructor to manage cache in memory.
+        Constructor for redis implementation
     </div>
     
 
@@ -186,134 +186,6 @@
         <h3 class="subsection-title">Methods</h3>
 
         <dl>
-            
-<hr>
-<dt>
-    <h4 class="name" id="_getRecord"><span class="type-signature"></span>_getRecord(key)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Internal method to get record Object for a given key
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">cache key</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
             
 <hr>
 <dt>
@@ -617,7 +489,7 @@
     
             
 <div class="param-desc">
-    A promise to delete the key.  On resolve, the boolean flag indicates if cache was deleted successfully or not.
+    A promise to delete. On resolve, the boolean flag indicates if key was valid before deleting.
 </div>
 
 
@@ -805,7 +677,7 @@
 
     
     <div class="description">
-        Get the stored object value for the given key. Internally call get method
+        Get the stored object value for the given key.
     </div>
     
 
@@ -921,7 +793,7 @@
     
             
 <div class="param-desc">
-    A promise to return value of the key.
+    A promise to return object of the key.
 </div>
 
 
@@ -932,7 +804,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
+<span class="param-type">Promise.&lt;object></span>
 
 
 
@@ -1361,7 +1233,7 @@
 
             
 
-            <td class="description last">JSON/number/string that you want to store.</td>
+            <td class="description last">number/string value that you want to store.</td>
         </tr>
 
     
@@ -1461,7 +1333,7 @@
 
     
     <div class="description">
-        Set a new key object or update the existing key object in cache. Internally call set method
+        Set a new key object or update the existing key object in cache
     </div>
     
 
@@ -1526,7 +1398,7 @@
             <td class="type">
             
                 
-<span class="param-type">mixed</span>
+<span class="param-type">object</span>
 
 
 
@@ -1537,7 +1409,7 @@
 
             
 
-            <td class="description last">JSON/number/string value that you want to store.</td>
+            <td class="description last">object value that you want to store.</td>
         </tr>
 
     

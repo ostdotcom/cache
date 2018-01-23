@@ -22,14 +22,14 @@ npm install @openstfoundation/openst-cache --save
 export OST_CACHING_ENGINE='redis' # Possible values are - 'none', 'redis', 'memcached'
 export OST_DEFAULT_TTL=3600 # In seconds
 ```
-##### Redis specific ENV variables
+##### If OST_CACHING_ENGINE is redis, then set following ENV variables:
 ```bash
 export OST_REDIS_HOST='127.0.0.1'
 export OST_REDIS_PORT=6379
 export OST_REDIS_PASS=st123 # Redis authentication password defined as "requirepass" 
 export OST_REDIS_TLS_ENABLED=0 # Possible values are 1 and 0
 ```
-##### Memcached specific ENV variables
+##### If OST_CACHING_ENGINE is memcached, then set following ENV variables:
 ```bash
 export OST_MEMCACHE_SERVERS='127.0.0.1:11211' # comma seperated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'
 ```

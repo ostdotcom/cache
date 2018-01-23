@@ -1,5 +1,4 @@
 "use strict";
-
 /*
  * Cache Related Constants:
  *
@@ -7,10 +6,7 @@
  *
  */
 
-const path = require('path')
-  , rootPrefix = ".."
-;
-
+// Function to define Global variables
 function define(name, value) {
   Object.defineProperty(exports, name, {
     value: value,
