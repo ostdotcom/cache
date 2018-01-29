@@ -1,8 +1,8 @@
 OpenST-Cache
 ============
-[![Latest version](https://img.shields.io/npm/v/github-api.svg?maxAge=3600)][npm]
-[![Travis](https://img.shields.io/travis/OpenSTFoundation/openst-cache.svg?maxAge=600)][travis]
-[![Downloads per month](https://img.shields.io/npm/dm/@openstfoundation/openst-cache.svg?maxAge=3600)][npm]
+[![Latest version](https://img.shields.io/npm/v/github-api.svg?maxAge=3600)][npm-package]
+[![Travis](https://img.shields.io/travis/OpenSTFoundation/openst-cache.svg?maxAge=600)][travis-ci]
+[![Downloads per month](https://img.shields.io/npm/dm/@openstfoundation/openst-cache.svg?maxAge=3600)][npm-package]
 [![Gitter](https://img.shields.io/gitter/room/SimpleToken/github.js.svg?maxAge=3600)][gitter]
 
 OpenST Cache is the central cache implementation for all OpenST products and can easily be plugged-in. 
