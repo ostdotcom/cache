@@ -21,7 +21,8 @@
     "url": "https://github.com/OpenSTFoundation/openst-cache/issues"
   },
   "scripts": {
-    "start": "index.js"
+    "start": "index.js",
+    "make-docs": "node_modules/.bin/jsdoc -c .jsdoc.json"
   },
   "dependencies": {
     "memcached": "^2.2.2",
