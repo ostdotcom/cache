@@ -1,5 +1,4 @@
 "use strict";
-
 /*
  * Cache Related Constants:
  *
@@ -7,10 +6,7 @@
  *
  */
 
-const path = require('path')
-  , rootPrefix = ".."
-;
-
+// Function to define Global variables
 function define(name, value) {
   Object.defineProperty(exports, name, {
     value: value,
@@ -21,7 +17,7 @@ function define(name, value) {
 // Default cache TTL (in seconds)
 define("DEFAULT_TTL", process.env.OST_DEFAULT_TTL);
 
-// ALLOWED VALUES => NONE/REDIS/MEMCACHED
+// ALLOWED VALUES => none/redis/memcached
 define('CACHING_ENGINE', process.env.OST_CACHING_ENGINE);
 
 // Constants for redis caching layer
@@ -31,4 +27,4 @@ define("REDIS_PASS", process.env.OST_REDIS_PASS);
 define("REDIS_TLS_ENABLED", process.env.OST_REDIS_TLS_ENABLED == '1' ? true : false);
 
 // Constants for memcached caching layer
-define("MEMCACHE_SERVERS", process.env.OST_MEMCACHE_SERVERS);
+define("MEMCACHE_SERVERS", (process.env.OST_MEMCACHE_SERVERS || '').split(',').map(Function.prototype.call, String.prototype.trim));

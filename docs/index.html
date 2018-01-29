@@ -31,13 +31,6 @@
 		<ul class="nav navbar-nav">
 			
 			<li class="dropdown">
-				<a href="namespaces.list.html" class="dropdown-toggle" data-toggle="dropdown">Namespaces<b class="caret"></b></a>
-				<ul class="dropdown-menu ">
-					<li><a href="module-lib_cache_in_memory-inMemoryCache.html">lib/cache/in_memory~inMemoryCache</a></li><li><a href="module-lib_cache_memcached-memcachedCache.html">lib/cache/memcached~memcachedCache</a></li><li><a href="module-lib_cache_redis-redisCache.html">lib/cache/redis~redisCache</a></li>
-				</ul>
-			</li>
-			
-			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
 					<li><a href="module-lib_cache_in_memory.html">lib/cache/in_memory</a></li><li><a href="module-lib_cache_memcached.html">lib/cache/memcached</a></li><li><a href="module-lib_cache_redis.html">lib/cache/redis</a></li>
@@ -47,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Cache.html">Cache</a></li><li><a href="OpenSTKeys.html">OpenSTKeys</a></li>
+					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache_in_memory-inMemoryCache.html">lib/cache/in_memory~inMemoryCache</a></li><li><a href="module-lib_cache_memcached-memcachedCache.html">lib/cache/memcached~memcachedCache</a></li><li><a href="module-lib_cache_redis-redisCache.html">lib/cache/redis~redisCache</a></li><li><a href="OpenSTCacheKeys.html">OpenSTCacheKeys</a></li>
 				</ul>
 			</li>
 			
@@ -109,13 +102,73 @@ It contains three caching engines. Decision of which caching engine to use is go
 <li>In-process (use with single threaded process in development mode only)</li>
 </ul>
 <h1>Install OpenST Cache</h1><pre class="prettyprint source lang-bash"><code>npm install @openstfoundation/openst-cache --save</code></pre><h1>Set EVN Variables</h1><h5>Select the desired caching engine and default TTL:</h5><pre class="prettyprint source lang-bash"><code>export OST_CACHING_ENGINE='redis' # Possible values are - 'none', 'redis', 'memcached'
-export OST_DEFAULT_TTL=3600 # In seconds</code></pre><h5>Redis specific ENV variables</h5><pre class="prettyprint source lang-bash"><code>export OST_REDIS_HOST='127.0.0.1'
+export OST_DEFAULT_TTL=3600 # In seconds</code></pre><h5>If OST_CACHING_ENGINE is redis, then set following ENV variables:</h5><pre class="prettyprint source lang-bash"><code>export OST_REDIS_HOST='127.0.0.1'
 export OST_REDIS_PORT=6379
 export OST_REDIS_PASS=st123 # Redis authentication password defined as &quot;requirepass&quot; 
-export OST_REDIS_TLS_ENABLED=0 # Possible values are 1 and 0</code></pre><h5>Memcached specific ENV variables</h5><pre class="prettyprint source lang-bash"><code>export OST_MEMCACHE_SERVERS='127.0.0.1:11211' # comma seperated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'</code></pre><h1>Example:</h1><pre class="prettyprint source lang-js"><code>const openSTCache = require('@openstfoundation/openst-cache')
-  , cacheImplementer = openSTCache.cache;
-cacheImplementer.set('testKey', 'testValue');
-cacheImplementer.get('testKey');</code></pre></article>
+export OST_REDIS_TLS_ENABLED=0 # Possible values are 1 and 0</code></pre><h5>If OST_CACHING_ENGINE is memcached, then set following ENV variables:</h5><pre class="prettyprint source lang-bash"><code>export OST_MEMCACHE_SERVERS='127.0.0.1:11211' # comma seperated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'</code></pre><h1>Examples:</h1><h4>Create OpenST Cache Object:</h4><pre class="prettyprint source lang-js"><code>const openSTCache = require('@openstfoundation/openst-cache');
+const cacheImplementer = openSTCache.cache;</code></pre><h4>Store and retrieve data in cache using 'set' and 'get':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKey', 'testValue').then(function(cacheResponse){
+    if (cacheResponse.isSuccess()) {
+      console.log(cacheResponse.data.response);
+    } else {
+      console.log(cacheResponse);
+    }
+  });
+cacheImplementer.get('testKey').then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });</code></pre><h4>Manage objects in cache using 'setObject' and 'getObject':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.setObject('testObjKey', {dataK1: 'a', dataK2: 'b'}).then(function(cacheResponse){
+    if (cacheResponse.isSuccess()) {
+      console.log(cacheResponse.data.response);
+    } else {
+      console.log(cacheResponse);
+    }
+  });
+cacheImplementer.getObject('testObjKey').then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });</code></pre><h4>Retrieve multiple cache data using 'multiGet':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKeyOne', 'One').then(console.log);
+cacheImplementer.set('testKeyTwo', 'Two').then(console.log);
+cacheImplementer.multiGet(['testKeyOne', 'testKeyTwo']).then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });</code></pre><h4>Delete cache using 'del':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKey', 'testValue').then(console.log);
+cacheImplementer.del('testKey').then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });</code></pre><h4>Manage counters in cache using 'increment' and 'decrement':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testCounterKey', 1).then(console.log);
+cacheImplementer.increment('testCounterKey', 10).then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });
+cacheImplementer.decrement('testCounterKey', 5).then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });</code></pre><h4>Change the cache expiry time using 'touch':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKey', &quot;testData&quot;).then(console.log);
+cacheImplementer.touch('testKey', 10).then(function(cacheResponse){
+   if (cacheResponse.isSuccess()) {
+     console.log(cacheResponse.data.response);
+   } else {
+     console.log(cacheResponse);
+   }
+ });</code></pre></article>
     </section>
 
 
