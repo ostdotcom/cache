@@ -4,10 +4,10 @@
  *
  * This implementation is very specific to OpenST branded tokens and ST' related cache keys.<br><br>
  *
- * @class OpenSTKeys
+ * @class OpenSTCacheKeys
  * @constructor
  */
-const OpenSTKeys = function () {
+const OpenSTCacheKeys = function () {
 
   const oThis = this;
 
@@ -16,7 +16,7 @@ const OpenSTKeys = function () {
 
 };
 
-OpenSTKeys.prototype = {
+OpenSTCacheKeys.prototype = {
 
   /**
    * @ignore
@@ -115,4 +115,4 @@ OpenSTKeys.prototype = {
 };
 
 
-module.exports = new OpenSTKeys();
+module.exports = new OpenSTCacheKeys();

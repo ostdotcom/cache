@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>OpenST Cache Class: inMemoryCache</title>
+	<title>OpenST Cache Class: OpenSTCacheKeys</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,14 +33,14 @@
 			<li class="dropdown">
 				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="module-lib_cache.html">lib/cache</a></li>
+					<li><a href="module-lib_cache_in_memory.html">lib/cache/in_memory</a></li><li><a href="module-lib_cache_memcached.html">lib/cache/memcached</a></li><li><a href="module-lib_cache_redis.html">lib/cache/redis</a></li>
 				</ul>
 			</li>
 			
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache-inMemoryCache.html">lib/cache~inMemoryCache</a></li><li><a href="module-lib_cache-memcachedCache.html">lib/cache~memcachedCache</a></li><li><a href="module-lib_cache-redisCache.html">lib/cache~redisCache</a></li><li><a href="OpenSTKeys.html">OpenSTKeys</a></li>
+					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache_in_memory-inMemoryCache.html">lib/cache/in_memory~inMemoryCache</a></li><li><a href="module-lib_cache_memcached-memcachedCache.html">lib/cache/memcached~memcachedCache</a></li><li><a href="module-lib_cache_redis-redisCache.html">lib/cache/redis~redisCache</a></li><li><a href="OpenSTCacheKeys.html">OpenSTCacheKeys</a></li>
 				</ul>
 			</li>
 			
@@ -72,16 +72,16 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: inMemoryCache</h1>
+	<h1 class="page-title">Class: OpenSTCacheKeys</h1>
 <section>
 
 <header>
     
         <h2>
-            <span class="ancestors"><a href="module-lib_cache.html">lib/cache</a>~</span>
-        
-        inMemoryCache
+        OpenSTCacheKeys
         </h2>
+        
+            <div class="class-description">OpenSTCacheKeys</div>
         
     
 </header>
@@ -93,7 +93,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="inMemoryCache"><span class="type-signature"></span>new inMemoryCache()</h4>
+    <h4 class="name" id="OpenSTCacheKeys"><span class="type-signature"></span>new OpenSTCacheKeys()</h4>
     
     
 </dt>
@@ -101,7 +101,7 @@
 
     
     <div class="description">
-        Constructor to manage cache in memory.
+        This implementation is very specific to OpenST branded tokens and ST' related cache keys.<br><br>
     </div>
     
 
@@ -189,7 +189,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="_getRecord"><span class="type-signature"></span>_getRecord(key)</h4>
+    <h4 class="name" id="btBalance"><span class="type-signature"></span>btBalance(chainId, btAddress, address)</h4>
     
     
 </dt>
@@ -197,7 +197,7 @@
 
     
     <div class="description">
-        Internal method to get record Object for a given key
+        Get Branded Token balance cache key
     </div>
     
 
@@ -232,13 +232,13 @@
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>chainId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Integer</span>
 
 
 
@@ -249,148 +249,20 @@
 
             
 
-            <td class="description last">cache key</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="decrement"><span class="type-signature"></span>decrement(key, byValue)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Decrement the numeric value for the given key, if key already exists.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">cache key</td>
+            <td class="description last">Branded Token deployed on chain id</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>byValue</code></td>
+                <td class="name"><code>btAddress</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">String</span>
 
 
 
@@ -401,7 +273,31 @@
 
             
 
-            <td class="description last">number that you want to decrement by</td>
+            <td class="description last">address of branded token ERC20 contract</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">address whose balance cache key need to be generated</td>
         </tr>
 
     
@@ -464,10 +360,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    A promise to decrement the numeric value.  On resolve, the boolean flag indicates if value was decremented successfully or not.
-</div>
-
 
 
 <dl>
@@ -476,7 +368,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">String</span>
 
 
 
@@ -493,7 +385,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="del"><span class="type-signature"></span>del(key)</h4>
+    <h4 class="name" id="btDecimals"><span class="type-signature"></span>btDecimals(chainId, btAddress)</h4>
     
     
 </dt>
@@ -501,7 +393,7 @@
 
     
     <div class="description">
-        Delete the key from cache
+        Get Branded Token decimals cache key
     </div>
     
 
@@ -536,13 +428,13 @@
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>chainId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Integer</span>
 
 
 
@@ -553,7 +445,31 @@
 
             
 
-            <td class="description last">cache key</td>
+            <td class="description last">Branded Token deployed on chain id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>btAddress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">address of branded token ERC20 contract</td>
         </tr>
 
     
@@ -616,10 +532,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    A promise to delete the key.  On resolve, the boolean flag indicates if cache was deleted successfully or not.
-</div>
-
 
 
 <dl>
@@ -628,7 +540,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">String</span>
 
 
 
@@ -645,7 +557,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="get"><span class="type-signature"></span>get(key)</h4>
+    <h4 class="name" id="btName"><span class="type-signature"></span>btName(chainId, btAddress)</h4>
     
     
 </dt>
@@ -653,7 +565,7 @@
 
     
     <div class="description">
-        Get the stored value for the given key.
+        Get Branded Token name cache key
     </div>
     
 
@@ -688,13 +600,13 @@
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>chainId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Integer</span>
 
 
 
@@ -705,7 +617,31 @@
 
             
 
-            <td class="description last">cache key</td>
+            <td class="description last">Branded Token deployed on chain id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>btAddress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">address of branded token ERC20 contract</td>
         </tr>
 
     
@@ -768,10 +704,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    A promise to return value of the key.
-</div>
-
 
 
 <dl>
@@ -780,7 +712,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
+<span class="param-type">String</span>
 
 
 
@@ -797,7 +729,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getObject"><span class="type-signature"></span>getObject(key)</h4>
+    <h4 class="name" id="btSymbol"><span class="type-signature"></span>btSymbol(chainId, btAddress)</h4>
     
     
 </dt>
@@ -805,7 +737,7 @@
 
     
     <div class="description">
-        Get the stored object value for the given key. Internally call get method
+        Get Branded Token symbol cache key
     </div>
     
 
@@ -840,13 +772,13 @@
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>chainId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Integer</span>
 
 
 
@@ -857,7 +789,31 @@
 
             
 
-            <td class="description last">cache key</td>
+            <td class="description last">Branded Token deployed on chain id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>btAddress</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">address of branded token ERC20 contract</td>
         </tr>
 
     
@@ -920,10 +876,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    A promise to return value of the key.
-</div>
-
 
 
 <dl>
@@ -932,7 +884,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
+<span class="param-type">String</span>
 
 
 
@@ -949,7 +901,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="increment"><span class="type-signature"></span>increment(key, byValue)</h4>
+    <h4 class="name" id="btUUID"><span class="type-signature"></span>btUUID(chainId, btAddress)</h4>
     
     
 </dt>
@@ -957,7 +909,7 @@
 
     
     <div class="description">
-        Increment the numeric value for the given key, if key already exists.
+        Get Branded Token UUID cache key
     </div>
     
 
@@ -992,13 +944,13 @@
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>chainId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">string</span>
+<span class="param-type">Integer</span>
 
 
 
@@ -1009,20 +961,20 @@
 
             
 
-            <td class="description last">cache key</td>
+            <td class="description last">Branded Token deployed on chain id</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>byValue</code></td>
+                <td class="name"><code>btAddress</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">String</span>
 
 
 
@@ -1033,7 +985,7 @@
 
             
 
-            <td class="description last">number that you want to increment by</td>
+            <td class="description last">address of branded token ERC20 contract</td>
         </tr>
 
     
@@ -1096,10 +1048,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    A promise to increment the numeric value.  On resolve, the boolean flag indicates if value was incremented successfully or not.
-</div>
-
 
 
 <dl>
@@ -1108,7 +1056,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">String</span>
 
 
 
@@ -1125,7 +1073,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="multiGet"><span class="type-signature"></span>multiGet(keys)</h4>
+    <h4 class="name" id="stPrimeBalance"><span class="type-signature"></span>stPrimeBalance(chainId, address)</h4>
     
     
 </dt>
@@ -1133,7 +1081,7 @@
 
     
     <div class="description">
-        Get the values of specified keys.
+        Get ST' balance cache key
     </div>
     
 
@@ -1168,13 +1116,13 @@
 
         <tr>
             
-                <td class="name"><code>keys</code></td>
+                <td class="name"><code>chainId</code></td>
             
 
             <td class="type">
             
                 
-<span class="param-type">array</span>
+<span class="param-type">Integer</span>
 
 
 
@@ -1185,7 +1133,31 @@
 
             
 
-            <td class="description last">Array of cache keys</td>
+            <td class="description last">Branded Token deployed on chain id</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>address</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">address whose balance cache key need to be generated</td>
         </tr>
 
     
@@ -1248,10 +1220,6 @@
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    A promise to return value of the keys.
-</div>
-
 
 
 <dl>
@@ -1260,535 +1228,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="set"><span class="type-signature"></span>set(key, value)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Set a new key value or update the existing key value in cache
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">cache key</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">mixed</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">JSON/number/string that you want to store.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    A promise to set the key.  On resolve, the boolean flag indicates if cache was set successfully or not.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;boolean></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setObject"><span class="type-signature"></span>setObject(key, object)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Set a new key object or update the existing key object in cache. Internally call set method
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">cache key</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>object</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">mixed</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">JSON/number/string value that you want to store.</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    A promise to set the key.  On resolve, the boolean flag indicates if cache was set successfully or not.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;boolean></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="touch"><span class="type-signature"></span>touch(key, lifetime)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Find cached key and set its new expiry time.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">string</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">cache key</td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>lifetime</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">integer</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">number that you want to set as expiry</td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    A promise to update the expiry of record.  On resolve, the boolean flag indicates if record was updated successfully or not.
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">String</span>
 
 
 

@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu ">
-					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache_in_memory-inMemoryCache.html">lib/cache/in_memory~inMemoryCache</a></li><li><a href="module-lib_cache_memcached-memcachedCache.html">lib/cache/memcached~memcachedCache</a></li><li><a href="module-lib_cache_redis-redisCache.html">lib/cache/redis~redisCache</a></li><li><a href="OpenSTKeys.html">OpenSTKeys</a></li>
+					<li><a href="Cache.html">Cache</a></li><li><a href="module-lib_cache_in_memory-inMemoryCache.html">lib/cache/in_memory~inMemoryCache</a></li><li><a href="module-lib_cache_memcached-memcachedCache.html">lib/cache/memcached~memcachedCache</a></li><li><a href="module-lib_cache_redis-redisCache.html">lib/cache/redis~redisCache</a></li><li><a href="OpenSTCacheKeys.html">OpenSTCacheKeys</a></li>
 				</ul>
 			</li>
 			
@@ -390,7 +390,7 @@
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">integer</span>
 
 
 
@@ -401,7 +401,7 @@
 
             
 
-            <td class="description last">number that you want to decrement by</td>
+            <td class="description last">number by which cache need to be decremented. Default: 1</td>
         </tr>
 
     
@@ -465,7 +465,7 @@
     
             
 <div class="param-desc">
-    A promise to decrement the numeric value.  On resolve, the boolean flag indicates if value was decremented successfully or not.
+    - On success, data.value is true. On failure, error details returned.
 </div>
 
 
@@ -476,7 +476,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -617,7 +617,7 @@
     
             
 <div class="param-desc">
-    A promise to delete the key.  On resolve, the boolean flag indicates if cache was deleted successfully or not.
+    - On success, data.value is true. On failure, error details returned.
 </div>
 
 
@@ -628,7 +628,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -653,7 +653,7 @@
 
     
     <div class="description">
-        Get the stored value for the given key.
+        Get the cached value of a key.
     </div>
     
 
@@ -769,7 +769,7 @@
     
             
 <div class="param-desc">
-    A promise to return value of the key.
+    - On success, data.value has value. On failure, error details returned.
 </div>
 
 
@@ -780,7 +780,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -805,7 +805,7 @@
 
     
     <div class="description">
-        Get the stored object value for the given key. Internally call get method
+        Get the stored object value for the given key.
     </div>
     
 
@@ -921,7 +921,7 @@
     
             
 <div class="param-desc">
-    A promise to return value of the key.
+    - On success, data.value has value. On failure, error details returned.
 </div>
 
 
@@ -932,7 +932,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -1022,7 +1022,7 @@
             <td class="type">
             
                 
-<span class="param-type">number</span>
+<span class="param-type">integer</span>
 
 
 
@@ -1033,7 +1033,7 @@
 
             
 
-            <td class="description last">number that you want to increment by</td>
+            <td class="description last">number by which cache need to be incremented. Default: 1</td>
         </tr>
 
     
@@ -1097,7 +1097,7 @@
     
             
 <div class="param-desc">
-    A promise to increment the numeric value.  On resolve, the boolean flag indicates if value was incremented successfully or not.
+    - On success, data.value is true. On failure, error details returned.
 </div>
 
 
@@ -1108,7 +1108,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -1185,7 +1185,7 @@
 
             
 
-            <td class="description last">Array of cache keys</td>
+            <td class="description last">cache keys</td>
         </tr>
 
     
@@ -1249,7 +1249,7 @@
     
             
 <div class="param-desc">
-    A promise to return value of the keys.
+    - On success, data.value is object of keys and values. On failure, error details returned.
 </div>
 
 
@@ -1260,7 +1260,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;mixed></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -1361,7 +1361,7 @@
 
             
 
-            <td class="description last">JSON/number/string that you want to store.</td>
+            <td class="description last">data to be cached</td>
         </tr>
 
     
@@ -1425,7 +1425,7 @@
     
             
 <div class="param-desc">
-    A promise to set the key.  On resolve, the boolean flag indicates if cache was set successfully or not.
+    - On success, data.value is true. On failure, error details returned.
 </div>
 
 
@@ -1436,7 +1436,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -1461,7 +1461,7 @@
 
     
     <div class="description">
-        Set a new key object or update the existing key object in cache. Internally call set method
+        Cache object in cache
     </div>
     
 
@@ -1537,7 +1537,7 @@
 
             
 
-            <td class="description last">JSON/number/string value that you want to store.</td>
+            <td class="description last">object to be cached</td>
         </tr>
 
     
@@ -1601,7 +1601,7 @@
     
             
 <div class="param-desc">
-    A promise to set the key.  On resolve, the boolean flag indicates if cache was set successfully or not.
+    - On success, data.value is true. On failure, error details returned.
 </div>
 
 
@@ -1612,7 +1612,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
@@ -1637,7 +1637,7 @@
 
     
     <div class="description">
-        Find cached key and set its new expiry time.
+        Change the expiry time of an existing cache key
     </div>
     
 
@@ -1713,7 +1713,7 @@
 
             
 
-            <td class="description last">number that you want to set as expiry</td>
+            <td class="description last">new cache expiry in number of seconds</td>
         </tr>
 
     
@@ -1777,7 +1777,7 @@
     
             
 <div class="param-desc">
-    A promise to update the expiry of record.  On resolve, the boolean flag indicates if record was updated successfully or not.
+    - On success, data.value is true. On failure, error details returned.
 </div>
 
 
@@ -1788,7 +1788,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Promise.&lt;boolean></span>
+<span class="param-type">Promise.&lt;Result></span>
 
 
 
