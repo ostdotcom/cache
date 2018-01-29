@@ -4,7 +4,6 @@ sudo: required
 branches:
   only:
   - master
-  - develop
   - release-0.9
 notifications:
   email:
