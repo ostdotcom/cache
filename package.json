@@ -1,6 +1,6 @@
 {
   "name": "@openstfoundation/openst-cache",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "OpenST Cache is the central cache implementation for OpenST products and can easily be plugged-in.",
   "keywords": [
     "openst",
@@ -21,7 +21,8 @@
     "url": "https://github.com/OpenSTFoundation/openst-cache/issues"
   },
   "scripts": {
-    "start": "index.js"
+    "start": "index.js",
+    "make-docs": "node_modules/.bin/jsdoc -c .jsdoc.json"
   },
   "dependencies": {
     "memcached": "^2.2.2",
