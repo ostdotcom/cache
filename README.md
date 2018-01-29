@@ -138,6 +138,9 @@ cacheImplementer.touch('testKey', 10).then(function(cacheResponse){
  });
 ```
 
+For further implementation details, please refer [API documentation][api-docs].
+
 [gitter]: https://gitter.im/OpenSTFoundation/SimpleToken
 [npm]: https://www.npmjs.com/package/@openstfoundation/openst-cache
 [travis]: https://travis-ci.org/OpenSTFoundation/openst-cache
+[api-docs]: https://openstfoundation.github.io/openst-cache/
