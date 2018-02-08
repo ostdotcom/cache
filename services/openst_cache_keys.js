@@ -110,6 +110,20 @@ OpenSTCacheKeys.prototype = {
   stPrimeBalance: function(chainId, address) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, 'STPrime', address);
+  },
+
+  /**
+   * Get price oracle cache key
+   *
+   * @param {Integer} chainId - Price oracle chain id
+   * @param {String} address - address whose balance cache key need to be generated
+   *
+   * @return {String}
+   *
+   */
+  oraclePricePoint: function(chainId, address) {
+    const oThis = this;
+    return oThis._getCacheKeyForProperty(chainId, 'PriceOracle', address);
   }
 
 };
