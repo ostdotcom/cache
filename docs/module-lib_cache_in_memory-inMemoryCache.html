@@ -1277,7 +1277,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="set"><span class="type-signature"></span>set(key, value)</h4>
+    <h4 class="name" id="set"><span class="type-signature"></span>set(key, value [, ttl])</h4>
     
     
 </dt>
@@ -1308,6 +1308,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -1334,6 +1336,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -1358,10 +1368,52 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">data to be cached</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ttl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">cache expiry in seconds. default: DEFAULT_TTL</td>
         </tr>
 
     
@@ -1453,7 +1505,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setObject"><span class="type-signature"></span>setObject(key, object)</h4>
+    <h4 class="name" id="setObject"><span class="type-signature"></span>setObject(key, object [, ttl])</h4>
     
     
 </dt>
@@ -1484,6 +1536,8 @@
         <th>Type</th>
 
         
+        <th>Argument</th>
+        
 
         
 
@@ -1510,6 +1564,14 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
@@ -1534,10 +1596,52 @@
             </td>
 
             
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
 
             
 
             <td class="description last">object to be cached</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ttl</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">number</span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last">cache expiry in seconds. default: DEFAULT_TTL</td>
         </tr>
 
     
