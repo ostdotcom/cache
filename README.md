@@ -47,7 +47,7 @@ const cacheImplementer = openSTCache.cache;
 
 #### Store and retrieve data in cache using 'set' and 'get':
 ```js
-cacheImplementer.set('testKey', 'testValue').then(function(cacheResponse){
+cacheImplementer.set('testKey', 'testValue', 5000).then(function(cacheResponse){
     if (cacheResponse.isSuccess()) {
       console.log(cacheResponse.data.response);
     } else {
@@ -82,7 +82,7 @@ cacheImplementer.getObject('testObjKey').then(function(cacheResponse){
 ```
 
 #### Retrieve multiple cache data using 'multiGet':
-######* <b>NOTE: Don't retrieve Object values using multiGet. As Redis returns null value, even if a value is set in cache.</b>
+###### * <b>NOTE: Don't retrieve Object values using multiGet. As Redis returns null value, even if a value is set in cache.</b>
 ```js
 cacheImplementer.set('testKeyOne', 'One').then(console.log);
 cacheImplementer.set('testKeyTwo', 'Two').then(console.log);

@@ -120,4 +120,21 @@ describe('Cache SetObject', function() {
     assert.equal(response.data.response, true);
   });
 
+  it('should delete from cache after ttl (if cache engine is not redis)', async function() {
+    var cKey = "cache-key"
+        , cValue = {a: 'a', b: [12,23], c: true, d: 1}
+        , ttl = 6 // seconds
+        , response = await openSTCache.setObject(cKey, cValue, ttl);
+    setTimeout(async function(){
+        response = await openSTCache.getObject(cKey);
+        assert.equal(response.isSuccess(), true);
+        if (cacheConfig.CACHING_ENGINE != 'redis') {
+          assert.equal(response.data.response, null);
+        } else {
+          assert.equal(response.data.response, true);
+        }
+      }, ttl * 1000
+    );
+  });
+
 });

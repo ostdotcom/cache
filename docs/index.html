@@ -110,7 +110,7 @@ export OST_DEFAULT_TTL=3600 # In seconds</code></pre><h5>If OST_CACHING_ENGINE i
 export OST_REDIS_PORT=6379
 export OST_REDIS_PASS=st123 # Redis authentication password defined as &quot;requirepass&quot; 
 export OST_REDIS_TLS_ENABLED=0 # Possible values are 1 and 0</code></pre><h5>If OST_CACHING_ENGINE is memcached, then set following ENV variables:</h5><pre class="prettyprint source lang-bash"><code>export OST_MEMCACHE_SERVERS='127.0.0.1:11211' # comma seperated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'</code></pre><h1>Examples:</h1><h4>Create OpenST Cache Object:</h4><pre class="prettyprint source lang-js"><code>const openSTCache = require('@openstfoundation/openst-cache');
-const cacheImplementer = openSTCache.cache;</code></pre><h4>Store and retrieve data in cache using 'set' and 'get':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKey', 'testValue').then(function(cacheResponse){
+const cacheImplementer = openSTCache.cache;</code></pre><h4>Store and retrieve data in cache using 'set' and 'get':</h4><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKey', 'testValue', 5000).then(function(cacheResponse){
     if (cacheResponse.isSuccess()) {
       console.log(cacheResponse.data.response);
     } else {
