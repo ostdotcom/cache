@@ -110,4 +110,19 @@ describe('Cache Set', function() {
     assert.equal(response.data.response, true);
   });
 
+  it('should delete from cache after ttl', async function() {
+    var cKey = "cache-key"
+        , cValue = 10
+        , ttl = 6 // seconds
+        , response = await openSTCache.set(cKey, cValue, ttl);
+    assert.equal(response.isSuccess(), true);
+    assert.equal(response.data.response, true);
+    setTimeout(async function(){
+      response = await openSTCache.get(cKey);
+      assert.equal(response.isSuccess(), true);
+      assert.equal(response.data.response, null);
+      }, ttl * 1000
+    );
+  });
+
 });
