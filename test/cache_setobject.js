@@ -120,15 +120,13 @@ describe('Cache SetObject', function() {
     assert.equal(response.data.response, true);
   });
 
-  it('should delete from cache after ttl', async function() {
+  it('should delete from cache after ttl (if cache engine is not redis)', async function() {
     var cKey = "cache-key"
         , cValue = {a: 'a', b: [12,23], c: true, d: 1}
         , ttl = 6 // seconds
-        , response = await openSTCache.set(cKey, cValue, ttl);
-    assert.equal(response.isSuccess(), true);
-    assert.equal(response.data.response, true);
+        , response = await openSTCache.setObject(cKey, cValue, ttl);
     setTimeout(async function(){
-        response = await openSTCache.get(cKey);
+        response = await openSTCache.getObject(cKey);
         assert.equal(response.isSuccess(), true);
         if (cacheConfig.CACHING_ENGINE != 'redis') {
           assert.equal(response.data.response, null);
