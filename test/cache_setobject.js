@@ -120,21 +120,23 @@ describe('Cache SetObject', function() {
     assert.equal(response.data.response, true);
   });
 
-  if (cacheConfig.CACHING_ENGINE != 'redis') {
-    it('should delete from cache after ttl', async function() {
-      var cKey = "cache-key"
-          , cValue = {a: 'a', b: [12,23], c: true, d: 1}
-          , ttl = 6 // seconds
-          , response = await openSTCache.set(cKey, cValue, ttl);
-      assert.equal(response.isSuccess(), true);
-      assert.equal(response.data.response, true);
-      setTimeout(async function(){
-          response = await openSTCache.get(cKey);
-          assert.equal(response.isSuccess(), true);
+  it('should delete from cache after ttl', async function() {
+    var cKey = "cache-key"
+        , cValue = {a: 'a', b: [12,23], c: true, d: 1}
+        , ttl = 6 // seconds
+        , response = await openSTCache.set(cKey, cValue, ttl);
+    assert.equal(response.isSuccess(), true);
+    assert.equal(response.data.response, true);
+    setTimeout(async function(){
+        response = await openSTCache.get(cKey);
+        assert.equal(response.isSuccess(), true);
+        if (cacheConfig.CACHING_ENGINE != 'redis') {
           assert.equal(response.data.response, null);
-        }, ttl * 1000
-      );
-    });
-  }
+        } else {
+          assert.equal(response.data.response, true);
+        }
+      }, ttl * 1000
+    );
+  });
 
 });

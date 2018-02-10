@@ -47,7 +47,7 @@ const cacheImplementer = openSTCache.cache;
 
 #### Store and retrieve data in cache using 'set' and 'get':
 ```js
-cacheImplementer.set('testKey', 'testValue').then(function(cacheResponse){
+cacheImplementer.set('testKey', 'testValue', 5000).then(function(cacheResponse){
     if (cacheResponse.isSuccess()) {
       console.log(cacheResponse.data.response);
     } else {
