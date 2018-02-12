@@ -136,8 +136,7 @@ cacheImplementer.getObject('testObjKey').then(function(cacheResponse){
    } else {
      console.log(cacheResponse);
    }
- });</code></pre><h4>Retrieve multiple cache data using 'multiGet':</h4><p>######* <b>NOTE: Don't retrieve Object values using multiGet. As Redis returns null value, even if a value is set in cache.</b></p>
-<pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKeyOne', 'One').then(console.log);
+ });</code></pre><h4>Retrieve multiple cache data using 'multiGet':</h4><h6>* <b>NOTE: Don't retrieve Object values using multiGet. As Redis returns null value, even if a value is set in cache.</b></h6><pre class="prettyprint source lang-js"><code>cacheImplementer.set('testKeyOne', 'One').then(console.log);
 cacheImplementer.set('testKeyTwo', 'Two').then(console.log);
 cacheImplementer.multiGet(['testKeyOne', 'testKeyTwo']).then(function(cacheResponse){
    if (cacheResponse.isSuccess()) {
