@@ -4,103 +4,112 @@ const chai = require('chai')
 
 // Load cache service
 const rootPrefix = ".."
-  , openSTCache = require(rootPrefix + '/services/cache')
-  , cacheConfig = require(rootPrefix + '/config/cache')
+  , openSTCacheKlass = require(rootPrefix + '/services/cache')
+  , engineType = process.env.OST_CACHING_ENGINE
 ;
 
-describe('Cache MultiGet', function() {
+function performTest (cahceObj, keySuffix) {
 
-  it('should return promise', async function() {
-    var cKey = ["cache-key"]
-      , response = openSTCache.multiGet(cKey);
-    assert.typeOf(response, 'Promise');
+  describe('Cache MultiGet ' + keySuffix, function() {
+
+    keySuffix = keySuffix + "_" + (new Date()).getTime();
+
+    it('should return promise', async function() {
+      var cKey = ["cache-key"+ keySuffix]
+        , response = cahceObj.multiGet(cKey);
+      assert.typeOf(response, 'Promise');
+    });
+
+    it('should fail when key is not passed', async function() {
+      var response = await cahceObj.multiGet();
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is empty array', async function() {
+      var response = await cahceObj.multiGet([]);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is undefined', async function() {
+      var response = await cahceObj.multiGet([undefined]);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is blank', async function() {
+      var cKey = ['']
+        , response = await cahceObj.multiGet(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is number', async function() {
+      var cKey = [10]
+        , response = await cahceObj.multiGet(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key has space', async function() {
+      var cKey = ["a b"+ keySuffix]
+        , response = await cahceObj.multiGet(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key length is > 250 bytes', async function() {
+      var cKey = [Array(252).join('x')]
+        , response = await cahceObj.multiGet(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should pass when value is not set', async function() {
+      var cKey = ["cache-key-not-set"+ keySuffix]
+        , response = await cahceObj.multiGet(cKey);
+      assert.equal(response.isSuccess(), true);
+      assert.equal(response.data.response["cache-key-not-set"], null);
+    });
+
+    it('should pass when non object values are get', async function() {
+      var keyValue = {};
+
+      keyValue[`cache-key-string${keySuffix}`] = "String Value";
+      keyValue[`cache-key-integer${keySuffix}`] = 10;
+      keyValue[`cache-key-blank${keySuffix}`] = "";
+
+
+      for(var key in keyValue) {
+        res = await cahceObj.set(key, keyValue[key]);
+      }
+
+      var lookupKeys = Object.keys(keyValue)
+        , response = await cahceObj.multiGet(lookupKeys);
+
+      assert.equal(response.isSuccess(), true);
+      for(var key in response.data.response) {
+        assert.equal(response.data.response[key], keyValue[key]);
+      };
+
+    });
+
+    it('should return null when object values are get', async function() {
+      var keyValue = {};
+      keyValue[`cache-key-array${keySuffix}`] =  [1,2,3,4];
+      keyValue[`cache-key-object${keySuffix}`] =  {a: 1};
+
+
+      for(var key in keyValue) {
+        res = await cahceObj.set(key, keyValue[key]);
+      }
+
+      var lookupKeys = Object.keys(keyValue)
+        , response = await cahceObj.multiGet(lookupKeys);
+
+      assert.equal(response.isSuccess(), true);
+      for(var key in response.data.response) {
+        assert.equal(response.data.response[key], null);
+      };
+
+    });
+
   });
+}
 
-  it('should fail when key is not passed', async function() {
-    var response = await openSTCache.multiGet();
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key is empty array', async function() {
-    var response = await openSTCache.multiGet([]);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key is undefined', async function() {
-    var response = await openSTCache.multiGet([undefined]);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key is blank', async function() {
-    var cKey = ['']
-      , response = await openSTCache.multiGet(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key is number', async function() {
-    var cKey = [10]
-      , response = await openSTCache.multiGet(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key has space', async function() {
-    var cKey = ["a b"]
-      , response = await openSTCache.multiGet(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key length is > 250 bytes', async function() {
-    var cKey = [Array(252).join('x')]
-      , response = await openSTCache.multiGet(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should pass when value is not set', async function() {
-    var cKey = ["cache-key-not-set"]
-      , response = await openSTCache.multiGet(cKey);
-    assert.equal(response.isSuccess(), true);
-    assert.equal(response.data.response["cache-key-not-set"], null);
-  });
-
-  it('should pass when non object values are get', async function() {
-    var keyValue = {
-      "cache-key-string": "String Value",
-      "cache-key-integer": 10,
-      "cache-key-blank": ""
-    };
-
-    for(var key in keyValue) {
-      res = await openSTCache.set(key, keyValue[key]);
-    }
-
-    var lookupKeys = Object.keys(keyValue)
-      , response = await openSTCache.multiGet(lookupKeys);
-
-    assert.equal(response.isSuccess(), true);
-    for(var key in response.data.response) {
-      assert.equal(response.data.response[key], keyValue[key]);
-    };
-
-  });
-
-  it('should return null when object values are get', async function() {
-    var keyValue = {
-      "cache-key-array": [1,2,3,4],
-      "cache-key-object": {a: 1}
-    };
-
-    for(var key in keyValue) {
-      res = await openSTCache.set(key, keyValue[key]);
-    }
-
-    var lookupKeys = Object.keys(keyValue)
-      , response = await openSTCache.multiGet(lookupKeys);
-
-    assert.equal(response.isSuccess(), true);
-    for(var key in response.data.response) {
-      assert.equal(response.data.response[key], null);
-    };
-
-  });
-
-});
+performTest(new openSTCacheKlass(engineType, true), "ConsistentBehaviour");
+performTest(new openSTCacheKlass (engineType, false), "InconsistentBehaviour");
