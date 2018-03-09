@@ -4,132 +4,173 @@ const chai = require('chai')
 
 // Load cache service
 const rootPrefix = ".."
-  , openSTCache = require(rootPrefix + '/services/cache')
-  , cacheConfig = require(rootPrefix + '/config/cache')
+  , openSTCacheKlass = require(rootPrefix + '/services/cache')
+  , engineType = process.env.OST_CACHING_ENGINE
 ;
 
-describe('Cache Decrement', function() {
+function performTest (cacheObj, keySuffix) {
 
-  it('should return promise', async function() {
-    var cKey = "cache-key-decr-counter"
-      , cValue = 1
-      , response = openSTCache.decrement(cKey, cValue);
-    assert.typeOf(response, 'Promise');
-  });
+  describe('Cache Decrement ' + keySuffix, function() {
 
-  it('should fail when key/value is not passed', async function() {
-    var response = await openSTCache.decrement();
-    assert.equal(response.isSuccess(), false);
-  });
+    keySuffix = keySuffix + "_" + (new Date()).getTime();
 
-  it('should fail when key is undefined', async function() {
-    var cValue = 1
-      , response = await openSTCache.decrement(undefined, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should return promise', async function () {
+      var cKey = "cache-key-decr-counter" + keySuffix
+        , cValue = 1
+        , response = cacheObj.decrement(cKey, cValue);
+      assert.typeOf(response, 'Promise');
+    });
 
-  it('should fail when key is blank', async function() {
-    var cKey = ''
-      , cValue = 1
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key/value is not passed', async function () {
+      var response = await cacheObj.decrement();
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when key is number', async function() {
-    var cKey = 10
-      , cValue = 1
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key is undefined', async function () {
+      var cValue = 1
+        , response = await cacheObj.decrement(undefined, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when key has space', async function() {
-    var cKey = "a b"
-      , cValue = 1
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key is blank', async function () {
+      var cKey = ''
+        , cValue = 1
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when key length is > 250 bytes', async function() {
-    var cKey = Array(252).join('x')
-      , cValue = 1
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key is number', async function () {
+      var cKey = 10
+        , cValue = 1
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when value is Object', async function() {
-    var cKey = "cache-key-decr-counter"
-      , cValue = {a: 1}
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key has space', async function () {
+      var cKey = "a b"
+        , cValue = 1
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when value is blank', async function() {
-    var cKey = "cache-key-decr-counter"
-      , cValue = ""
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key length is > 250 bytes', async function () {
+      var cKey = Array(252).join('x')
+        , cValue = 1
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when value is string', async function() {
-    var cKey = "cache-key-decr-counter"
-      , cValue = "String Value"
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when value is Object', async function () {
+      var cKey = "cache-key-decr-counter" + keySuffix
+        , cValue = {a: 1}
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when key has non numeric value', async function() {
-    var cKey = "cache-key-decr-non-numeric"
-      , cValue = "hi"
-      , response = await openSTCache.set(cKey, cValue);
-    assert.equal(response.isSuccess(), true);
+    it('should fail when value is blank', async function () {
+      var cKey = "cache-key-decr-counter" + keySuffix
+        , cValue = ""
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-    cValue = 10
-    response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when value is string', async function () {
+      var cKey = "cache-key-decr-counter" + keySuffix
+        , cValue = "String Value"
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-  it('should fail when key does not exist', async function() {
-    var cKey = "cache-key-decr-counter-not-exist"
-      , cValue = 10
-      , response = await openSTCache.decrement(cKey, cValue);
-    assert.equal(response.isSuccess(), false);
-  });
+    it('should fail when key has non numeric value', async function () {
+      var cKey = "cache-key-decr-non-numeric" + keySuffix
+        , cValue = "hi"
+        , response = await cacheObj.set(cKey, cValue);
+      assert.equal(response.isSuccess(), true);
 
-  it('should pass incremented by multiple integer values', async function() {
-    var cKey = "cache-key-decr-counter-key"
-      , cValue = 10000
-      , response = await openSTCache.set(cKey, cValue);
-    assert.equal(response.isSuccess(), true);
+      cValue = 10
+      response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
 
-    // decrement by default value
-    resObj = await openSTCache.decrement(cKey);
-    assert.equal(resObj.isSuccess(), true);
-    cValue -= 1;
-    assert.equal(resObj.data.response, cValue);
+    performTestWhenKeyDoesNotExists(cacheObj, keySuffix);
 
-    // decrement by negative value
-    resObj = await openSTCache.decrement(cKey, -1);
-    assert.equal(resObj.isSuccess(), false);
+    it('should pass decremented by multiple integer values', async function() {
+      var cKey = "cache-key-decr-counter-key" + keySuffix
+        , cValue = 10000
+        , response = await cacheObj.set(cKey, cValue);
+      assert.equal(response.isSuccess(), true);
 
-    // decrement by float value
-    resObj = await openSTCache.decrement(cKey, 1.2);
-    assert.equal(resObj.isSuccess(), false);
-
-    // decrement by 1
-    var incrementBy = [1, 3, 2, 10, 100, 57];
-    for (var i=0; i < incrementBy.length; i++) {
-      resObj = await openSTCache.decrement(cKey, incrementBy[i]);
+      // decrement by default value
+      resObj = await cacheObj.decrement(cKey);
       assert.equal(resObj.isSuccess(), true);
-      cValue -= incrementBy[i];
+      cValue -= 1;
       assert.equal(resObj.data.response, cValue);
-    }
 
-    // decrement by bigger number value
-    resObj = await openSTCache.decrement(cKey, 100000000);
-    assert.equal(resObj.isSuccess(), true);
-    cValue = 0;
-    assert.equal(resObj.data.response, cValue);
+      // decrement by negative value
+      resObj = await cacheObj.decrement(cKey, -1);
+      assert.equal(resObj.isSuccess(), false);
+
+      // decrement by float value
+      resObj = await cacheObj.decrement(cKey, 1.2);
+      assert.equal(resObj.isSuccess(), false);
+
+      // decrement by 1
+      var incrementBy = [1, 3, 2, 10, 100, 57];
+      for (var i=0; i < incrementBy.length; i++) {
+        resObj = await cacheObj.decrement(cKey, incrementBy[i]);
+        assert.equal(resObj.isSuccess(), true);
+        cValue -= incrementBy[i];
+        assert.equal(resObj.data.response, cValue);
+      }
+
+      // decrement by bigger number value
+      resObj = await cacheObj.decrement(cKey, 100000000);
+      assert.equal(resObj.isSuccess(), true);
+
+      if (['redis', 'none'].includes(engineType) && !cacheObj._isConsistentBehaviour) {
+        assert.equal(resObj.data.response, cValue-100000000);
+      } else {
+        cValue = 0;
+        assert.equal(resObj.data.response, cValue);
+      }
+
+    });
 
   });
+}
 
-});
+function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
+  const failCase = function () {
+    it('should fail when key does not exist', async function () {
+      var cKey = "cache-key-decr-counter-not-exist" + keySuffix
+        , cValue = 10
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), false);
+    });
+  };
+
+  const passCase = function () {
+    it('should pass when key does not exist', async function () {
+      var cKey = "cache-key-decr-counter-not-exist" + keySuffix
+        , cValue = 10
+        , response = await cacheObj.decrement(cKey, cValue);
+      assert.equal(response.isSuccess(), true);
+      assert.equal(response.data.response, -1 * cValue);
+    });
+  }
+
+  if (cacheObj._isConsistentBehaviour){
+    failCase();
+  } else {
+    if (engineType == 'redis') {
+      passCase();
+    } else if(engineType == 'memcached'){
+      failCase();
+    }	else if (engineType == 'none') {
+      passCase();
+    }
+  }
+}
+
+performTest(new openSTCacheKlass(engineType, true), "ConsistentBehaviour");
+performTest(new openSTCacheKlass (engineType, false), "InconsistentBehaviour");

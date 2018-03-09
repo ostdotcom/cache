@@ -17,9 +17,6 @@ function define(name, value) {
 // Default cache TTL (in seconds)
 define("DEFAULT_TTL", process.env.OST_DEFAULT_TTL);
 
-// ALLOWED VALUES => none/redis/memcached
-define('CACHING_ENGINE', process.env.OST_CACHING_ENGINE);
-
 // Constants for redis caching layer
 define("REDIS_HOST", process.env.OST_REDIS_HOST);
 define("REDIS_PORT", process.env.OST_REDIS_PORT);
