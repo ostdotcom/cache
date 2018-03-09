@@ -10,8 +10,6 @@
  *     </ul>
  *
  * @class Cache
- * @constructor
- *
  */
 
 const rootPrefix = ".."
