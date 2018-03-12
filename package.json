@@ -1,6 +1,6 @@
 {
   "name": "@openstfoundation/openst-cache",
-  "version": "1.0.1-beta.4",
+  "version": "1.0.1-beta.5",
   "description": "OpenST Cache is the central cache implementation for OpenST products and can easily be plugged-in.",
   "keywords": [
     "openst",
