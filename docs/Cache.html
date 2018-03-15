@@ -81,8 +81,6 @@
         Cache
         </h2>
         
-            <div class="class-description">Cache</div>
-        
     
 </header>
 
@@ -101,7 +99,7 @@
 
     
     <div class="description">
-        Depending on CACHING_ENGINE environment variable, the preferred caching engine is picked. This module acts as a
+        Depending on cacheEngine variable, the preferred caching engine is picked. This module acts as a
 wrapper / factory for the cache layer. Following are the actual implementations of the cache layer methods: <br>
     <ul>
       <li>Memcached implementation - ref: <a href="module-lib_cache_memcached.html"><code>module:lib/cache/memcached</code></a></li>
@@ -116,6 +114,200 @@ wrapper / factory for the cache layer. Following are the actual implementations 
     
 
     
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+    
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</article>
+
+</section>
+
+
+
+
+	<h1 class="page-title">Class: Cache</h1>
+<section>
+
+<header>
+    
+        <h2>
+        Cache
+        </h2>
+        
+    
+</header>
+
+
+<article>
+    <div class="container-overview">
+    
+        
+<hr>
+<dt>
+    <h4 class="name" id="Cache"><span class="type-signature"></span>new Cache(cacheEngine, isConsistentBehaviour)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+    <div class="description">
+        Constructor for Cache Engine
+    </div>
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>cacheEngine</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Specify the cache engine. Possible values: 'redis', 'memcached', 'none'</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>isConsistentBehaviour</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Specify if the cache behaviour need to be consistent across all the engines or not. Default is: True</td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     

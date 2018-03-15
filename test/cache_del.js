@@ -4,66 +4,75 @@ const chai = require('chai')
 
 // Load cache service
 const rootPrefix = ".."
-  , openSTCache = require(rootPrefix + '/services/cache')
-  , cacheConfig = require(rootPrefix + '/config/cache')
+  , openSTCacheKlass = require(rootPrefix + '/services/cache')
+  , engineType = process.env.OST_CACHING_ENGINE
 ;
 
-describe('Cache Del', function() {
+function performTest (cahceObj, keySuffix) {
 
-  it('should return promise', async function() {
-    var cKey = "cache-key"
-      , response = openSTCache.del(cKey);
-    assert.typeOf(response, 'Promise');
+  describe('Cache Del '+ keySuffix, function() {
+
+    keySuffix = keySuffix + "_" + (new Date()).getTime();
+
+    it('should return promise', async function() {
+      var cKey = "cache-key" + keySuffix
+        , response = cahceObj.del(cKey);
+      assert.typeOf(response, 'Promise');
+    });
+
+    it('should fail when key/value is not passed', async function() {
+      var response = await cahceObj.del();
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is undefined', async function() {
+      var response = await cahceObj.del(undefined);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is blank', async function() {
+      var cKey = ''
+        , response = await cahceObj.del(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key is number', async function() {
+      var cKey = 10
+        , response = await cahceObj.del(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key has space', async function() {
+      var cKey = "a b" + keySuffix
+        , response = await cahceObj.del(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should fail when key length is > 250 bytes', async function() {
+      var cKey = Array(252).join('x')
+        , response = await cahceObj.del(cKey);
+      assert.equal(response.isSuccess(), false);
+    });
+
+    it('should pass when key is not set', async function() {
+      var cKey = "cache-key-not-key-del" + keySuffix
+        , response = await cahceObj.del(cKey);
+      assert.equal(response.isSuccess(), true);
+      assert.equal(response.data.response, true);
+    });
+
+    it('should pass when key is set', async function() {
+      var cKey = "cache-key" + keySuffix
+        , cValue = "String Value"
+        , responseSet = await cahceObj.set(cKey, cValue)
+        , response = await cahceObj.del(cKey);
+      assert.equal(response.isSuccess(), true);
+      assert.equal(response.data.response, true);
+    });
+
   });
 
-  it('should fail when key/value is not passed', async function() {
-    var response = await openSTCache.del();
-    assert.equal(response.isSuccess(), false);
-  });
+}
 
-  it('should fail when key is undefined', async function() {
-    var response = await openSTCache.del(undefined);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key is blank', async function() {
-    var cKey = ''
-      , response = await openSTCache.del(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key is number', async function() {
-    var cKey = 10
-      , response = await openSTCache.del(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key has space', async function() {
-    var cKey = "a b"
-      , response = await openSTCache.del(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should fail when key length is > 250 bytes', async function() {
-    var cKey = Array(252).join('x')
-      , response = await openSTCache.del(cKey);
-    assert.equal(response.isSuccess(), false);
-  });
-
-  it('should pass when key is not set', async function() {
-    var cKey = "cache-key-not-key-del"
-      , response = await openSTCache.del(cKey);
-    assert.equal(response.isSuccess(), true);
-    assert.equal(response.data.response, true);
-  });
-
-  it('should pass when key is set', async function() {
-    var cKey = "cache-key"
-      , cValue = "String Value"
-      , responseSet = await openSTCache.set(cKey, cValue)
-      , response = await openSTCache.del(cKey);
-    assert.equal(response.isSuccess(), true);
-    assert.equal(response.data.response, true);
-  });
-
-});
+performTest(new openSTCacheKlass(engineType, true), "ConsistentBehaviour");
+performTest(new openSTCacheKlass (engineType, false), "InconsistentBehaviour");

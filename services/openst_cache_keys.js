@@ -123,8 +123,23 @@ OpenSTCacheKeys.prototype = {
    */
   oraclePricePoint: function(chainId, address) {
     const oThis = this;
-    return oThis._getCacheKeyForProperty(chainId, 'PriceOracle', address);
+    return oThis._getCacheKeyForProperty(chainId, address, 'oracle_price');
+  },
+
+  /**
+   * Get price oracle expiration height cache key
+   *
+   * @param {Integer} chainId - Price oracle chain id
+   * @param {String} address - address whose balance cache key need to be generated
+   *
+   * @return {String}
+   *
+   */
+  oracleExpirationHeight: function(chainId, address) {
+    const oThis = this;
+    return oThis._getCacheKeyForProperty(chainId, address, 'oracle_expiration_height' );
   }
+
 
 };
 
