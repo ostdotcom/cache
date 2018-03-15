@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * Depending on CACHING_ENGINE environment variable, the preferred caching engine is picked. This module acts as a
+ * Depending on cacheEngine variable, the preferred caching engine is picked. This module acts as a
  * wrapper / factory for the cache layer. Following are the actual implementations of the cache layer methods: <br>
  *     <ul>
  *       <li>Memcached implementation - ref: {@link module:lib/cache/memcached}</li>
@@ -10,28 +10,40 @@
  *     </ul>
  *
  * @class Cache
- * @constructor
- *
  */
-const Cache = function () {};
 
 const rootPrefix = ".."
   , cacheConfig = require(rootPrefix + '/config/cache');
 
-var implementer = null;
 
-if (cacheConfig.CACHING_ENGINE == 'redis') {
-  implementer = require(rootPrefix + '/lib/cache/redis');
-} else if(cacheConfig.CACHING_ENGINE == 'memcached'){
-  implementer = require(rootPrefix + '/lib/cache/memcached');
-}	else if (cacheConfig.CACHING_ENGINE == 'none') {
-  implementer = require(rootPrefix + '/lib/cache/in_memory');
-} else {
-  throw('invalid caching engine or not defined');
-}
+/**
+ * Constructor for Cache Engine
+ *
+ * @param {string} cacheEngine - Specify the cache engine. Possible values: 'redis', 'memcached', 'none'
+ * @param {boolean} isConsistentBehaviour - Specify if the cache behaviour need to be consistent across all the engines or not. Default is: True
+ *
+ * @constructor
+ */
+const Cache = function (cacheEngine, isConsistentBehaviour) {
 
-Cache.prototype = {
-  implementer: implementer
+  const oThis = this;
+
+  var implementerKlass = null;
+
+  if (cacheEngine == 'redis') {
+    implementerKlass = require(rootPrefix + '/lib/cache/redis');
+  } else if(cacheEngine == 'memcached'){
+    implementerKlass = require(rootPrefix + '/lib/cache/memcached');
+  }	else if (cacheEngine == 'none') {
+    implementerKlass = require(rootPrefix + '/lib/cache/in_memory');
+  } else {
+    throw('invalid caching engine or not defined');
+  }
+
+  return new implementerKlass((isConsistentBehaviour == undefined) ? true: isConsistentBehaviour);
 };
 
-module.exports = new Cache().implementer;
+Cache.prototype = {
+};
+
+module.exports = Cache;
