@@ -23,5 +23,7 @@ define("REDIS_PORT", process.env.OST_REDIS_PORT);
 define("REDIS_PASS", process.env.OST_REDIS_PASS);
 define("REDIS_TLS_ENABLED", process.env.OST_REDIS_TLS_ENABLED == '1' ? true : false);
 
+define("DEBUG_ENABLED", process.env.OST_DEBUG_ENABLED);
+
 // Constants for memcached caching layer
 define("MEMCACHE_SERVERS", (process.env.OST_MEMCACHE_SERVERS || '').split(',').map(Function.prototype.call, String.prototype.trim));
