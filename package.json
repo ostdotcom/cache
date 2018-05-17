@@ -1,6 +1,6 @@
 {
   "name": "@openstfoundation/openst-cache",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "OpenST Cache is the central cache implementation for OpenST products and can easily be plugged-in.",
   "keywords": [
     "openst",
@@ -26,7 +26,8 @@
   },
   "dependencies": {
     "memcached": "2.2.2",
-    "redis": "2.8.0"
+    "redis": "2.8.0",
+    "@openstfoundation/openst-base": "0.9.0"
   },
   "devDependencies": {
     "chai": "4.1.2",
