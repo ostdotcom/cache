@@ -34,9 +34,9 @@ before_script:
   - ps aux | grep 'memcached'
   - ps aux | grep 'redis-server'
 script:
-  - source test/env/in_memory.json
+  - source test/env/in-memory.sh
   - mocha test --exit
-  - source test/env/memcached.json
+  - source test/env/memcached.sh
   - mocha test --exit
   - source test/env/redis.sh
   - mocha test --exit
