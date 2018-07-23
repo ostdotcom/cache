@@ -4,9 +4,24 @@ const chai = require('chai')
 
 // Load cache service
 const rootPrefix = ".."
-  , openSTCacheKlass = require(rootPrefix + '/services/cache')
-  , engineType = process.env.OST_CACHING_ENGINE
+  , openSTCacheKlass = require(rootPrefix + '/index')
+  , testCachingEngine = process.env.OST_CACHING_ENGINE
 ;
+
+let configStrategy;
+if (testCachingEngine == 'redis') {
+  configStrategy = require(rootPrefix + '/test/env/redis.json')
+}
+else if (testCachingEngine == 'memcached') {
+  configStrategy = require(rootPrefix + '/test/env/memcached.json')
+}
+else if (testCachingEngine == 'none') {
+  configStrategy = require(rootPrefix + '/test/env/in-memory.json')
+}
+
+const engineType = configStrategy.OST_CACHING_ENGINE
+;
+
 
 function performTest (cahceObj, keySuffix) {
 
@@ -175,6 +190,8 @@ function performTestWhenValueIsArray(cahceObj, keySuffix) {
   }
 }
 
+openSTCache = openSTCacheKlass.getInstance(configStrategy);
+cacheImplementer = openSTCache.cacheInstance;
 
-performTest(new openSTCacheKlass(engineType, true), "ConsistentBehaviour");
-performTest(new openSTCacheKlass (engineType, false), "InconsistentBehaviour");
+performTest(cacheImplementer, "ConsistentBehaviour");
+performTest(cacheImplementer, "InconsistentBehaviour");
