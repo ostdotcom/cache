@@ -1,3 +1,3 @@
 #!/bin/bash
 
-export OST_CACHING_ENGINE='memcached'
+export TEST_CACHING_ENGINE='memcached'

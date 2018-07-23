@@ -5,7 +5,7 @@ const chai = require('chai')
 // Load cache service
 const rootPrefix = ".."
   , openSTCacheKlass = require(rootPrefix + '/index')
-  , testCachingEngine = process.env.OST_CACHING_ENGINE
+  , testCachingEngine = process.env.TEST_CACHING_ENGINE
   ;
 
   let configStrategy;

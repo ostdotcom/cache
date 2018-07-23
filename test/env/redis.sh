@@ -1,3 +1,3 @@
 #!/bin/bash
 
-export OST_CACHING_ENGINE='redis'
+export TEST_CACHING_ENGINE='redis'
