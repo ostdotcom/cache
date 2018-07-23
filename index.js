@@ -49,7 +49,7 @@ const instanceMap = {};
 const getInstanceKey = function (configStrategy) {
 
   // Fetch caching ID from the configStrategy.
-  return configStrategy.OST_CACHING_ID;
+  return configStrategy.CACHING_STRATEGY_ID;
 
 };
 
