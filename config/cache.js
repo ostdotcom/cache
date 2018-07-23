@@ -21,7 +21,7 @@ const GetCacheConfigHelper = function (configStrategy, instanceComposer) {
   oThis.REDIS_PASS= configStrategy.OST_REDIS_PASS;
   oThis.REDIS_TLS_ENABLED = (configStrategy.OST_REDIS_TLS_ENABLED == '1');
   oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
-  oThis.MEMCACHE_SERVERS = (configStrategy.MEMCACHE_SERVERS || '').split(',').map(Function.prototype.call, String.prototype.trim);
+  oThis.MEMCACHE_SERVERS = (configStrategy.OST_MEMCACHE_SERVERS || '').split(',').map(Function.prototype.call, String.prototype.trim);
 };
 
 InstanceComposer.register(GetCacheConfigHelper, "getCacheConfigHelper", true);
