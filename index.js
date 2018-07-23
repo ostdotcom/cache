@@ -47,13 +47,10 @@ const instanceMap = {};
  *
  */
 const getInstanceKey = function (configStrategy) {
-  let isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
-  // Sanitize isConsistentBehaviour
-  isConsistentBehaviour = (isConsistentBehaviour == undefined) ? true: (isConsistentBehaviour != '0');
 
-  return configStrategy.OST_CACHING_ENGINE.toString() + '-'+
-    isConsistentBehaviour.toString() + '-' +
-    configStrategy.OST_CACHE_ENDPOINT.toString().toLowerCase();
+  // Fetch caching ID from the configStrategy.
+  return configStrategy.OST_CACHING_ID;
+
 };
 
 

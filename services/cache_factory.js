@@ -34,7 +34,7 @@ const CacheFactory = function (configStrategy, instanceComposer) {
   // Grab the required details from the configStrategy.
   oThis.cacheEngine = configStrategy.OST_CACHING_ENGINE;
   oThis.isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
-  oThis.endpoint = configStrategy.OST_CACHE_ENDPOINT;
+  oThis.instanceKey = configStrategy.OST_CACHING_ID;
 
   // sanitize the isConsistentBehaviour
   oThis.isConsistentBehaviour = (oThis.isConsistentBehaviour == undefined) ? true: (oThis.isConsistentBehaviour != '0');
@@ -76,9 +76,7 @@ CacheFactory.prototype = {
     const oThis = this
     ;
 
-    return oThis.cacheEngine.toString() + '-' +
-      oThis.isConsistentBehaviour.toString() + '-' +
-      oThis.endpoint.toString().toLowerCase();
+    return oThis.instanceKey;
   },
 
   /**
