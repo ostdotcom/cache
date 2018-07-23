@@ -18,7 +18,7 @@ const rootPrefix = ".."
 ;
 
 require(rootPrefix + '/lib/cache/redis');
-// require(rootPrefix + '/lib/cache/memcached');
+require(rootPrefix + '/lib/cache/memcached');
 // require(rootPrefix + '/lib/cache/in_memory');
 
 /**
@@ -95,8 +95,8 @@ CacheFactory.prototype = {
 
     if (oThis.cacheEngine == 'redis') {
       implementerKlass = instanceComposer.getRedisCacheImplementer();
-    // } else if(cacheEngine == 'memcached'){
-    //   implementerKlass = require(rootPrefix + '/lib/cache/memcached');
+    } else if(oThis.cacheEngine == 'memcached'){
+      implementerKlass = instanceComposer.getMemcachedCacheImplementer();
     // }	else if (cacheEngine == 'none') {
     //   implementerKlass = require(rootPrefix + '/lib/cache/in_memory');
     } else {
@@ -105,6 +105,7 @@ CacheFactory.prototype = {
 
     const cacheInstance = new implementerKlass(oThis.isConsistentBehaviour);
 
+    // Fetch the instanceKey.
     let instanceKey = oThis.getMapKey();
 
     // Set the newly created instance in the map.
