@@ -10,7 +10,7 @@ const rootPrefix = "."
   , InstanceComposer = require(rootPrefix + '/instance_composer')
 ;
 
-require(rootPrefix + '/services/cache_factory');
+require(rootPrefix + '/services/cache_instance');
 
 const OpenSTCache = function (configStrategy) {
   const oThis = this;

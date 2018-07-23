@@ -9,7 +9,7 @@
  *       <li>In Memory implementation - ref: {@link module:lib/cache/in_memory}</li>
  *     </ul>
  *
- * @class CacheFactory
+ * @class CacheInstance
  */
 
 const rootPrefix = ".."
@@ -27,7 +27,7 @@ require(rootPrefix + '/lib/cache/in_memory');
  * @constructor
  *
  */
-const CacheFactory = function (configStrategy, instanceComposer) {
+const CacheInstance = function (configStrategy, instanceComposer) {
   const oThis = this
   ;
 
@@ -42,7 +42,7 @@ const CacheFactory = function (configStrategy, instanceComposer) {
   return oThis.getInstance(instanceComposer);
 };
 
-CacheFactory.prototype = {
+CacheInstance.prototype = {
 
   /**
    * Fetches a cache instance if available in instanceMap. If instance is not available in
@@ -113,6 +113,6 @@ CacheFactory.prototype = {
   }
 };
 
-InstanceComposer.register(CacheFactory, "getCacheInstance", true);
+InstanceComposer.register(CacheInstance, "getCacheInstance", true);
 
-module.exports = CacheFactory;
+module.exports = CacheInstance;
