@@ -19,7 +19,7 @@ const rootPrefix = ".."
 
 require(rootPrefix + '/lib/cache/redis');
 require(rootPrefix + '/lib/cache/memcached');
-// require(rootPrefix + '/lib/cache/in_memory');
+require(rootPrefix + '/lib/cache/in_memory');
 
 /**
  * Constructor for Cache Engine
@@ -97,8 +97,8 @@ CacheFactory.prototype = {
       implementerKlass = instanceComposer.getRedisCacheImplementer();
     } else if(oThis.cacheEngine == 'memcached'){
       implementerKlass = instanceComposer.getMemcachedCacheImplementer();
-    // }	else if (cacheEngine == 'none') {
-    //   implementerKlass = require(rootPrefix + '/lib/cache/in_memory');
+    }	else if (oThis.cacheEngine == 'none') {
+      implementerKlass = instanceComposer.getInMemoryCacheImplementer();
     } else {
       throw('invalid caching engine or not defined');
     }
