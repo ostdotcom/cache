@@ -19,13 +19,70 @@ const OpenSTCache = function (configStrategy) {
     throw "Mandatory argument configStrategy missing";
   }
 
-  const instanceComposer = oThis.ic = new InstanceComposer(configStrategy);
 
-  oThis.version = version;
-  oThis.OpenSTCacheKeys = OpenSTCacheKeys;
-  oThis.cacheInstance = instanceComposer.getCacheInstance();
+  const instanceComposer = new InstanceComposer(configStrategy);
+  oThis.ic = function () {
+    return instanceComposer;
+  };
 };
 
-OpenSTCache.prototype = {};
+OpenSTCache.prototype = {
+  version: version,
+  OpenSTCacheKeys: OpenSTCacheKeys
+};
+
+Object.defineProperty(OpenSTCache.prototype, "cacheInstance", {
+  get: function () {
+    const oThis = this;
+    return oThis.ic().getCacheInstance();
+  }
+});
+
+const instanceMap = {};
+
+/**
+ * Creates the key for the instanceMap.
+ *
+ * @returns {string}
+ *
+ */
+const getInstanceKey = function (configStrategy) {
+  let isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
+  // Sanitize isConsistentBehaviour
+  isConsistentBehaviour = (isConsistentBehaviour == undefined) ? true: (isConsistentBehaviour != '0');
+
+  return configStrategy.OST_CACHING_ENGINE.toString() + '-'+
+    isConsistentBehaviour.toString() + '-' +
+    configStrategy.OST_CACHE_ENDPOINT.toString().toLowerCase();
+};
+
+
+let Factory = function () {};
+
+Factory.prototype = {
+  /**
+   * Fetches a cache instance if available in instanceMap. If instance is not available in
+   * instanceMap, it calls createCacheInstance() to create a new cache instance.
+   *
+   * @returns {cacheInstance}
+   *
+   */
+  getInstance: function (configStrategy) {
+    let instanceKey = getInstanceKey(configStrategy);
+
+    let _instance = instanceMap[instanceKey];
+
+    if (!_instance) {
+      _instance = new OpenSTCache(configStrategy);
+      instanceMap[instanceKey] = _instance;
+    }
+
+    return _instance;
+  }
+};
+
+const factory = new Factory();
+OpenSTCache.getInstance = factory.getInstance;
+
 
 module.exports = OpenSTCache;
