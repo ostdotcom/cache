@@ -4,8 +4,22 @@ const chai = require('chai')
 
 // Load cache service
 const rootPrefix = ".."
-  , openSTCacheKlass = require(rootPrefix + '/services/cache')
-  , engineType = process.env.OST_CACHING_ENGINE
+  , openSTCacheKlass = require(rootPrefix + '/index')
+  , testCachingEngine = process.env.OST_CACHING_ENGINE
+  ;
+
+  let configStrategy;
+  if (testCachingEngine == 'redis') {
+    configStrategy = require(rootPrefix + '/test/env/redis.json')
+  }
+  else if (testCachingEngine == 'memcached') {
+    configStrategy = require(rootPrefix + '/test/env/memcached.json')
+  }
+  else if (testCachingEngine == 'none') {
+    configStrategy = require(rootPrefix + '/test/env/in-memory.json')
+  }
+
+  const engineType = configStrategy.OST_CACHING_ENGINE
 ;
 
 function performTest (cacheObj, keySuffix) {
@@ -115,11 +129,11 @@ function performTest (cacheObj, keySuffix) {
       assert.equal(resObj.isSuccess(), false);
 
       // decrement by 1
-      var incrementBy = [1, 3, 2, 10, 100, 57];
-      for (var i=0; i < incrementBy.length; i++) {
-        resObj = await cacheObj.decrement(cKey, incrementBy[i]);
+      var decrementBy = [1, 3, 2, 10, 100, 57];
+      for (var i=0; i < decrementBy.length; i++) {
+        resObj = await cacheObj.decrement(cKey, decrementBy[i]);
         assert.equal(resObj.isSuccess(), true);
-        cValue -= incrementBy[i];
+        cValue -= decrementBy[i];
         assert.equal(resObj.data.response, cValue);
       }
 
@@ -157,7 +171,7 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, -1 * cValue);
     });
-  }
+  };
 
   if (cacheObj._isConsistentBehaviour){
     failCase();
@@ -172,5 +186,8 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
   }
 }
 
-performTest(new openSTCacheKlass(engineType, true), "ConsistentBehaviour");
-performTest(new openSTCacheKlass (engineType, false), "InconsistentBehaviour");
+openSTCache = openSTCacheKlass.getInstance(configStrategy);
+cacheImplementer = openSTCache.cacheInstance;
+
+performTest(cacheImplementer, "ConsistentBehaviour");
+performTest(cacheImplementer, "InconsistentBehaviour");
