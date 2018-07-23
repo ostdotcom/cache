@@ -1,4 +1,5 @@
 "use strict";
+
 /*
  * Cache Related Constants:
  *
@@ -6,24 +7,23 @@
  *
  */
 
-// Function to define Global variables
-function define(name, value) {
-  Object.defineProperty(exports, name, {
-    value: value,
-    enumerable: true
-  });
-}
+const rootPrefix = '..'
+  , InstanceComposer = require( rootPrefix + "/instance_composer")
+;
 
-// Default cache TTL (in seconds)
-define("DEFAULT_TTL", process.env.OST_DEFAULT_TTL);
+const GetCacheConfigHelper = function (configStrategy, instanceComposer) {
+  const oThis = this
+  ;
 
-// Constants for redis caching layer
-define("REDIS_HOST", process.env.OST_REDIS_HOST);
-define("REDIS_PORT", process.env.OST_REDIS_PORT);
-define("REDIS_PASS", process.env.OST_REDIS_PASS);
-define("REDIS_TLS_ENABLED", process.env.OST_REDIS_TLS_ENABLED == '1' ? true : false);
+  oThis.DEFAULT_TTL = configStrategy.OST_DEFAULT_TTL;
+  oThis.REDIS_HOST = configStrategy.OST_REDIS_HOST;
+  oThis.REDIS_PORT = configStrategy.OST_REDIS_PORT;
+  oThis.REDIS_PASS= configStrategy.OST_REDIS_PASS;
+  oThis.REDIS_TLS_ENABLED = (configStrategy.OST_REDIS_TLS_ENABLED == '1');
+  oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
+  oThis.MEMCACHE_SERVERS = (configStrategy.MEMCACHE_SERVERS || '').split(',').map(Function.prototype.call, String.prototype.trim);
+};
 
-define("DEBUG_ENABLED", process.env.OST_DEBUG_ENABLED);
+InstanceComposer.register(GetCacheConfigHelper, "getCacheConfigHelper", true);
 
-// Constants for memcached caching layer
-define("MEMCACHE_SERVERS", (process.env.OST_MEMCACHE_SERVERS || '').split(',').map(Function.prototype.call, String.prototype.trim));
+module.exports = GetCacheConfigHelper;

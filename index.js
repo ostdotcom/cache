@@ -6,16 +6,26 @@
 
 const rootPrefix = "."
   , version = require(rootPrefix + '/package.json').version
-  , cache = require(rootPrefix + '/services/cache')
-  , OpenSTCacheKeys = require(rootPrefix + '/services/openst_cache_keys');
+  , OpenSTCacheKeys = require(rootPrefix + '/services/openst_cache_keys')
+  , InstanceComposer = require(rootPrefix + '/instance_composer')
+;
 
-const OpenSTCacheManagement = function () {
+require(rootPrefix + '/services/cache_factory');
+
+const OpenSTCache = function (configStrategy) {
   const oThis = this;
+
+  if (!configStrategy) {
+    throw "Mandatory argument configStrategy missing";
+  }
+
+  const instanceComposer = oThis.ic = new InstanceComposer(configStrategy);
 
   oThis.version = version;
   oThis.OpenSTCacheKeys = OpenSTCacheKeys;
-  oThis.cache = cache;
+  oThis.cacheInstance = instanceComposer.getCacheInstance();
 };
 
-module.exports = new OpenSTCacheManagement();
+OpenSTCache.prototype = {};
 
+module.exports = OpenSTCache;
