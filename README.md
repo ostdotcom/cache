@@ -14,35 +14,64 @@ The caching engines implemented are:
 * Redis
 * In-process (use with single threaded process in development mode only)
 
-##### Contructor parameters:
-There are 2 parameters required while creating the cache implementer.
+##### Constructor parameters:
+There is 1 parameter required while creating the cache implementer.
 
-* First parameter is mandatory and it specifies the cache engine to be used. The values can be <b>'*none*'</b>, 
-<b>'*memcached*'</b> or <b>'*redis*'</b>
-
-* Second parameter is optional and specifies the behaviour consistency of the cache accross all cache engines.
-Few implementation differ in redis and memcached, for example the behaviour of increment and decrement when initial 
-value is not set for a key. So if the system is designed considering one cache engine and later when the cache engine 
-is changed then the system may break. To avoid such cases this parameter tell the implementer wheather behaviour of the
- cache engine be should be consistent or not.
+* First parameter is mandatory and it specifies the configuration strategy to be used. An example of the configStrategy is: 
+```js
+configStrategy = {
+  OST_CACHING_ENGINE: 'none',
+  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
+  OST_REDIS_HOST: '127.0.0.1',
+  OST_REDIS_PORT: 6379,
+  OST_REDIS_PASS: 'st123',
+  OST_REDIS_TLS_ENABLED: 0,
+  OST_DEFAULT_TTL: '36000',
+  OST_CACHE_ENDPOINT: '127.0.0.1:6379',
+  OST_CACHING_ID: 'alphanumericString',
+  OST_MEMCACHE_SERVERS: '127.0.0.1:11211',
+};
+```
 
 <b>Below are the examples:</b>
 ```js
 // import the cache module
-const openSTCache = require('@openstfoundation/openst-cache');
+const OpenSTCache = require('@openstfoundation/openst-cache');
 ```
 ```js
-//redis engine
-const cacheImplementer = new openSTCache.cache('redis', false);
-```
+// configStrategy for redis engine
+configStrategy = {
+  OST_CACHING_ENGINE: 'redis',
+  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
+  OST_REDIS_HOST: '127.0.0.1',
+  OST_REDIS_PORT: 6379,
+  OST_REDIS_PASS: 'st123', // Redis authentication password defined as "requirepass"
+  OST_REDIS_TLS_ENABLED: 0,
+  OST_DEFAULT_TTL: '36000',
+  OST_CACHE_ENDPOINT: '127.0.0.1:6379',
+  OST_CACHING_ID: 'alphanumericString',
+}
+````
+
 ```js
-//memcached engine
-const cacheImplementer = new openSTCache.cache('memcached', true);
-```
+// configStrategy for memcached engine
+configStrategy = {
+  OST_CACHING_ENGINE: 'memcached',
+  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
+  OST_DEFAULT_TTL: '36000',
+  OST_CACHING_ID: 'alphanumericString',
+  OST_MEMCACHE_SERVERS: '127.0.0.1:11211', // comma separated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'
+}
+````
 ```js
-//In-process engine 
-const cacheImplementer = new openSTCache.cache('none', false);
-```
+// configStrategy for in-memory engine
+configStrategy = {
+  OST_CACHING_ENGINE: 'none',
+  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
+  OST_DEFAULT_TTL: '36000',
+  OST_CACHING_ID: 'alphanumericString',
+}
+````
 
 # Install OpenST Cache
 
@@ -50,34 +79,15 @@ const cacheImplementer = new openSTCache.cache('none', false);
 npm install @openstfoundation/openst-cache --save
 ```
 
-# Set ENV Variables
-
-#### Define the default TTL:
-
-```bash
-export OST_DEFAULT_TTL=3600 # In seconds
-```
-#### If the cache engine is redis, set the following ENV variables:
-
-```bash
-export OST_REDIS_HOST='127.0.0.1'
-export OST_REDIS_PORT=6379
-export OST_REDIS_PASS=st123 # Redis authentication password defined as "requirepass" 
-export OST_REDIS_TLS_ENABLED=0 # Possible values are 1 and 0
-```
-
-#### If the cache engine is memcached, set the following ENV variable:
-
-```bash
-export OST_MEMCACHE_SERVERS='127.0.0.1:11211' # comma seperated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'
-```
 # Examples:
 
 #### Create OpenST Cache Object:
 
 ```js
-const openSTCache = require('@openstfoundation/openst-cache');
-const cacheImplementer = new openSTCache.cache('redis', false);
+OpenSTCache = require('@openstfoundation/openst-cache');
+openSTCache = OpenSTCache.getInstance(configStrategy);
+
+cacheImplementer = openSTCache.cacheInstance;
 ```
 
 #### Store and retrieve data in cache using `set` and `get`:
