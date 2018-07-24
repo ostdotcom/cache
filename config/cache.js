@@ -1,12 +1,13 @@
 "use strict";
-
 /*
  * Cache Related Constants:
  *
  * Load caching layer related constant variables from environment variables
  *
+ * @module config/cache
  */
 
+// Load internal libraries
 const rootPrefix = '..'
   , InstanceComposer = require( rootPrefix + "/instance_composer")
 ;

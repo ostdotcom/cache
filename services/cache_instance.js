@@ -9,6 +9,7 @@
  *       <li>In Memory implementation - ref: {@link module:lib/cache/in_memory}</li>
  *     </ul>
  *
+ * @module services/cache_instance
  * @class CacheInstance
  */
 
