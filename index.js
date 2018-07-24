@@ -79,7 +79,8 @@ Factory.prototype = {
 };
 
 const factory = new Factory();
-OpenSTCache.getInstance = factory.getInstance;
-
+OpenSTCache.getInstance = function () {
+  return factory.getInstance.apply(factory, arguments);
+};
 
 module.exports = OpenSTCache;
