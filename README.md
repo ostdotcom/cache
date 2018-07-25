@@ -28,7 +28,6 @@ configStrategy = {
   OST_REDIS_TLS_ENABLED: 0,
   OST_DEFAULT_TTL: '36000',
   OST_CACHE_ENDPOINT: '127.0.0.1:6379',
-  OST_CACHING_ID: 'alphanumericString',
   OST_MEMCACHE_SERVERS: '127.0.0.1:11211',
 };
 ```
@@ -49,7 +48,6 @@ configStrategy = {
   OST_REDIS_TLS_ENABLED: 0,
   OST_DEFAULT_TTL: '36000',
   OST_CACHE_ENDPOINT: '127.0.0.1:6379',
-  OST_CACHING_ID: 'alphanumericString',
 }
 ````
 
@@ -59,7 +57,6 @@ configStrategy = {
   OST_CACHING_ENGINE: 'memcached',
   OST_CACHE_CONSISTENT_BEHAVIOR: 1,
   OST_DEFAULT_TTL: '36000',
-  OST_CACHING_ID: 'alphanumericString',
   OST_MEMCACHE_SERVERS: '127.0.0.1:11211', // comma separated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'
 }
 ````
@@ -69,7 +66,6 @@ configStrategy = {
   OST_CACHING_ENGINE: 'none',
   OST_CACHE_CONSISTENT_BEHAVIOR: 1,
   OST_DEFAULT_TTL: '36000',
-  OST_CACHING_ID: 'alphanumericString',
 }
 ````
 

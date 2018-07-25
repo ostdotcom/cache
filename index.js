@@ -66,7 +66,7 @@ const getInstanceKey = function(configStrategy) {
     // Check if all the mandatory connection parameters for Redis are available or not.
     for (let key = 0; key < redisMandatoryParams.length; key++) {
       if (!configStrategy.hasOwnProperty(redisMandatoryParams[key])) {
-        throw 'Redis one or more mandatory connection parameters missing.';
+        throw 'Redis - mandatory connection parameters missing.';
       }
     }
 
@@ -78,7 +78,7 @@ const getInstanceKey = function(configStrategy) {
       configStrategy.OST_REDIS_TLS_ENABLED.toString();
   } else if (cacheEngine == 'memcached') {
     if (!configStrategy.hasOwnProperty('OST_MEMCACHE_SERVERS')) {
-      throw 'Memcached mandatory connection parameters missing.';
+      throw 'Memcached - mandatory connection parameters missing.';
     }
 
     endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
