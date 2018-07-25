@@ -1,37 +1,31 @@
 // Load external packages
-const chai = require('chai')
-  , assert = chai.assert;
+const chai = require('chai'),
+  assert = chai.assert;
 
 // Load cache service
-const rootPrefix = ".."
-  , openSTCacheKlass = require(rootPrefix + '/index')
-  , testCachingEngine = process.env.TEST_CACHING_ENGINE
-;
+const rootPrefix = '..',
+  openSTCacheKlass = require(rootPrefix + '/index'),
+  testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
 let configStrategy;
 if (testCachingEngine == 'redis') {
-  configStrategy = require(rootPrefix + '/test/env/redis.json')
-}
-else if (testCachingEngine == 'memcached') {
-  configStrategy = require(rootPrefix + '/test/env/memcached.json')
-}
-else if (testCachingEngine == 'none') {
-  configStrategy = require(rootPrefix + '/test/env/in-memory.json')
+  configStrategy = require(rootPrefix + '/test/env/redis.json');
+} else if (testCachingEngine == 'memcached') {
+  configStrategy = require(rootPrefix + '/test/env/memcached.json');
+} else if (testCachingEngine == 'none') {
+  configStrategy = require(rootPrefix + '/test/env/in-memory.json');
 }
 
-const engineType = configStrategy.OST_CACHING_ENGINE
-;
+const engineType = configStrategy.OST_CACHING_ENGINE;
 
-function performTest (cahceObj, keySuffix) {
-
-  describe('Cache Touch '+ keySuffix, function() {
-
-    keySuffix = keySuffix + "_" + (new Date()).getTime();
+function performTest(cahceObj, keySuffix) {
+  describe('Cache Touch ' + keySuffix, function() {
+    keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = 100
-        , response = cahceObj.touch(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = 100,
+        response = cahceObj.touch(cKey, cValue);
       assert.typeOf(response, 'Promise');
     });
 
@@ -41,71 +35,71 @@ function performTest (cahceObj, keySuffix) {
     });
 
     it('should fail when key is undefined', async function() {
-      var cValue = 100
-        , response = await cahceObj.touch(undefined, cValue);
+      var cValue = 100,
+        response = await cahceObj.touch(undefined, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
-      var cKey = ''
-        , cValue = 100
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = '',
+        cValue = 100,
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
-      var cKey = 10
-        , cValue = 100
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = 10,
+        cValue = 100,
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
-      var cKey = "a b" + keySuffix
-        , cValue = 100
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = 'a b' + keySuffix,
+        cValue = 100,
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
-      var cKey = Array(252).join('x')
-        , cValue = 100
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = Array(252).join('x'),
+        cValue = 100,
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when expiry is Object', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = {a: 1}
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = { a: 1 },
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when expiry is blank', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = ""
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = '',
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when expiry is string', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = "String Value"
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = 'String Value',
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key does not exist', async function() {
-      var cKey = "cache-key-touch-not-exist" + keySuffix
-        , cValue = 100
-        , response = await cahceObj.touch(cKey, cValue);
+      var cKey = 'cache-key-touch-not-exist' + keySuffix,
+        cValue = 100,
+        response = await cahceObj.touch(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when expiry is negative secs', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = "my value"
-        , response = await cahceObj.set(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = 'my value',
+        response = await cahceObj.set(cKey, cValue);
       assert.equal(response.isSuccess(), true);
 
       // touch by negative value
@@ -115,9 +109,9 @@ function performTest (cahceObj, keySuffix) {
     });
 
     it('should pass when expiry is 100 secs', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = "my value"
-        , response = await cahceObj.set(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = 'my value',
+        response = await cahceObj.set(cKey, cValue);
       assert.equal(response.isSuccess(), true);
 
       // touch by positive value
@@ -127,9 +121,9 @@ function performTest (cahceObj, keySuffix) {
     });
 
     it('should pass when expiry is 0 secs', async function() {
-      var cKey = "cache-key-touch" + keySuffix
-        , cValue = "my value"
-        , response = await cahceObj.set(cKey, cValue);
+      var cKey = 'cache-key-touch' + keySuffix,
+        cValue = 'my value',
+        response = await cahceObj.set(cKey, cValue);
       assert.equal(response.isSuccess(), true);
 
       // touch by 0 value
@@ -150,16 +144,12 @@ function performTest (cahceObj, keySuffix) {
           assert.equal(resObj.data.response, null);
         }
       }
-
-
     });
-
   });
-
 }
 
 openSTCache = openSTCacheKlass.getInstance(configStrategy);
 cacheImplementer = openSTCache.cacheInstance;
 
-performTest(cacheImplementer, "ConsistentBehaviour");
-performTest(cacheImplementer, "InconsistentBehaviour");
+performTest(cacheImplementer, 'ConsistentBehaviour');
+performTest(cacheImplementer, 'InconsistentBehaviour');
