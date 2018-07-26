@@ -1,9 +1,10 @@
-## OpenST-cache v1.0.5-beta.3
-- We take configuration as openst cache constructor params and then use the config in place of environment variables, where-ever needed.
+## OpenST-cache v1.0.5
+- Follow common JS style guide followed across all openst repos([openst-cache](https://github.com/OpenSTFoundation/openst-cache/issues/30)).
+
+- We take configuration as openst cache constructor params and then use the config in place of environment variables, where-ever needed ([openst-cache](https://github.com/OpenSTFoundation/openst-cache/issues/29)).
 
 - Application can create different configurations, instantiate cache for each configuration and then communicate with respective (appropriate) cache instance.
 
-## OpenST-cache v1.0.5-beta.1
 - version bump for dependencies
 
 ## OpenST-cache v1.0.3
