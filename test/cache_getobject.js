@@ -18,53 +18,53 @@ if (testCachingEngine == 'redis') {
 
 const engineType = configStrategy.OST_CACHING_ENGINE;
 
-function performTest(cahceObj, keySuffix) {
+function performTest(cacheObj, keySuffix) {
   describe('Cache GetObject ' + keySuffix, function() {
     keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', async function() {
       var cKey = 'cache-key-object' + keySuffix,
-        response = cahceObj.getObject(cKey);
+        response = cacheObj.getObject(cKey);
       assert.typeOf(response, 'Promise');
     });
 
     it('should fail when key/value is not passed', async function() {
-      var response = await cahceObj.getObject();
+      var response = await cacheObj.getObject();
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is undefined', async function() {
-      var response = await cahceObj.getObject(undefined);
+      var response = await cacheObj.getObject(undefined);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
       var cKey = '',
-        response = await cahceObj.getObject(cKey);
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
       var cKey = 10,
-        response = await cahceObj.getObject(cKey);
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
       var cKey = 'a b' + keySuffix,
-        response = await cahceObj.getObject(cKey);
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
       var cKey = Array(252).join('x'),
-        response = await cahceObj.getObject(cKey);
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should pass when value is not set', async function() {
       var cKey = 'cache-key-not-set' + keySuffix,
-        response = await cahceObj.getObject(cKey);
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, null);
     });
@@ -72,8 +72,8 @@ function performTest(cahceObj, keySuffix) {
     it('should pass when value is object', async function() {
       var cKey = 'cache-key-object' + keySuffix,
         cValue = { a: 'a' },
-        responseSet = await cahceObj.setObject(cKey, cValue),
-        response = await cahceObj.getObject(cKey);
+        responseSet = await cacheObj.setObject(cKey, cValue),
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(typeof response.data.response, typeof cValue);
       assert.equal(JSON.stringify(response.data.response), JSON.stringify(cValue));
@@ -82,8 +82,8 @@ function performTest(cahceObj, keySuffix) {
     it('should pass when value is complex object', async function() {
       var cKey = 'cache-key-object' + keySuffix,
         cValue = { a: 'a', b: [12, 23], c: true, d: 1, e: { f: 'hi', g: 1 } },
-        responseSet = await cahceObj.setObject(cKey, cValue),
-        response = await cahceObj.getObject(cKey);
+        responseSet = await cacheObj.setObject(cKey, cValue),
+        response = await cacheObj.getObject(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(typeof response.data.response, typeof cValue);
       assert.equal(JSON.stringify(response.data.response), JSON.stringify(cValue));

@@ -18,58 +18,58 @@ if (testCachingEngine == 'redis') {
 
 const engineType = configStrategy.OST_CACHING_ENGINE;
 
-function performTest(cahceObj, keySuffix) {
+function performTest(cacheObj, keySuffix) {
   describe('Cache MultiGet ' + keySuffix, function() {
     keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', async function() {
       var cKey = ['cache-key' + keySuffix],
-        response = cahceObj.multiGet(cKey);
+        response = cacheObj.multiGet(cKey);
       assert.typeOf(response, 'Promise');
     });
 
     it('should fail when key is not passed', async function() {
-      var response = await cahceObj.multiGet();
+      var response = await cacheObj.multiGet();
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is empty array', async function() {
-      var response = await cahceObj.multiGet([]);
+      var response = await cacheObj.multiGet([]);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is undefined', async function() {
-      var response = await cahceObj.multiGet([undefined]);
+      var response = await cacheObj.multiGet([undefined]);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
       var cKey = [''],
-        response = await cahceObj.multiGet(cKey);
+        response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
       var cKey = [10],
-        response = await cahceObj.multiGet(cKey);
+        response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
       var cKey = ['a b' + keySuffix],
-        response = await cahceObj.multiGet(cKey);
+        response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
       var cKey = [Array(252).join('x')],
-        response = await cahceObj.multiGet(cKey);
+        response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should pass when value is not set', async function() {
       var cKey = ['cache-key-not-set' + keySuffix],
-        response = await cahceObj.multiGet(cKey);
+        response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response['cache-key-not-set'], null);
     });
@@ -82,11 +82,11 @@ function performTest(cahceObj, keySuffix) {
       keyValue[`cache-key-blank${keySuffix}`] = '';
 
       for (var key in keyValue) {
-        res = await cahceObj.set(key, keyValue[key]);
+        res = await cacheObj.set(key, keyValue[key]);
       }
 
       var lookupKeys = Object.keys(keyValue),
-        response = await cahceObj.multiGet(lookupKeys);
+        response = await cacheObj.multiGet(lookupKeys);
 
       assert.equal(response.isSuccess(), true);
       for (var key in response.data.response) {
@@ -100,11 +100,11 @@ function performTest(cahceObj, keySuffix) {
       keyValue[`cache-key-object${keySuffix}`] = { a: 1 };
 
       for (var key in keyValue) {
-        res = await cahceObj.set(key, keyValue[key]);
+        res = await cacheObj.set(key, keyValue[key]);
       }
 
       var lookupKeys = Object.keys(keyValue),
-        response = await cahceObj.multiGet(lookupKeys);
+        response = await cacheObj.multiGet(lookupKeys);
 
       assert.equal(response.isSuccess(), true);
       for (var key in response.data.response) {
