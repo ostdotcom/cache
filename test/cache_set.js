@@ -7,16 +7,21 @@ const rootPrefix = '..',
   openSTCacheKlass = require(rootPrefix + '/index'),
   testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
-let configStrategy;
+let configStrategy1;
+let configStrategy2;
 if (testCachingEngine == 'redis') {
-  configStrategy = require(rootPrefix + '/test/env/redis.json');
+  configStrategy1 = require(rootPrefix + '/test/env/redis.json');
+  configStrategy2 = require(rootPrefix + '/test/env/redis2.json');
 } else if (testCachingEngine == 'memcached') {
-  configStrategy = require(rootPrefix + '/test/env/memcached.json');
+  configStrategy1 = require(rootPrefix + '/test/env/memcached.json');
+  configStrategy2 = require(rootPrefix + '/test/env/memcached2.json');
 } else if (testCachingEngine == 'none') {
-  configStrategy = require(rootPrefix + '/test/env/in-memory.json');
+  configStrategy1 = require(rootPrefix + '/test/env/in-memory.json');
+  configStrategy2 = require(rootPrefix + '/test/env/in-memory.json');
+  // Config strategies are same as they won't change for in-memory.
 }
 
-const engineType = configStrategy.OST_CACHING_ENGINE;
+const engineType = configStrategy1.OST_CACHING_ENGINE;
 
 function performTest(cacheObj, keySuffix) {
   describe('Cache Set ' + keySuffix, function() {
@@ -138,8 +143,32 @@ function performTest(cacheObj, keySuffix) {
   });
 }
 
-openSTCache = openSTCacheKlass.getInstance(configStrategy);
-cacheImplementer = openSTCache.cacheInstance;
+function performMultipleTest(cacheObj1, cacheObj2, keySuffix) {
+  describe('Cache Multiple Set ' + keySuffix, function() {
+    keySuffix = keySuffix + '_' + new Date().getTime();
 
-performTest(cacheImplementer, 'ConsistentBehaviour');
-performTest(cacheImplementer, 'InconsistentBehaviour');
+    it('should set values to different cache instances', async function() {
+      let cKey1 = 'cache-key' + keySuffix,
+        cValue1 = 'value1',
+        response1 = await cacheObj1.set(cKey1, cValue1),
+        cKey2 = 'cache-key' + keySuffix,
+        cValue2 = 'value2',
+        response2 = await cacheObj2.set(cKey2, cValue2);
+      assert.equal(response1.isSuccess(), true);
+      assert.equal(response1.data.response, true);
+      assert.equal(response2.isSuccess(), true);
+      assert.equal(response2.data.response, true);
+    });
+  });
+}
+
+openSTCache1 = openSTCacheKlass.getInstance(configStrategy1);
+cacheImplementer1 = openSTCache1.cacheInstance;
+
+openSTCache2 = openSTCacheKlass.getInstance(configStrategy2);
+cacheImplementer2 = openSTCache2.cacheInstance;
+
+performTest(cacheImplementer1, 'ConsistentBehaviour');
+performTest(cacheImplementer1, 'InconsistentBehaviour');
+performMultipleTest(cacheImplementer1, cacheImplementer2, 'ConsistentBehaviour');
+performMultipleTest(cacheImplementer1, cacheImplementer2, 'InconsistentBehaviour');
