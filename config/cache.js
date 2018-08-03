@@ -24,6 +24,8 @@ const GetCacheConfigHelper = function(configStrategy, instanceComposer) {
   oThis.MEMCACHE_SERVERS = (configStrategy.OST_MEMCACHE_SERVERS || '')
     .split(',')
     .map(Function.prototype.call, String.prototype.trim);
+
+  oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.OST_INMEMORY_CACHE_NAMESPACE || '';
 };
 
 InstanceComposer.register(GetCacheConfigHelper, 'getCacheConfigHelper', true);

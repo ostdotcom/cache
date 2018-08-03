@@ -17,7 +17,7 @@ if (testCachingEngine == 'redis') {
   configStrategy2 = require(rootPrefix + '/test/env/memcached2.json');
 } else if (testCachingEngine == 'none') {
   configStrategy1 = require(rootPrefix + '/test/env/in-memory.json');
-  configStrategy2 = require(rootPrefix + '/test/env/in-memory.json');
+  configStrategy2 = require(rootPrefix + '/test/env/in-memory2.json');
   // Config strategies are same as they won't change for in-memory.
 }
 

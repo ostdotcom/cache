@@ -68,7 +68,7 @@ const CacheInstance = function(configStrategy, instanceComposer) {
 
     oThis.endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
   } else {
-    oThis.endpointDetails = 'in-memory';
+    oThis.endpointDetails = `in-memory-${configStrategy.OST_INMEMORY_CACHE_NAMESPACE || ''}`;
   }
 
   return oThis.getInstance(instanceComposer);

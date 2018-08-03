@@ -83,7 +83,7 @@ const getInstanceKey = function(configStrategy) {
 
     endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
   } else {
-    endpointDetails = '';
+    endpointDetails = configStrategy.OST_INMEMORY_CACHE_NAMESPACE || '';
   }
 
   return cacheEngine + '-' + isConsistentBehaviour.toString() + '-' + endpointDetails;
