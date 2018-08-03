@@ -45,8 +45,11 @@ const instanceMap = {};
  *
  */
 const getInstanceKey = function(configStrategy) {
-  if (configStrategy.OST_CACHING_ENGINE == undefined) {
-    throw 'OST_CACHE_ENGINE parameter missing.';
+  if (!configStrategy.hasOwnProperty('OST_CACHING_ENGINE')) {
+    throw 'OST_CACHING_ENGINE parameter is missing.';
+  }
+  if (configStrategy.OST_CACHING_ENGINE === undefined) {
+    throw 'OST_CACHING_ENGINE parameter is empty.';
   }
 
   // Grab the required details from the configStrategy.
@@ -54,7 +57,7 @@ const getInstanceKey = function(configStrategy) {
   let isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
 
   // Sanitize isConsistentBehaviour
-  isConsistentBehaviour = isConsistentBehaviour == undefined ? true : isConsistentBehaviour != '0';
+  isConsistentBehaviour = isConsistentBehaviour === undefined ? true : isConsistentBehaviour != '0';
 
   // Stores the endpoint for key generation of instanceMap.
   let endpointDetails = null;
@@ -64,9 +67,12 @@ const getInstanceKey = function(configStrategy) {
     const redisMandatoryParams = ['OST_REDIS_HOST', 'OST_REDIS_PORT', 'OST_REDIS_PASS', 'OST_REDIS_TLS_ENABLED'];
 
     // Check if all the mandatory connection parameters for Redis are available or not.
-    for (let key = 0; key < redisMandatoryParams.length; key++) {
-      if (!configStrategy.hasOwnProperty(redisMandatoryParams[key])) {
+    for (let i = 0; i < redisMandatoryParams.length; i++) {
+      if (!configStrategy.hasOwnProperty(redisMandatoryParams[i])) {
         throw 'Redis - mandatory connection parameters missing.';
+      }
+      if (configStrategy[redisMandatoryParams[i]] === undefined) {
+        throw 'Redis - connection parameters are empty.';
       }
     }
 
@@ -80,7 +86,9 @@ const getInstanceKey = function(configStrategy) {
     if (!configStrategy.hasOwnProperty('OST_MEMCACHE_SERVERS')) {
       throw 'Memcached - mandatory connection parameters missing.';
     }
-
+    if (configStrategy.OST_MEMCACHE_SERVERS === undefined) {
+      throw 'OST_MEMCACHE_SERVERS parameter is empty. ';
+    }
     endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
   } else {
     endpointDetails = configStrategy.OST_INMEMORY_CACHE_NAMESPACE || '';
