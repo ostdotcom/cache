@@ -1,4 +1,4 @@
-## OpenST-cache v1.0.5
+## OpenST-cache v1.0.6
 - Follow common JS style guide followed across all openst repos([openst-cache#30](https://github.com/OpenSTFoundation/openst-cache/issues/30)).
 
 - We take configuration as openst cache constructor params and then use the config in place of environment variables, where-ever needed ([openst-cache#29](https://github.com/OpenSTFoundation/openst-cache/issues/29)).
