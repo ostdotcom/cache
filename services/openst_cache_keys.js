@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 /**
  *
@@ -7,24 +7,21 @@
  * @class OpenSTCacheKeys
  * @constructor
  */
-const OpenSTCacheKeys = function () {
-
+const OpenSTCacheKeys = function() {
   const oThis = this;
 
   // openST cache key namespace
-  oThis.namespace = "openst_";
-
+  oThis.namespace = 'openst_';
 };
 
 OpenSTCacheKeys.prototype = {
-
   /**
    * @ignore
    */
-  _getCacheKeyForProperty: function (chainId, tokenIdentifier, propName) {
+  _getCacheKeyForProperty: function(chainId, tokenIdentifier, propName) {
     // Internal Method. Returns key name to be used for caching properties of ERC20 contract and different balances
     const oThis = this;
-    return oThis.namespace + chainId + "_" + tokenIdentifier.toLowerCase() + "_prop_" + propName.toLowerCase();
+    return oThis.namespace + chainId + '_' + tokenIdentifier.toLowerCase() + '_prop_' + propName.toLowerCase();
   },
 
   /**
@@ -36,9 +33,9 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btName: function (chainId, btAddress) {
+  btName: function(chainId, btAddress) {
     const oThis = this;
-    return oThis._getCacheKeyForProperty(chainId, btAddress, "name");
+    return oThis._getCacheKeyForProperty(chainId, btAddress, 'name');
   },
 
   /**
@@ -50,9 +47,9 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btSymbol: function (chainId, btAddress) {
+  btSymbol: function(chainId, btAddress) {
     const oThis = this;
-    return oThis._getCacheKeyForProperty(chainId, btAddress, "symbol");
+    return oThis._getCacheKeyForProperty(chainId, btAddress, 'symbol');
   },
 
   /**
@@ -64,9 +61,9 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btDecimals: function (chainId, btAddress) {
+  btDecimals: function(chainId, btAddress) {
     const oThis = this;
-    return oThis._getCacheKeyForProperty(chainId, btAddress, "decimals");
+    return oThis._getCacheKeyForProperty(chainId, btAddress, 'decimals');
   },
 
   /**
@@ -78,9 +75,9 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btUUID: function (chainId, btAddress) {
+  btUUID: function(chainId, btAddress) {
     const oThis = this;
-    return oThis._getCacheKeyForProperty(chainId, btAddress, "uuid");
+    return oThis._getCacheKeyForProperty(chainId, btAddress, 'uuid');
   },
 
   /**
@@ -137,11 +134,8 @@ OpenSTCacheKeys.prototype = {
    */
   oracleExpirationHeight: function(chainId, address) {
     const oThis = this;
-    return oThis._getCacheKeyForProperty(chainId, address, 'oracle_expiration_height' );
+    return oThis._getCacheKeyForProperty(chainId, address, 'oracle_expiration_height');
   }
-
-
 };
-
 
 module.exports = new OpenSTCacheKeys();
