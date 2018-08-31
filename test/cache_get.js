@@ -9,13 +9,13 @@ const rootPrefix = '..',
 
 let configStrategy1;
 let configStrategy2;
-if (testCachingEngine == 'redis') {
+if (testCachingEngine === 'redis') {
   configStrategy1 = require(rootPrefix + '/test/env/redis.json');
   configStrategy2 = require(rootPrefix + '/test/env/redis2.json');
-} else if (testCachingEngine == 'memcached') {
+} else if (testCachingEngine === 'memcached') {
   configStrategy1 = require(rootPrefix + '/test/env/memcached.json');
   configStrategy2 = require(rootPrefix + '/test/env/memcached2.json');
-} else if (testCachingEngine == 'none') {
+} else if (testCachingEngine === 'none') {
   configStrategy1 = require(rootPrefix + '/test/env/in-memory.json');
   configStrategy2 = require(rootPrefix + '/test/env/in-memory2.json');
   // Config strategies are same as they won't change for in-memory.
@@ -28,54 +28,54 @@ function performTest(cacheObj, keySuffix) {
     keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', function() {
-      var cKey = 'cache-key' + keySuffix,
+      let cKey = 'cache-key' + keySuffix,
         response = cacheObj.get(cKey);
       assert.typeOf(response, 'Promise');
     });
 
     it('should fail when key is not passed', async function() {
-      var response = await cacheObj.get();
+      let response = await cacheObj.get();
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is undefined', async function() {
-      var response = await cacheObj.get(undefined);
+      let response = await cacheObj.get(undefined);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
-      var cKey = '',
+      let cKey = '',
         response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
-      var cKey = 10,
+      let cKey = 10,
         response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
-      var cKey = 'a b' + keySuffix,
+      let cKey = 'a b' + keySuffix,
         response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
-      var cKey = Array(252).join('x'),
+      let cKey = Array(252).join('x'),
         response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should pass when value is not get', async function() {
-      var cKey = 'cache-key-not-get' + keySuffix,
+      let cKey = 'cache-key-not-get' + keySuffix,
         response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, null);
     });
 
     it('should pass when value is string', async function() {
-      var cKey = 'cache-key' + keySuffix,
+      let cKey = 'cache-key' + keySuffix,
         cValue = 'String Value',
         responseSet = await cacheObj.set(cKey, cValue),
         response = await cacheObj.get(cKey);
@@ -84,7 +84,7 @@ function performTest(cacheObj, keySuffix) {
     });
 
     it('should pass when value is integer', async function() {
-      var cKey = 'cache-key' + keySuffix,
+      let cKey = 'cache-key' + keySuffix,
         cValue = 10,
         responseSet = await cacheObj.set(cKey, cValue),
         response = await cacheObj.get(cKey);
@@ -93,7 +93,7 @@ function performTest(cacheObj, keySuffix) {
     });
 
     it('should pass when value is blank', async function() {
-      var cKey = 'cache-key' + keySuffix,
+      let cKey = 'cache-key' + keySuffix,
         cValue = '',
         responseSet = await cacheObj.set(cKey, cValue),
         response = await cacheObj.get(cKey);
@@ -103,7 +103,7 @@ function performTest(cacheObj, keySuffix) {
 
     if (engineType != 'redis') {
       it('should pass when value is Object', async function() {
-        var cKey = 'cache-key-object' + keySuffix,
+        let cKey = 'cache-key-object' + keySuffix,
           cValue = { a: 1 },
           responseSet = await cacheObj.set(cKey, cValue),
           response = await cacheObj.get(cKey);
@@ -113,7 +113,7 @@ function performTest(cacheObj, keySuffix) {
       });
 
       it('should pass when value is Array', async function() {
-        var cKey = 'cache-key-object' + keySuffix,
+        let cKey = 'cache-key-object' + keySuffix,
           cValue = [1, 2, 3, 4],
           responseSet = await cacheObj.set(cKey, cValue),
           response = await cacheObj.get(cKey);
@@ -123,7 +123,7 @@ function performTest(cacheObj, keySuffix) {
       });
     } else {
       it('should fail when value is Object', async function() {
-        var cKey = 'cache-key-object' + keySuffix,
+        let cKey = 'cache-key-object' + keySuffix,
           cValue = { a: 1 },
           responseSet = await cacheObj.setObject(cKey, cValue),
           response = await cacheObj.get(cKey);
@@ -131,7 +131,7 @@ function performTest(cacheObj, keySuffix) {
       });
 
       it('should fail when value is Array', async function() {
-        var cKey = 'cache-key-object' + keySuffix,
+        let cKey = 'cache-key-object' + keySuffix,
           cValue = [1, 2, 3, 4],
           responseSet = await cacheObj.set(cKey, cValue),
           response = await cacheObj.get(cKey);

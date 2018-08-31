@@ -8,11 +8,11 @@ const rootPrefix = '..',
   testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
 let configStrategy;
-if (testCachingEngine == 'redis') {
+if (testCachingEngine === 'redis') {
   configStrategy = require(rootPrefix + '/test/env/redis.json');
-} else if (testCachingEngine == 'memcached') {
+} else if (testCachingEngine === 'memcached') {
   configStrategy = require(rootPrefix + '/test/env/memcached.json');
-} else if (testCachingEngine == 'none') {
+} else if (testCachingEngine === 'none') {
   configStrategy = require(rootPrefix + '/test/env/in-memory.json');
 }
 
@@ -23,91 +23,91 @@ function performTest(cacheObj, keySuffix) {
     keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', async function() {
-      var cKey = ['cache-key' + keySuffix],
+      let cKey = ['cache-key' + keySuffix],
         response = cacheObj.multiGet(cKey);
       assert.typeOf(response, 'Promise');
     });
 
     it('should fail when key is not passed', async function() {
-      var response = await cacheObj.multiGet();
+      let response = await cacheObj.multiGet();
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is empty array', async function() {
-      var response = await cacheObj.multiGet([]);
+      let response = await cacheObj.multiGet([]);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is undefined', async function() {
-      var response = await cacheObj.multiGet([undefined]);
+      let response = await cacheObj.multiGet([undefined]);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
-      var cKey = [''],
+      let cKey = [''],
         response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
-      var cKey = [10],
+      let cKey = [10],
         response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
-      var cKey = ['a b' + keySuffix],
+      let cKey = ['a b' + keySuffix],
         response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
-      var cKey = [Array(252).join('x')],
+      let cKey = [Array(252).join('x')],
         response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should pass when value is not set', async function() {
-      var cKey = ['cache-key-not-set' + keySuffix],
+      let cKey = ['cache-key-not-set' + keySuffix],
         response = await cacheObj.multiGet(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response['cache-key-not-set'], null);
     });
 
     it('should pass when non object values are get', async function() {
-      var keyValue = {};
+      let keyValue = {};
 
       keyValue[`cache-key-string${keySuffix}`] = 'String Value';
       keyValue[`cache-key-integer${keySuffix}`] = 10;
       keyValue[`cache-key-blank${keySuffix}`] = '';
 
-      for (var key in keyValue) {
+      for (let key in keyValue) {
         res = await cacheObj.set(key, keyValue[key]);
       }
 
-      var lookupKeys = Object.keys(keyValue),
+      let lookupKeys = Object.keys(keyValue),
         response = await cacheObj.multiGet(lookupKeys);
 
       assert.equal(response.isSuccess(), true);
-      for (var key in response.data.response) {
+      for (let key in response.data.response) {
         assert.equal(response.data.response[key], keyValue[key]);
       }
     });
 
     it('should return null when object values are get', async function() {
-      var keyValue = {};
+      let keyValue = {};
       keyValue[`cache-key-array${keySuffix}`] = [1, 2, 3, 4];
       keyValue[`cache-key-object${keySuffix}`] = { a: 1 };
 
-      for (var key in keyValue) {
+      for (let key in keyValue) {
         res = await cacheObj.set(key, keyValue[key]);
       }
 
-      var lookupKeys = Object.keys(keyValue),
+      let lookupKeys = Object.keys(keyValue),
         response = await cacheObj.multiGet(lookupKeys);
 
       assert.equal(response.isSuccess(), true);
-      for (var key in response.data.response) {
+      for (let key in response.data.response) {
         assert.equal(response.data.response[key], null);
       }
     });
