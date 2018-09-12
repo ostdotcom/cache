@@ -23,74 +23,74 @@ function performTest(cacheObj, keySuffix) {
     keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', async function() {
-      var cKey = 'cache-key-decr-counter' + keySuffix,
+      let cKey = 'cache-key-decr-counter' + keySuffix,
         cValue = 1,
         response = cacheObj.decrement(cKey, cValue);
       assert.typeOf(response, 'Promise');
     });
 
     it('should fail when key/value is not passed', async function() {
-      var response = await cacheObj.decrement();
+      let response = await cacheObj.decrement();
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is undefined', async function() {
-      var cValue = 1,
+      let cValue = 1,
         response = await cacheObj.decrement(undefined, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
-      var cKey = '',
+      let cKey = '',
         cValue = 1,
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
-      var cKey = 10,
+      let cKey = 10,
         cValue = 1,
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
-      var cKey = 'a b',
+      let cKey = 'a b',
         cValue = 1,
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
-      var cKey = Array(252).join('x'),
+      let cKey = Array(252).join('x'),
         cValue = 1,
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when value is Object', async function() {
-      var cKey = 'cache-key-decr-counter' + keySuffix,
+      let cKey = 'cache-key-decr-counter' + keySuffix,
         cValue = { a: 1 },
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when value is blank', async function() {
-      var cKey = 'cache-key-decr-counter' + keySuffix,
+      let cKey = 'cache-key-decr-counter' + keySuffix,
         cValue = '',
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when value is string', async function() {
-      var cKey = 'cache-key-decr-counter' + keySuffix,
+      let cKey = 'cache-key-decr-counter' + keySuffix,
         cValue = 'String Value',
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has non numeric value', async function() {
-      var cKey = 'cache-key-decr-non-numeric' + keySuffix,
+      let cKey = 'cache-key-decr-non-numeric' + keySuffix,
         cValue = 'hi',
         response = await cacheObj.set(cKey, cValue);
       assert.equal(response.isSuccess(), true);
@@ -103,7 +103,7 @@ function performTest(cacheObj, keySuffix) {
     performTestWhenKeyDoesNotExists(cacheObj, keySuffix);
 
     it('should pass decremented by multiple integer values', async function() {
-      var cKey = 'cache-key-decr-counter-key' + keySuffix,
+      let cKey = 'cache-key-decr-counter-key' + keySuffix,
         cValue = 10000,
         response = await cacheObj.set(cKey, cValue);
       assert.equal(response.isSuccess(), true);
@@ -123,8 +123,8 @@ function performTest(cacheObj, keySuffix) {
       assert.equal(resObj.isSuccess(), false);
 
       // decrement by 1
-      var decrementBy = [1, 3, 2, 10, 100, 57];
-      for (var i = 0; i < decrementBy.length; i++) {
+      let decrementBy = [1, 3, 2, 10, 100, 57];
+      for (let i = 0; i < decrementBy.length; i++) {
         resObj = await cacheObj.decrement(cKey, decrementBy[i]);
         assert.equal(resObj.isSuccess(), true);
         cValue -= decrementBy[i];
@@ -148,7 +148,7 @@ function performTest(cacheObj, keySuffix) {
 function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
   const failCase = function() {
     it('should fail when key does not exist', async function() {
-      var cKey = 'cache-key-decr-counter-not-exist' + keySuffix,
+      let cKey = 'cache-key-decr-counter-not-exist' + keySuffix,
         cValue = 10,
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), false);
@@ -157,7 +157,7 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
 
   const passCase = function() {
     it('should pass when key does not exist', async function() {
-      var cKey = 'cache-key-decr-counter-not-exist' + keySuffix,
+      let cKey = 'cache-key-decr-counter-not-exist' + keySuffix,
         cValue = 10,
         response = await cacheObj.decrement(cKey, cValue);
       assert.equal(response.isSuccess(), true);
@@ -168,11 +168,11 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
   if (cacheObj._isConsistentBehaviour) {
     failCase();
   } else {
-    if (engineType == 'redis') {
+    if (engineType === 'redis') {
       passCase();
-    } else if (engineType == 'memcached') {
+    } else if (engineType === 'memcached') {
       failCase();
-    } else if (engineType == 'none') {
+    } else if (engineType === 'none') {
       passCase();
     }
   }
