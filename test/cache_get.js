@@ -1,133 +1,204 @@
 // Load external packages
-const chai = require('chai')
-  , assert = chai.assert;
+const chai = require('chai'),
+  assert = chai.assert;
 
 // Load cache service
-const rootPrefix = ".."
-  , openSTCacheKlass = require(rootPrefix + '/services/cache')
-  , engineType = process.env.OST_CACHING_ENGINE
-;
+const rootPrefix = '..',
+  openSTCacheKlass = require(rootPrefix + '/index'),
+  testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
-function performTest (cahceObj, keySuffix) {
+let configStrategy1;
+let configStrategy2;
+if (testCachingEngine === 'redis') {
+  configStrategy1 = require(rootPrefix + '/test/env/redis.json');
+  configStrategy2 = require(rootPrefix + '/test/env/redis2.json');
+} else if (testCachingEngine === 'memcached') {
+  configStrategy1 = require(rootPrefix + '/test/env/memcached.json');
+  configStrategy2 = require(rootPrefix + '/test/env/memcached2.json');
+} else if (testCachingEngine === 'none') {
+  configStrategy1 = require(rootPrefix + '/test/env/in-memory.json');
+  configStrategy2 = require(rootPrefix + '/test/env/in-memory2.json');
+  // Config strategies are same as they won't change for in-memory.
+}
 
-  describe('Cache Get ' + keySuffix , function() {
+const engineType = configStrategy1.OST_CACHING_ENGINE;
 
-    keySuffix = keySuffix + "_" + (new Date()).getTime();
+function performTest(cacheObj, keySuffix) {
+  describe('Cache Get ' + keySuffix, function() {
+    keySuffix = keySuffix + '_' + new Date().getTime();
 
     it('should return promise', function() {
-      var cKey = "cache-key" + keySuffix
-        , response = cahceObj.get(cKey);
+      let cKey = 'cache-key' + keySuffix,
+        response = cacheObj.get(cKey);
       assert.typeOf(response, 'Promise');
     });
 
     it('should fail when key is not passed', async function() {
-      var response = await cahceObj.get();
+      let response = await cacheObj.get();
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is undefined', async function() {
-      var response = await cahceObj.get(undefined);
+      let response = await cacheObj.get(undefined);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is blank', async function() {
-      var cKey = ''
-        , response = await cahceObj.get(cKey);
+      let cKey = '',
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key is number', async function() {
-      var cKey = 10
-        , response = await cahceObj.get(cKey);
+      let cKey = 10,
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key has space', async function() {
-      var cKey = "a b" + keySuffix
-        , response = await cahceObj.get(cKey);
+      let cKey = 'a b' + keySuffix,
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should fail when key length is > 250 bytes', async function() {
-      var cKey = Array(252).join('x')
-        , response = await cahceObj.get(cKey);
+      let cKey = Array(252).join('x'),
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), false);
     });
 
     it('should pass when value is not get', async function() {
-      var cKey = "cache-key-not-get" + keySuffix
-        , response = await cahceObj.get(cKey);
+      let cKey = 'cache-key-not-get' + keySuffix,
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, null);
     });
 
     it('should pass when value is string', async function() {
-      var cKey = "cache-key" + keySuffix
-        , cValue = "String Value"
-        , responseSet = await cahceObj.set(cKey, cValue)
-        , response = await cahceObj.get(cKey);
+      let cKey = 'cache-key' + keySuffix,
+        cValue = 'String Value',
+        responseSet = await cacheObj.set(cKey, cValue),
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, cValue);
     });
 
     it('should pass when value is integer', async function() {
-      var cKey = "cache-key" + keySuffix
-        , cValue = 10
-        , responseSet = await cahceObj.set(cKey, cValue)
-        , response = await cahceObj.get(cKey);
+      let cKey = 'cache-key' + keySuffix,
+        cValue = 10,
+        responseSet = await cacheObj.set(cKey, cValue),
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, cValue);
     });
 
     it('should pass when value is blank', async function() {
-      var cKey = "cache-key" + keySuffix
-        , cValue = ""
-        , responseSet = await cahceObj.set(cKey, cValue)
-        , response = await cahceObj.get(cKey);
+      let cKey = 'cache-key' + keySuffix,
+        cValue = '',
+        responseSet = await cacheObj.set(cKey, cValue),
+        response = await cacheObj.get(cKey);
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, cValue);
     });
 
     if (engineType != 'redis') {
       it('should pass when value is Object', async function() {
-        var cKey = "cache-key-object" + keySuffix
-          , cValue = {a: 1}
-          , responseSet = await cahceObj.set(cKey, cValue)
-          , response = await cahceObj.get(cKey);
+        let cKey = 'cache-key-object' + keySuffix,
+          cValue = { a: 1 },
+          responseSet = await cacheObj.set(cKey, cValue),
+          response = await cacheObj.get(cKey);
         assert.equal(response.isSuccess(), true);
         assert.equal(typeof response.data.response, typeof cValue);
         assert.equal(JSON.stringify(response.data.response), JSON.stringify(cValue));
       });
 
       it('should pass when value is Array', async function() {
-        var cKey = "cache-key-object" + keySuffix
-          , cValue = [1,2,3,4]
-          , responseSet = await cahceObj.set(cKey, cValue)
-          , response = await cahceObj.get(cKey);
+        let cKey = 'cache-key-object' + keySuffix,
+          cValue = [1, 2, 3, 4],
+          responseSet = await cacheObj.set(cKey, cValue),
+          response = await cacheObj.get(cKey);
         assert.equal(response.isSuccess(), true);
         assert.equal(typeof response.data.response, typeof cValue);
         assert.equal(JSON.stringify(response.data.response), JSON.stringify(cValue));
       });
     } else {
       it('should fail when value is Object', async function() {
-        var cKey = "cache-key-object" + keySuffix
-          , cValue = {a: 1}
-          , responseSet = await cahceObj.setObject(cKey, cValue)
-          , response = await cahceObj.get(cKey);
+        let cKey = 'cache-key-object' + keySuffix,
+          cValue = { a: 1 },
+          responseSet = await cacheObj.setObject(cKey, cValue),
+          response = await cacheObj.get(cKey);
         assert.equal(response.isSuccess(), false);
       });
 
       it('should fail when value is Array', async function() {
-        var cKey = "cache-key-object" + keySuffix
-          , cValue = [1,2,3,4]
-          , responseSet = await cahceObj.set(cKey, cValue)
-          , response = await cahceObj.get(cKey);
+        let cKey = 'cache-key-object' + keySuffix,
+          cValue = [1, 2, 3, 4],
+          responseSet = await cacheObj.set(cKey, cValue),
+          response = await cacheObj.get(cKey);
         assert.equal(response.isSuccess(), false);
       });
     }
-
   });
 }
 
-performTest(new openSTCacheKlass(engineType, true), "ConsistentBehaviour");
-performTest(new openSTCacheKlass (engineType, false), "InconsistentBehaviour");
+function performMultipleTest(cacheObj1, cacheObj2, keySuffix) {
+  describe('Cache Multiple Get ' + keySuffix, function() {
+    keySuffix = keySuffix + '_' + new Date().getTime();
+
+    it('should pass and get different values from different cache instances for same key', async function() {
+      let cKey1 = 'cache-key' + keySuffix,
+        cValue1 = 'value1',
+        responseSet1 = await cacheObj1.set(cKey1, cValue1),
+        response1 = await cacheObj1.get(cKey1),
+        cKey2 = 'cache-key' + keySuffix,
+        cValue2 = 'value2',
+        responseSet2 = await cacheObj2.set(cKey2, cValue2),
+        response2 = await cacheObj2.get(cKey2);
+      assert.equal(response1.isSuccess(), true);
+      assert.equal(JSON.stringify(response1.data.response), JSON.stringify(cValue1));
+      assert.equal(response2.isSuccess(), true);
+      assert.equal(JSON.stringify(response2.data.response), JSON.stringify(cValue2));
+    });
+
+    it('should pass and get different values from different cache instances for different keys', async function() {
+      let cKey1 = 'cache-key1' + keySuffix,
+        cValue1 = 'value1',
+        responseSet1 = await cacheObj1.set(cKey1, cValue1),
+        response1 = await cacheObj1.get(cKey1),
+        cKey2 = 'cache-key2' + keySuffix,
+        cValue2 = 'value2',
+        responseSet2 = await cacheObj2.set(cKey2, cValue2),
+        response2 = await cacheObj2.get(cKey2);
+      assert.equal(response1.isSuccess(), true);
+      assert.equal(JSON.stringify(response1.data.response), JSON.stringify(cValue1));
+      assert.equal(response2.isSuccess(), true);
+      assert.equal(JSON.stringify(response2.data.response), JSON.stringify(cValue2));
+    });
+
+    it('should fail when proper cache instances are not used', async function() {
+      let cKey1 = 'cache-key1' + keySuffix,
+        cValue1 = 'value1',
+        responseSet1 = await cacheObj1.set(cKey1, cValue1),
+        cKey2 = 'cache-key2' + keySuffix,
+        cValue2 = 'value2',
+        responseSet2 = await cacheObj2.set(cKey2, cValue2),
+        response1 = await cacheObj2.get(cKey1),
+        response2 = await cacheObj1.get(cKey2);
+      assert.equal(response1.isSuccess(), true);
+      assert.equal(response1.data.response, null);
+      assert.equal(response2.isSuccess(), true);
+      assert.equal(response2.data.response, null);
+    });
+  });
+}
+
+openSTCache1 = openSTCacheKlass.getInstance(configStrategy1);
+cacheImplementer1 = openSTCache1.cacheInstance;
+
+openSTCache2 = openSTCacheKlass.getInstance(configStrategy2);
+cacheImplementer2 = openSTCache2.cacheInstance;
+
+performTest(cacheImplementer1, 'ConsistentBehaviour');
+performTest(cacheImplementer1, 'InconsistentBehaviour');
+performMultipleTest(cacheImplementer1, cacheImplementer2, 'ConsistentBehaviour');
+performMultipleTest(cacheImplementer1, cacheImplementer2, 'InconsistentBehaviour');
