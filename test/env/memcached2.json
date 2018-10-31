@@ -1,0 +1,6 @@
+{
+"OST_DEFAULT_TTL": "60",
+"OST_CACHING_ENGINE": "memcached",
+"OST_MEMCACHE_SERVERS": "localhost:11214,localhost:11215",
+"OST_CACHE_CONSISTENT_BEHAVIOR": "1"
+}
