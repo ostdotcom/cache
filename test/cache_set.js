@@ -135,7 +135,7 @@ function performTest(cacheObj, keySuffix) {
       assert.equal(response.isSuccess(), true);
       assert.equal(response.data.response, true);
       setTimeout(async function() {
-        response = await openSTCache.get(cKey);
+        response = await cacheObj.get(cKey);
         assert.equal(response.isSuccess(), true);
         assert.equal(response.data.response, null);
       }, ttl * 1000);
