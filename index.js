@@ -7,7 +7,10 @@
 const rootPrefix = '.',
   version = require(rootPrefix + '/package.json').version,
   OpenSTCacheKeys = require(rootPrefix + '/services/openst_cache_keys'),
-  InstanceComposer = require(rootPrefix + '/instance_composer');
+  OSTBase = require('@openstfoundation/openst-base'),
+  coreConstants = require(rootPrefix + '/config/coreConstants');
+
+const InstanceComposer = OSTBase.InstanceComposer;
 
 require(rootPrefix + '/services/cache_instance');
 
@@ -32,7 +35,7 @@ OpenSTCache.prototype = {
 Object.defineProperty(OpenSTCache.prototype, 'cacheInstance', {
   get: function() {
     const oThis = this;
-    return oThis.ic().getCacheInstance();
+    return oThis.ic().getInstanceFor(coreConstants.icNameSpace, 'getCacheInstance');
   }
 });
 

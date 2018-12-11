@@ -10,7 +10,10 @@
 
 // Load internal libraries
 const rootPrefix = '..',
-  InstanceComposer = require(rootPrefix + '/instance_composer');
+  OSTBase = require('@openstfoundation/openst-base'),
+  coreConstants = require(rootPrefix + '/config/coreConstants');
+
+const InstanceComposer = OSTBase.InstanceComposer;
 
 const GetCacheConfigHelper = function(configStrategy, instanceComposer) {
   const oThis = this;
@@ -28,6 +31,6 @@ const GetCacheConfigHelper = function(configStrategy, instanceComposer) {
   oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.OST_INMEMORY_CACHE_NAMESPACE || '';
 };
 
-InstanceComposer.register(GetCacheConfigHelper, 'getCacheConfigHelper', true);
+InstanceComposer.registerAsObject(GetCacheConfigHelper, coreConstants.icNameSpace, 'getCacheConfigHelper', true);
 
 module.exports = GetCacheConfigHelper;

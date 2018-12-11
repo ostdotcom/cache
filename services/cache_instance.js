@@ -15,7 +15,10 @@
 
 const rootPrefix = '..',
   instanceMap = require(rootPrefix + '/lib/cache/existing_instances'),
-  InstanceComposer = require(rootPrefix + '/instance_composer');
+  OSTBase = require('@openstfoundation/openst-base'),
+  coreConstants = require(rootPrefix + '/config/coreConstants');
+
+const InstanceComposer = OSTBase.InstanceComposer;
 
 require(rootPrefix + '/lib/cache/redis');
 require(rootPrefix + '/lib/cache/memcached');
@@ -119,11 +122,14 @@ CacheInstance.prototype = {
     let implementerKlass = null;
 
     if (oThis.cacheEngine == 'redis') {
-      implementerKlass = instanceComposer.getRedisCacheImplementer();
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'getRedisCacheImplementer');
     } else if (oThis.cacheEngine == 'memcached') {
-      implementerKlass = instanceComposer.getMemcachedCacheImplementer();
+      implementerKlass = instanceComposer.getShadowedClassFor(
+        coreConstants.icNameSpace,
+        'getMemcachedCacheImplementer'
+      );
     } else if (oThis.cacheEngine == 'none') {
-      implementerKlass = instanceComposer.getInMemoryCacheImplementer();
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'getInMemoryCacheImplementer');
     } else {
       throw 'invalid caching engine or not defined';
     }
@@ -140,6 +146,6 @@ CacheInstance.prototype = {
   }
 };
 
-InstanceComposer.register(CacheInstance, 'getCacheInstance', true);
+InstanceComposer.registerAsObject(CacheInstance, coreConstants.icNameSpace, 'getCacheInstance', true);
 
 module.exports = CacheInstance;
