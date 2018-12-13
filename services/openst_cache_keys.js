@@ -7,22 +7,22 @@
  * @class OpenSTCacheKeys
  * @constructor
  */
-const OpenSTCacheKeys = function() {
-  const oThis = this;
+class OpenSTCacheKeys {
+  constructor() {
+    const oThis = this;
 
-  // openST cache key namespace
-  oThis.namespace = 'openst_';
-};
+    // openST cache key namespace
+    oThis.namespace = 'openst_';
+  }
 
-OpenSTCacheKeys.prototype = {
   /**
    * @ignore
    */
-  _getCacheKeyForProperty: function(chainId, tokenIdentifier, propName) {
+  _getCacheKeyForProperty(chainId, tokenIdentifier, propName) {
     // Internal Method. Returns key name to be used for caching properties of ERC20 contract and different balances
     const oThis = this;
     return oThis.namespace + chainId + '_' + tokenIdentifier.toLowerCase() + '_prop_' + propName.toLowerCase();
-  },
+  }
 
   /**
    * Get Branded Token name cache key
@@ -33,10 +33,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btName: function(chainId, btAddress) {
+  btName(chainId, btAddress) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, btAddress, 'name');
-  },
+  }
 
   /**
    * Get Branded Token symbol cache key
@@ -47,10 +47,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btSymbol: function(chainId, btAddress) {
+  btSymbol(chainId, btAddress) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, btAddress, 'symbol');
-  },
+  }
 
   /**
    * Get Branded Token decimals cache key
@@ -61,10 +61,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btDecimals: function(chainId, btAddress) {
+  btDecimals(chainId, btAddress) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, btAddress, 'decimals');
-  },
+  }
 
   /**
    * Get Branded Token UUID cache key
@@ -75,10 +75,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btUUID: function(chainId, btAddress) {
+  btUUID(chainId, btAddress) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, btAddress, 'uuid');
-  },
+  }
 
   /**
    * Get Branded Token balance cache key
@@ -90,10 +90,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  btBalance: function(chainId, btAddress, address) {
+  btBalance(chainId, btAddress, address) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, btAddress, address);
-  },
+  }
 
   /**
    * Get ST' balance cache key
@@ -104,10 +104,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  stPrimeBalance: function(chainId, address) {
+  stPrimeBalance(chainId, address) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, 'STPrime', address);
-  },
+  }
 
   /**
    * Get price oracle cache key
@@ -118,10 +118,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  oraclePricePoint: function(chainId, address) {
+  oraclePricePoint(chainId, address) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, address, 'oracle_price');
-  },
+  }
 
   /**
    * Get price oracle expiration height cache key
@@ -132,10 +132,10 @@ OpenSTCacheKeys.prototype = {
    * @return {String}
    *
    */
-  oracleExpirationHeight: function(chainId, address) {
+  oracleExpirationHeight(chainId, address) {
     const oThis = this;
     return oThis._getCacheKeyForProperty(chainId, address, 'oracle_expiration_height');
   }
-};
+}
 
 module.exports = new OpenSTCacheKeys();

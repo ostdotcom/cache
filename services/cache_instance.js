@@ -30,54 +30,55 @@ require(rootPrefix + '/lib/cache/in_memory');
  * @constructor
  *
  */
-const CacheInstance = function(configStrategy, instanceComposer) {
-  const oThis = this;
+class CacheInstance {
 
-  if (configStrategy.cache.engine == undefined) {
-    throw 'OST_CACHE_ENGINE parameter missing.';
-  }
+  constructor(configStrategy, instanceComposer) {
+    const oThis = this;
 
-  // Grab the required details from the configStrategy.
-  oThis.cacheEngine = configStrategy.cache.engine;
-  oThis.isConsistentBehaviour = configStrategy.cache.consistentBehavior;
+    if (configStrategy.cache.engine == undefined) {
+      throw 'OST_CACHE_ENGINE parameter missing.';
+    }
 
-  // sanitize the isConsistentBehaviour
-  oThis.isConsistentBehaviour = oThis.isConsistentBehaviour == undefined ? true : oThis.isConsistentBehaviour != '0';
+    // Grab the required details from the configStrategy.
+    oThis.cacheEngine = configStrategy.cache.engine;
+    oThis.isConsistentBehaviour = configStrategy.cache.consistentBehavior;
 
-  // Stores the endpoint for key generation of instanceMap.
-  oThis.endpointDetails = null;
+    // sanitize the isConsistentBehaviour
+    oThis.isConsistentBehaviour = oThis.isConsistentBehaviour == undefined ? true : oThis.isConsistentBehaviour != '0';
 
-  // Generate endpointDetails for key generation of instanceMap.
-  if (oThis.cacheEngine == 'redis') {
-    const redisMandatoryParams = ['host', 'port', 'password', 'enableTsl'];
+    // Stores the endpoint for key generation of instanceMap.
+    oThis.endpointDetails = null;
 
-    // Check if all the mandatory connection parameters for Redis are available or not.
-    for (let key = 0; key < redisMandatoryParams.length; key++) {
-      if (!configStrategy.cache.hasOwnProperty(redisMandatoryParams[key])) {
-        throw 'Redis one or more mandatory connection parameters missing.';
+    // Generate endpointDetails for key generation of instanceMap.
+    if (oThis.cacheEngine == 'redis') {
+      const redisMandatoryParams = ['host', 'port', 'password', 'enableTsl'];
+
+      // Check if all the mandatory connection parameters for Redis are available or not.
+      for (let key = 0; key < redisMandatoryParams.length; key++) {
+        if (!configStrategy.cache.hasOwnProperty(redisMandatoryParams[key])) {
+          throw 'Redis one or more mandatory connection parameters missing.';
+        }
       }
+
+      oThis.endpointDetails =
+        configStrategy.cache.host.toLowerCase() +
+        '-' +
+        configStrategy.cache.port.toString() +
+        '-' +
+        configStrategy.cache.enableTsl.toString();
+    } else if (oThis.cacheEngine == 'memcached') {
+      if (!configStrategy.cache.hasOwnProperty('servers')) {
+        throw 'Memcached mandatory connection parameters missing.';
+      }
+
+      oThis.endpointDetails = configStrategy.cache.servers.join(',').toLowerCase();
+    } else {
+      oThis.endpointDetails = `in-memory-${configStrategy.cache.namespace || ''}`;
     }
 
-    oThis.endpointDetails =
-      configStrategy.cache.host.toLowerCase() +
-      '-' +
-      configStrategy.cache.port.toString() +
-      '-' +
-      configStrategy.cache.enableTsl.toString();
-  } else if (oThis.cacheEngine == 'memcached') {
-    if (!configStrategy.cache.hasOwnProperty('servers')) {
-      throw 'Memcached mandatory connection parameters missing.';
-    }
-
-    oThis.endpointDetails = configStrategy.cache.servers.join(',').toLowerCase();
-  } else {
-    oThis.endpointDetails = `in-memory-${configStrategy.cache.namespace || ''}`;
+    return oThis.getInstance(instanceComposer);
   }
 
-  return oThis.getInstance(instanceComposer);
-};
-
-CacheInstance.prototype = {
   /**
    * Fetches a cache instance if available in instanceMap. If instance is not available in
    * instanceMap, it calls createCacheInstance() to create a new cache instance.
@@ -85,7 +86,7 @@ CacheInstance.prototype = {
    * @returns {cacheInstance}
    *
    */
-  getInstance: function(instanceComposer) {
+  getInstance(instanceComposer) {
     const oThis = this;
 
     // Fetches the cache instance key to be used.
@@ -96,7 +97,7 @@ CacheInstance.prototype = {
     } else {
       return oThis.createCacheInstance(instanceComposer);
     }
-  },
+  }
 
   /**
    * Creates the key for the instanceMap.
@@ -104,11 +105,11 @@ CacheInstance.prototype = {
    * @returns {string}
    *
    */
-  getMapKey: function() {
+  getMapKey() {
     const oThis = this;
 
     return oThis.cacheEngine.toString() + '-' + oThis.isConsistentBehaviour.toString() + '-' + oThis.endpointDetails;
-  },
+  }
 
   /**
    * Creates a new cache instance if not available in instanceMap.
@@ -116,7 +117,7 @@ CacheInstance.prototype = {
    * @returns {cacheInstance}
    *
    */
-  createCacheInstance: function(instanceComposer) {
+  createCacheInstance(instanceComposer) {
     const oThis = this;
 
     let implementerKlass = null;
@@ -144,7 +145,8 @@ CacheInstance.prototype = {
 
     return cacheInstance;
   }
-};
+
+}
 
 InstanceComposer.registerAsObject(CacheInstance, coreConstants.icNameSpace, 'getCacheInstance', true);
 

@@ -15,20 +15,24 @@ const rootPrefix = '..',
 
 const InstanceComposer = OSTBase.InstanceComposer;
 
-const GetCacheConfigHelper = function(configStrategy, instanceComposer) {
-  const oThis = this;
+class GetCacheConfigHelper {
 
-  oThis.DEFAULT_TTL = configStrategy.cache.defaultTtl;
-  oThis.REDIS_HOST = configStrategy.cache.host;
-  oThis.REDIS_PORT = configStrategy.cache.port;
-  oThis.REDIS_PASS = configStrategy.cache.password;
-  oThis.REDIS_TLS_ENABLED = configStrategy.cache.enableTsl == '1';
-  oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
-  oThis.MEMCACHE_SERVERS = (configStrategy.cache.servers || [])
-    .map(Function.prototype.call, String.prototype.trim);
+  constructor(configStrategy, instanceComposer) {
+    const oThis = this;
 
-  oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.cache.namespace || '';
-};
+    oThis.DEFAULT_TTL = configStrategy.cache.defaultTtl;
+    oThis.REDIS_HOST = configStrategy.cache.host;
+    oThis.REDIS_PORT = configStrategy.cache.port;
+    oThis.REDIS_PASS = configStrategy.cache.password;
+    oThis.REDIS_TLS_ENABLED = configStrategy.cache.enableTsl == '1';
+    oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
+    oThis.MEMCACHE_SERVERS = (configStrategy.cache.servers || [])
+      .map(Function.prototype.call, String.prototype.trim);
+
+    oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.cache.namespace || '';
+  }
+
+}
 
 InstanceComposer.registerAsObject(GetCacheConfigHelper, coreConstants.icNameSpace, 'getCacheConfigHelper', true);
 
