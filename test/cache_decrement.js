@@ -95,8 +95,11 @@ function performTest(cacheObj, keySuffix) {
         response = await cacheObj.set(cKey, cValue);
       assert.equal(response.isSuccess(), true);
 
+      console.log('response1-----' + JSON.stringify(response));
+      console.log('cacheObj-----' + JSON.stringify(cacheObj));
       cValue = 10;
       response = await cacheObj.decrement(cKey, cValue);
+      console.log('response2-----' + JSON.stringify(response));
       assert.equal(response.isSuccess(), false);
     });
 
