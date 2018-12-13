@@ -33,13 +33,13 @@ require(rootPrefix + '/lib/cache/in_memory');
 const CacheInstance = function(configStrategy, instanceComposer) {
   const oThis = this;
 
-  if (configStrategy.OST_CACHING_ENGINE == undefined) {
+  if (configStrategy.cache.engine == undefined) {
     throw 'OST_CACHE_ENGINE parameter missing.';
   }
 
   // Grab the required details from the configStrategy.
-  oThis.cacheEngine = configStrategy.OST_CACHING_ENGINE;
-  oThis.isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
+  oThis.cacheEngine = configStrategy.cache.engine;
+  oThis.isConsistentBehaviour = configStrategy.cache.consistentBehavior;
 
   // sanitize the isConsistentBehaviour
   oThis.isConsistentBehaviour = oThis.isConsistentBehaviour == undefined ? true : oThis.isConsistentBehaviour != '0';
@@ -49,29 +49,29 @@ const CacheInstance = function(configStrategy, instanceComposer) {
 
   // Generate endpointDetails for key generation of instanceMap.
   if (oThis.cacheEngine == 'redis') {
-    const redisMandatoryParams = ['OST_REDIS_HOST', 'OST_REDIS_PORT', 'OST_REDIS_PASS', 'OST_REDIS_TLS_ENABLED'];
+    const redisMandatoryParams = ['host', 'port', 'password', 'enableTsl'];
 
     // Check if all the mandatory connection parameters for Redis are available or not.
     for (let key = 0; key < redisMandatoryParams.length; key++) {
-      if (!configStrategy.hasOwnProperty(redisMandatoryParams[key])) {
+      if (!configStrategy.cache.hasOwnProperty(redisMandatoryParams[key])) {
         throw 'Redis one or more mandatory connection parameters missing.';
       }
     }
 
     oThis.endpointDetails =
-      configStrategy.OST_REDIS_HOST.toLowerCase() +
+      configStrategy.cache.host.toLowerCase() +
       '-' +
-      configStrategy.OST_REDIS_PORT.toString() +
+      configStrategy.cache.port.toString() +
       '-' +
-      configStrategy.OST_REDIS_TLS_ENABLED.toString();
+      configStrategy.cache.enableTsl.toString();
   } else if (oThis.cacheEngine == 'memcached') {
-    if (!configStrategy.hasOwnProperty('OST_MEMCACHE_SERVERS')) {
+    if (!configStrategy.cache.hasOwnProperty('servers')) {
       throw 'Memcached mandatory connection parameters missing.';
     }
 
-    oThis.endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
+    oThis.endpointDetails = configStrategy.cache.servers.join(',').toLowerCase();
   } else {
-    oThis.endpointDetails = `in-memory-${configStrategy.OST_INMEMORY_CACHE_NAMESPACE || ''}`;
+    oThis.endpointDetails = `in-memory-${configStrategy.cache.namespace || ''}`;
   }
 
   return oThis.getInstance(instanceComposer);

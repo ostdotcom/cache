@@ -20,15 +20,9 @@ There is 1 parameter required while creating the cache implementer.
 * First parameter is mandatory and it specifies the configuration strategy to be used. An example of the configStrategy is: 
 ```js
 configStrategy = {
-  OST_CACHING_ENGINE: 'none',
-  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
-  OST_REDIS_HOST: '127.0.0.1',
-  OST_REDIS_PORT: 6379,
-  OST_REDIS_PASS: 'st123',
-  OST_REDIS_TLS_ENABLED: 0,
-  OST_DEFAULT_TTL: '36000',
-  OST_CACHE_ENDPOINT: '127.0.0.1:6379',
-  OST_MEMCACHE_SERVERS: '127.0.0.1:11211',
+  cache: {
+      engine: "none/redis/memcache"
+  }
 };
 ```
 
@@ -40,32 +34,38 @@ const OpenSTCache = require('@openstfoundation/openst-cache');
 ```js
 // configStrategy for redis engine
 configStrategy = {
-  OST_CACHING_ENGINE: 'redis',
-  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
-  OST_REDIS_HOST: '127.0.0.1',
-  OST_REDIS_PORT: 6379,
-  OST_REDIS_PASS: 'st123', // Redis authentication password defined as "requirepass"
-  OST_REDIS_TLS_ENABLED: 0,
-  OST_DEFAULT_TTL: '36000',
-  OST_CACHE_ENDPOINT: '127.0.0.1:6379',
+  cache: {
+    engine: "redis",
+    host: "localhost",
+    port: "6830",
+    password: "dsdsdsd",
+    enableTsl: "0",
+    defaultTtl: 36000,
+    consistentBehavior: "1"
+  }
 }
 ````
 
 ```js
 // configStrategy for memcached engine
 configStrategy = {
-  OST_CACHING_ENGINE: 'memcached',
-  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
-  OST_DEFAULT_TTL: '36000',
-  OST_MEMCACHE_SERVERS: '127.0.0.1:11211', // comma separated memcached instances eg: '127.0.0.1:11211, 192.168.1.101:11211'
+  cache: {
+    engine: "memcached",
+    servers: ["127.0.0.1:11211"],
+    defaultTtl: 36000,
+    consistentBehavior: "1"
+  }
 }
 ````
 ```js
 // configStrategy for in-memory engine
 configStrategy = {
-  OST_CACHING_ENGINE: 'none',
-  OST_CACHE_CONSISTENT_BEHAVIOR: 1,
-  OST_DEFAULT_TTL: '36000',
+  cache: {
+    engine: "none",
+    namespace: "A",
+    defaultTtl: "36000",
+    consistentBehavior: "1"
+  }
 }
 ````
 
