@@ -1,9 +1,11 @@
 {
-"OST_DEFAULT_TTL": "60",
-"OST_CACHING_ENGINE": "redis",
-"OST_REDIS_HOST": "localhost",
-"OST_REDIS_PORT": "6380",
-"OST_REDIS_PASS": "my-secret",
-"OST_REDIS_TLS_ENABLED": "0",
-"OST_CACHE_CONSISTENT_BEHAVIOR": "1"
+  "cache": {
+    "engine": "redis",
+    "host": "localhost",
+    "port": "6380",
+    "password": "my-secret",
+    "enableTsl": "0",
+    "defaultTtl": 60,
+    "consistentBehavior": "1"
+  }
 }

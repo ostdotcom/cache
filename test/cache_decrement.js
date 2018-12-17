@@ -16,7 +16,7 @@ if (testCachingEngine == 'redis') {
   configStrategy = require(rootPrefix + '/test/env/in-memory.json');
 }
 
-const engineType = configStrategy.OST_CACHING_ENGINE;
+const engineType = configStrategy.cache.engine;
 
 function performTest(cacheObj, keySuffix) {
   describe('Cache Decrement ' + keySuffix, function() {

@@ -7,7 +7,10 @@
 const rootPrefix = '.',
   version = require(rootPrefix + '/package.json').version,
   OpenSTCacheKeys = require(rootPrefix + '/services/openst_cache_keys'),
-  InstanceComposer = require(rootPrefix + '/instance_composer');
+  OSTBase = require('@openstfoundation/openst-base'),
+  coreConstants = require(rootPrefix + '/config/coreConstants');
+
+const InstanceComposer = OSTBase.InstanceComposer;
 
 require(rootPrefix + '/services/cache_instance');
 
@@ -32,7 +35,7 @@ OpenSTCache.prototype = {
 Object.defineProperty(OpenSTCache.prototype, 'cacheInstance', {
   get: function() {
     const oThis = this;
-    return oThis.ic().getCacheInstance();
+    return oThis.ic().getInstanceFor(coreConstants.icNameSpace, 'getCacheInstance');
   }
 });
 
@@ -45,16 +48,16 @@ const instanceMap = {};
  *
  */
 const getInstanceKey = function(configStrategy) {
-  if (!configStrategy.hasOwnProperty('OST_CACHING_ENGINE')) {
-    throw 'OST_CACHING_ENGINE parameter is missing.';
+  if (!configStrategy.hasOwnProperty('cache') || !configStrategy.cache.hasOwnProperty('engine')) {
+    throw 'CACHING_ENGINE parameter is missing.';
   }
-  if (configStrategy.OST_CACHING_ENGINE === undefined) {
-    throw 'OST_CACHING_ENGINE parameter is empty.';
+  if (configStrategy.cache.engine === undefined) {
+    throw 'CACHING_ENGINE parameter is empty.';
   }
 
   // Grab the required details from the configStrategy.
-  const cacheEngine = configStrategy.OST_CACHING_ENGINE.toString();
-  let isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
+  const cacheEngine = configStrategy.cache.engine.toString();
+  let isConsistentBehaviour = configStrategy.cache.consistentBehavior;
 
   // Sanitize isConsistentBehaviour
   isConsistentBehaviour = isConsistentBehaviour === undefined ? true : isConsistentBehaviour != '0';
@@ -64,34 +67,34 @@ const getInstanceKey = function(configStrategy) {
 
   // Generate endpointDetails for key generation of instanceMap.
   if (cacheEngine == 'redis') {
-    const redisMandatoryParams = ['OST_REDIS_HOST', 'OST_REDIS_PORT', 'OST_REDIS_PASS', 'OST_REDIS_TLS_ENABLED'];
+    const redisMandatoryParams = ['host', 'port', 'password', 'enableTsl'];
 
     // Check if all the mandatory connection parameters for Redis are available or not.
     for (let i = 0; i < redisMandatoryParams.length; i++) {
-      if (!configStrategy.hasOwnProperty(redisMandatoryParams[i])) {
+      if (!configStrategy.cache.hasOwnProperty(redisMandatoryParams[i])) {
         throw 'Redis - mandatory connection parameters missing.';
       }
-      if (configStrategy[redisMandatoryParams[i]] === undefined) {
+      if (configStrategy.cache[redisMandatoryParams[i]] === undefined) {
         throw 'Redis - connection parameters are empty.';
       }
     }
 
     endpointDetails =
-      configStrategy.OST_REDIS_HOST.toLowerCase() +
+      configStrategy.cache.host.toLowerCase() +
       '-' +
-      configStrategy.OST_REDIS_PORT.toString() +
+      configStrategy.cache.port.toString() +
       '-' +
-      configStrategy.OST_REDIS_TLS_ENABLED.toString();
+      configStrategy.cache.enableTsl.toString();
   } else if (cacheEngine == 'memcached') {
-    if (!configStrategy.hasOwnProperty('OST_MEMCACHE_SERVERS')) {
+    if (!configStrategy.cache.hasOwnProperty('servers')) {
       throw 'Memcached - mandatory connection parameters missing.';
     }
-    if (configStrategy.OST_MEMCACHE_SERVERS === undefined) {
-      throw 'OST_MEMCACHE_SERVERS parameter is empty. ';
+    if (configStrategy.cache.servers === undefined) {
+      throw 'MEMCACHE_SERVERS(configStrategy.cache.servers) parameter is empty. ';
     }
-    endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
+    endpointDetails = configStrategy.cache.servers.join(',').toLowerCase();
   } else {
-    endpointDetails = configStrategy.OST_INMEMORY_CACHE_NAMESPACE || '';
+    endpointDetails = configStrategy.cache.namespace || '';
   }
 
   return cacheEngine + '-' + isConsistentBehaviour.toString() + '-' + endpointDetails;

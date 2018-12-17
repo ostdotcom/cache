@@ -16,7 +16,7 @@ if (testCachingEngine === 'redis') {
   configStrategy = require(rootPrefix + '/test/env/in-memory.json');
 }
 
-const engineType = configStrategy.OST_CACHING_ENGINE;
+const engineType = configStrategy.cache.engine;
 
 function performTest(cacheObj, keySuffix) {
   describe('Cache Increment ' + keySuffix, function() {
@@ -93,10 +93,12 @@ function performTest(cacheObj, keySuffix) {
       let cKey = 'cache-key-incr-non-numeric' + keySuffix,
         cValue = 'hi',
         response = await cacheObj.set(cKey, cValue);
+      console.log('response1------'+JSON.stringify(response));
       assert.equal(response.isSuccess(), true);
 
       cValue = 10;
       response = await cacheObj.increment(cKey, cValue);
+      console.log('response2------'+JSON.stringify(response));
       assert.equal(response.isSuccess(), false);
     });
 

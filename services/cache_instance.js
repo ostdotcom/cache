@@ -15,7 +15,10 @@
 
 const rootPrefix = '..',
   instanceMap = require(rootPrefix + '/lib/cache/existing_instances'),
-  InstanceComposer = require(rootPrefix + '/instance_composer');
+  OSTBase = require('@openstfoundation/openst-base'),
+  coreConstants = require(rootPrefix + '/config/coreConstants');
+
+const InstanceComposer = OSTBase.InstanceComposer;
 
 require(rootPrefix + '/lib/cache/redis');
 require(rootPrefix + '/lib/cache/memcached');
@@ -27,54 +30,55 @@ require(rootPrefix + '/lib/cache/in_memory');
  * @constructor
  *
  */
-const CacheInstance = function(configStrategy, instanceComposer) {
-  const oThis = this;
+class CacheInstance {
 
-  if (configStrategy.OST_CACHING_ENGINE == undefined) {
-    throw 'OST_CACHE_ENGINE parameter missing.';
-  }
+  constructor(configStrategy, instanceComposer) {
+    const oThis = this;
 
-  // Grab the required details from the configStrategy.
-  oThis.cacheEngine = configStrategy.OST_CACHING_ENGINE;
-  oThis.isConsistentBehaviour = configStrategy.OST_CACHE_CONSISTENT_BEHAVIOR;
+    if (configStrategy.cache.engine == undefined) {
+      throw 'OST_CACHE_ENGINE parameter missing.';
+    }
 
-  // sanitize the isConsistentBehaviour
-  oThis.isConsistentBehaviour = oThis.isConsistentBehaviour == undefined ? true : oThis.isConsistentBehaviour != '0';
+    // Grab the required details from the configStrategy.
+    oThis.cacheEngine = configStrategy.cache.engine;
+    oThis.isConsistentBehaviour = configStrategy.cache.consistentBehavior;
 
-  // Stores the endpoint for key generation of instanceMap.
-  oThis.endpointDetails = null;
+    // sanitize the isConsistentBehaviour
+    oThis.isConsistentBehaviour = oThis.isConsistentBehaviour == undefined ? true : oThis.isConsistentBehaviour != '0';
 
-  // Generate endpointDetails for key generation of instanceMap.
-  if (oThis.cacheEngine == 'redis') {
-    const redisMandatoryParams = ['OST_REDIS_HOST', 'OST_REDIS_PORT', 'OST_REDIS_PASS', 'OST_REDIS_TLS_ENABLED'];
+    // Stores the endpoint for key generation of instanceMap.
+    oThis.endpointDetails = null;
 
-    // Check if all the mandatory connection parameters for Redis are available or not.
-    for (let key = 0; key < redisMandatoryParams.length; key++) {
-      if (!configStrategy.hasOwnProperty(redisMandatoryParams[key])) {
-        throw 'Redis one or more mandatory connection parameters missing.';
+    // Generate endpointDetails for key generation of instanceMap.
+    if (oThis.cacheEngine == 'redis') {
+      const redisMandatoryParams = ['host', 'port', 'password', 'enableTsl'];
+
+      // Check if all the mandatory connection parameters for Redis are available or not.
+      for (let key = 0; key < redisMandatoryParams.length; key++) {
+        if (!configStrategy.cache.hasOwnProperty(redisMandatoryParams[key])) {
+          throw 'Redis one or more mandatory connection parameters missing.';
+        }
       }
+
+      oThis.endpointDetails =
+        configStrategy.cache.host.toLowerCase() +
+        '-' +
+        configStrategy.cache.port.toString() +
+        '-' +
+        configStrategy.cache.enableTsl.toString();
+    } else if (oThis.cacheEngine == 'memcached') {
+      if (!configStrategy.cache.hasOwnProperty('servers')) {
+        throw 'Memcached mandatory connection parameters missing.';
+      }
+
+      oThis.endpointDetails = configStrategy.cache.servers.join(',').toLowerCase();
+    } else {
+      oThis.endpointDetails = `in-memory-${configStrategy.cache.namespace || ''}`;
     }
 
-    oThis.endpointDetails =
-      configStrategy.OST_REDIS_HOST.toLowerCase() +
-      '-' +
-      configStrategy.OST_REDIS_PORT.toString() +
-      '-' +
-      configStrategy.OST_REDIS_TLS_ENABLED.toString();
-  } else if (oThis.cacheEngine == 'memcached') {
-    if (!configStrategy.hasOwnProperty('OST_MEMCACHE_SERVERS')) {
-      throw 'Memcached mandatory connection parameters missing.';
-    }
-
-    oThis.endpointDetails = configStrategy.OST_MEMCACHE_SERVERS.toLowerCase();
-  } else {
-    oThis.endpointDetails = `in-memory-${configStrategy.OST_INMEMORY_CACHE_NAMESPACE || ''}`;
+    return oThis.getInstance(instanceComposer);
   }
 
-  return oThis.getInstance(instanceComposer);
-};
-
-CacheInstance.prototype = {
   /**
    * Fetches a cache instance if available in instanceMap. If instance is not available in
    * instanceMap, it calls createCacheInstance() to create a new cache instance.
@@ -82,7 +86,7 @@ CacheInstance.prototype = {
    * @returns {cacheInstance}
    *
    */
-  getInstance: function(instanceComposer) {
+  getInstance(instanceComposer) {
     const oThis = this;
 
     // Fetches the cache instance key to be used.
@@ -93,7 +97,7 @@ CacheInstance.prototype = {
     } else {
       return oThis.createCacheInstance(instanceComposer);
     }
-  },
+  }
 
   /**
    * Creates the key for the instanceMap.
@@ -101,11 +105,11 @@ CacheInstance.prototype = {
    * @returns {string}
    *
    */
-  getMapKey: function() {
+  getMapKey() {
     const oThis = this;
 
     return oThis.cacheEngine.toString() + '-' + oThis.isConsistentBehaviour.toString() + '-' + oThis.endpointDetails;
-  },
+  }
 
   /**
    * Creates a new cache instance if not available in instanceMap.
@@ -113,17 +117,20 @@ CacheInstance.prototype = {
    * @returns {cacheInstance}
    *
    */
-  createCacheInstance: function(instanceComposer) {
+  createCacheInstance(instanceComposer) {
     const oThis = this;
 
     let implementerKlass = null;
 
     if (oThis.cacheEngine == 'redis') {
-      implementerKlass = instanceComposer.getRedisCacheImplementer();
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'getRedisCacheImplementer');
     } else if (oThis.cacheEngine == 'memcached') {
-      implementerKlass = instanceComposer.getMemcachedCacheImplementer();
+      implementerKlass = instanceComposer.getShadowedClassFor(
+        coreConstants.icNameSpace,
+        'getMemcachedCacheImplementer'
+      );
     } else if (oThis.cacheEngine == 'none') {
-      implementerKlass = instanceComposer.getInMemoryCacheImplementer();
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'getInMemoryCacheImplementer');
     } else {
       throw 'invalid caching engine or not defined';
     }
@@ -138,8 +145,9 @@ CacheInstance.prototype = {
 
     return cacheInstance;
   }
-};
 
-InstanceComposer.register(CacheInstance, 'getCacheInstance', true);
+}
+
+InstanceComposer.registerAsObject(CacheInstance, coreConstants.icNameSpace, 'getCacheInstance', true);
 
 module.exports = CacheInstance;
