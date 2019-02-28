@@ -11,7 +11,7 @@
 Minor changes.
 
 ## Cache v1.0.3
-- Logger, response helper, promise context, promise queue manager and web3 from OST Base is now used in OST Cache. OpenST Base repository was created and all the common functionality which different openst modules need were moved to it.
+- Logger, response helper, promise context, promise queue manager and web3 from OST Base is now used in OST Cache. OST Base repository was created and all the common functionality which different openst modules need were moved to it.
 
 - Log level support was introduced and non-important logs were moved to debug log level.
 
