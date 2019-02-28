@@ -10,13 +10,12 @@
 
 // Load internal libraries
 const rootPrefix = '..',
-  OSTBase = require('@openstfoundation/openst-base'),
-  coreConstants = require(rootPrefix + '/config/coreConstants');
+  OSTBase = require('@ostdotcom/base'),
+  coreConstant = require(rootPrefix + '/config/coreConstant');
 
 const InstanceComposer = OSTBase.InstanceComposer;
 
-class GetCacheConfigHelper {
-
+class CacheConfigHelper {
   constructor(configStrategy, instanceComposer) {
     const oThis = this;
 
@@ -26,14 +25,12 @@ class GetCacheConfigHelper {
     oThis.REDIS_PASS = configStrategy.cache.password;
     oThis.REDIS_TLS_ENABLED = configStrategy.cache.enableTsl == '1';
     oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
-    oThis.MEMCACHE_SERVERS = (configStrategy.cache.servers || [])
-      .map(Function.prototype.call, String.prototype.trim);
+    oThis.MEMCACHE_SERVERS = (configStrategy.cache.servers || []).map(Function.prototype.call, String.prototype.trim);
 
     oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.cache.namespace || '';
   }
-
 }
 
-InstanceComposer.registerAsObject(GetCacheConfigHelper, coreConstants.icNameSpace, 'getCacheConfigHelper', true);
+InstanceComposer.registerAsObject(CacheConfigHelper, coreConstant.icNameSpace, 'CacheConfigHelper', true);
 
-module.exports = GetCacheConfigHelper;
+module.exports = CacheConfigHelper;

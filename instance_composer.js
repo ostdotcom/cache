@@ -1,10 +1,10 @@
 'use strict';
 
 /**
- * Instance Composer from OpenST-Base
+ * Instance Composer from @ostdotcom/base
  *
  * @module instance_composer
  */
 
-const OSTBase = require('@openstfoundation/openst-base');
+const OSTBase = require('@ostdotcom/base');
 module.exports = OSTBase.InstanceComposer;
