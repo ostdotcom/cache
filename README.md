@@ -4,7 +4,7 @@ Cache
 [![Travis](https://img.shields.io/travis/ostdotcom/cache.svg?maxAge=600)][travis]
 [![Downloads per month](https://img.shields.io/npm/dm/@ostdotcom/cache.svg?maxAge=3600)][npm]
 
-OST Cache is the central cache implementation for all OpenST products and can easily be plugged-in. 
+OST Cache is the central cache implementation for all OST products and can easily be plugged-in. 
 
 It contains three caching engines. The decision of which caching engine to use is governed while creating the cache object. 
 The caching engines implemented are:
