@@ -4,25 +4,25 @@
  * Depending on cacheEngine variable, the preferred caching engine is picked. This module acts as a
  * wrapper / factory for the cache layer. Following are the actual implementations of the cache layer methods: <br>
  *     <ul>
- *       <li>Memcached implementation - ref: {@link module:lib/cache/memcached}</li>
- *       <li>Redis implementation - ref: {@link module:lib/cache/redis}</li>
- *       <li>In Memory implementation - ref: {@link module:lib/cache/in_memory}</li>
+ *       <li>Memcached implementation - ref: {@link module:lib/cache/implementer/Memcached}</li>
+ *       <li>Redis implementation - ref: {@link module:lib/cache/implementer/Redis}</li>
+ *       <li>In Memory implementation - ref: {@link module:lib/cache/implementer/InMemory}</li>
  *     </ul>
  *
- * @module services/cache_instance
+ * @module services/CacheInstance
  * @class CacheInstance
  */
 
 const rootPrefix = '..',
-  instanceMap = require(rootPrefix + '/lib/cache/existing_instances'),
-  OSTBase = require('@openstfoundation/openst-base'),
-  coreConstants = require(rootPrefix + '/config/coreConstants');
+  instanceMap = require(rootPrefix + '/lib/cache/existingInstance'),
+  OSTBase = require('@ostdotcom/base'),
+  coreConstant = require(rootPrefix + '/config/coreConstant');
 
 const InstanceComposer = OSTBase.InstanceComposer;
 
-require(rootPrefix + '/lib/cache/redis');
-require(rootPrefix + '/lib/cache/memcached');
-require(rootPrefix + '/lib/cache/in_memory');
+require(rootPrefix + '/lib/cache/implementer/Redis');
+require(rootPrefix + '/lib/cache/implementer/Memcached');
+require(rootPrefix + '/lib/cache/implementer/InMemory');
 
 /**
  * Constructor for Cache Engine
@@ -31,7 +31,6 @@ require(rootPrefix + '/lib/cache/in_memory');
  *
  */
 class CacheInstance {
-
   constructor(configStrategy, instanceComposer) {
     const oThis = this;
 
@@ -123,14 +122,11 @@ class CacheInstance {
     let implementerKlass = null;
 
     if (oThis.cacheEngine == 'redis') {
-      implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'getRedisCacheImplementer');
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstant.icNameSpace, 'RedisCacheImplementer');
     } else if (oThis.cacheEngine == 'memcached') {
-      implementerKlass = instanceComposer.getShadowedClassFor(
-        coreConstants.icNameSpace,
-        'getMemcachedCacheImplementer'
-      );
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstant.icNameSpace, 'MemcachedCacheImplementer');
     } else if (oThis.cacheEngine == 'none') {
-      implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'getInMemoryCacheImplementer');
+      implementerKlass = instanceComposer.getShadowedClassFor(coreConstant.icNameSpace, 'InMemoryCacheImplementer');
     } else {
       throw 'invalid caching engine or not defined';
     }
@@ -145,9 +141,8 @@ class CacheInstance {
 
     return cacheInstance;
   }
-
 }
 
-InstanceComposer.registerAsObject(CacheInstance, coreConstants.icNameSpace, 'getCacheInstance', true);
+InstanceComposer.registerAsObject(CacheInstance, coreConstant.icNameSpace, 'getCacheInstance', true);
 
 module.exports = CacheInstance;

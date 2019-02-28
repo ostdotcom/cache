@@ -2,10 +2,10 @@
 /**
  * Load all the core constants.
  *
- * @module config/coreConstants
+ * @module config/coreConstant
  */
 
-class CoreConstants {
+class CoreConstant {
   /**
    * Constructor for core constants
    *
@@ -19,8 +19,8 @@ class CoreConstants {
    * @returns {*}
    */
   get icNameSpace() {
-    return 'openSTCache';
+    return 'OSTCache';
   }
 }
 
-module.exports = new CoreConstants();
+module.exports = new CoreConstant();

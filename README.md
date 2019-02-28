@@ -1,11 +1,10 @@
-OpenST Cache
+Cache
 ============
-[![Latest version](https://img.shields.io/npm/v/@openstfoundation/openst-cache.svg?maxAge=3600)][npm]
-[![Travis](https://img.shields.io/travis/OpenSTFoundation/openst-cache.svg?maxAge=600)][travis]
-[![Downloads per month](https://img.shields.io/npm/dm/@openstfoundation/openst-cache.svg?maxAge=3600)][npm]
-[![Gitter](https://img.shields.io/gitter/room/OpenSTFoundation/github.js.svg?maxAge=3600)][gitter]
+[![Latest version](https://img.shields.io/npm/v/@ostdotcom/cache.svg?maxAge=3600)][npm]
+[![Travis](https://img.shields.io/travis/ostdotcom/cache.svg?maxAge=600)][travis]
+[![Downloads per month](https://img.shields.io/npm/dm/@ostdotcom/cache.svg?maxAge=3600)][npm]
 
-OpenST Cache is the central cache implementation for all OpenST products and can easily be plugged-in. 
+OST Cache is the central cache implementation for all OpenST products and can easily be plugged-in. 
 
 It contains three caching engines. The decision of which caching engine to use is governed while creating the cache object. 
 The caching engines implemented are:
@@ -29,7 +28,7 @@ configStrategy = {
 <b>Below are the examples:</b>
 ```js
 // import the cache module
-const OpenSTCache = require('@openstfoundation/openst-cache');
+const OSTCache = require('@ostdotcom/cache');
 ```
 ```js
 // configStrategy for redis engine
@@ -69,21 +68,21 @@ configStrategy = {
 }
 ````
 
-# Install OpenST Cache
+# Install
 
 ```bash
-npm install @openstfoundation/openst-cache --save
+npm install @ostdotcom/cache --save
 ```
 
 # Examples:
 
-#### Create OpenST Cache Object:
+#### Create OST Cache Object:
 
 ```js
-OpenSTCache = require('@openstfoundation/openst-cache');
-openSTCache = OpenSTCache.getInstance(configStrategy);
+OSTCache = require('@ostdotcom/cache');
+OSTCache = OSTCache.getInstance(configStrategy);
 
-cacheImplementer = openSTCache.cacheInstance;
+cacheImplementer = OSTCache.cacheInstance;
 ```
 
 #### Store and retrieve data in cache using `set` and `get`:
@@ -188,7 +187,5 @@ cacheImplementer.touch('testKey', 10).then(function(cacheResponse){
 
 For further implementation details, please refer to the [API documentation][api-docs].
 
-[gitter]: https://gitter.im/OpenSTFoundation/SimpleToken
-[npm]: https://www.npmjs.com/package/@openstfoundation/openst-cache
-[travis]: https://travis-ci.org/OpenSTFoundation/openst-cache
-[api-docs]: https://openstfoundation.github.io/openst-cache/
+[npm]: https://www.npmjs.com/package/@ostdotcom/cache
+[travis]: https://travis-ci.org/ostdotcom/cache

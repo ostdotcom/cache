@@ -4,7 +4,7 @@ const chai = require('chai'),
 
 // Load cache service
 const rootPrefix = '..',
-  openSTCacheKlass = require(rootPrefix + '/index'),
+  OSTCache = require(rootPrefix + '/index'),
   testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
 let configStrategy;
@@ -93,12 +93,12 @@ function performTest(cacheObj, keySuffix) {
       let cKey = 'cache-key-incr-non-numeric' + keySuffix,
         cValue = 'hi',
         response = await cacheObj.set(cKey, cValue);
-      console.log('response1------'+JSON.stringify(response));
+      console.log('response1------' + JSON.stringify(response));
       assert.equal(response.isSuccess(), true);
 
       cValue = 10;
       response = await cacheObj.increment(cKey, cValue);
-      console.log('response2------'+JSON.stringify(response));
+      console.log('response2------' + JSON.stringify(response));
       assert.equal(response.isSuccess(), false);
     });
 
@@ -169,8 +169,8 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
   }
 }
 
-openSTCache = openSTCacheKlass.getInstance(configStrategy);
-cacheImplementer = openSTCache.cacheInstance;
+ostCache = OSTCache.getInstance(configStrategy);
+cacheImplementer = ostCache.cacheInstance;
 
 performTest(cacheImplementer, 'ConsistentBehaviour');
 performTest(cacheImplementer, 'InconsistentBehaviour');

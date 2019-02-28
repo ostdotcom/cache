@@ -1,20 +1,19 @@
 /**
- * Index File for openst-cache
+ * Index File for @ostdotcom/cache
  */
 
 'use strict';
 
 const rootPrefix = '.',
   version = require(rootPrefix + '/package.json').version,
-  OpenSTCacheKeys = require(rootPrefix + '/services/openst_cache_keys'),
-  OSTBase = require('@openstfoundation/openst-base'),
-  coreConstants = require(rootPrefix + '/config/coreConstants');
+  OSTBase = require('@ostdotcom/base'),
+  coreConstant = require(rootPrefix + '/config/coreConstant');
 
 const InstanceComposer = OSTBase.InstanceComposer;
 
-require(rootPrefix + '/services/cache_instance');
+require(rootPrefix + '/services/CacheInstance');
 
-const OpenSTCache = function(configStrategy) {
+const OSTCache = function(configStrategy) {
   const oThis = this;
 
   if (!configStrategy) {
@@ -27,15 +26,14 @@ const OpenSTCache = function(configStrategy) {
   };
 };
 
-OpenSTCache.prototype = {
-  version: version,
-  OpenSTCacheKeys: OpenSTCacheKeys
+OSTCache.prototype = {
+  version: version
 };
 
-Object.defineProperty(OpenSTCache.prototype, 'cacheInstance', {
+Object.defineProperty(OSTCache.prototype, 'cacheInstance', {
   get: function() {
     const oThis = this;
-    return oThis.ic().getInstanceFor(coreConstants.icNameSpace, 'getCacheInstance');
+    return oThis.ic().getInstanceFor(coreConstant.icNameSpace, 'getCacheInstance');
   }
 });
 
@@ -116,7 +114,7 @@ Factory.prototype = {
     let _instance = instanceMap[instanceKey];
 
     if (!_instance) {
-      _instance = new OpenSTCache(configStrategy);
+      _instance = new OSTCache(configStrategy);
       instanceMap[instanceKey] = _instance;
     }
 
@@ -125,8 +123,8 @@ Factory.prototype = {
 };
 
 const factory = new Factory();
-OpenSTCache.getInstance = function() {
+OSTCache.getInstance = function() {
   return factory.getInstance.apply(factory, arguments);
 };
 
-module.exports = OpenSTCache;
+module.exports = OSTCache;

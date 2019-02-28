@@ -4,7 +4,7 @@ const chai = require('chai'),
 
 // Load cache service
 const rootPrefix = '..',
-  openSTCacheKlass = require(rootPrefix + '/index'),
+  OSTCacheKlass = require(rootPrefix + '/index'),
   testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
 let configStrategy;
@@ -178,8 +178,8 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
   }
 }
 
-openSTCache = openSTCacheKlass.getInstance(configStrategy);
-cacheImplementer = openSTCache.cacheInstance;
+ostCache = OSTCacheKlass.getInstance(configStrategy);
+cacheImplementer = ostCache.cacheInstance;
 
 performTest(cacheImplementer, 'ConsistentBehaviour');
 performTest(cacheImplementer, 'InconsistentBehaviour');
