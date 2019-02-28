@@ -7,6 +7,7 @@ branches:
   - develop
   - release-0.9
   - release-1.0
+  - version-bump
 notifications:
   email:
     recipients:
