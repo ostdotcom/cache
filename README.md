@@ -4,6 +4,9 @@ Cache
 [![Travis](https://img.shields.io/travis/ostdotcom/cache.svg?maxAge=600)][travis]
 [![Downloads per month](https://img.shields.io/npm/dm/@ostdotcom/cache.svg?maxAge=3600)][npm]
 
+[npm]: https://www.npmjs.com/package/@ostdotcom/cache
+[travis]: https://travis-ci.org/ostdotcom/cache
+
 OST Cache is the central cache implementation for all OST products and can easily be plugged-in. 
 
 It contains three caching engines. The decision of which caching engine to use is governed while creating the cache object. 
@@ -184,8 +187,3 @@ cacheImplementer.touch('testKey', 10).then(function(cacheResponse){
     }
   });
 ```
-
-For further implementation details, please refer to the [API documentation][api-docs].
-
-[npm]: https://www.npmjs.com/package/@ostdotcom/cache
-[travis]: https://travis-ci.org/ostdotcom/cache
