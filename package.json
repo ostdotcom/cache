@@ -1,6 +1,6 @@
 {
   "name": "@ostdotcom/cache",
-  "version": "1.0.6-beta.14",
+  "version": "1.0.6-beta.15",
   "description": "OST Cache is the central cache implementation for OST products.",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "redis",
     "cache"
   ],
-  "author": "OST.COM LTD",
+  "author": "OST.COM LTD.",
   "license": "LGPL-3.0",
   "bugs": {
     "url": "https://github.com/ostdotcom/cache/issues"
@@ -28,7 +28,7 @@
   "dependencies": {
     "memcached": "2.2.2",
     "redis": "2.8.0",
-    "@ostdotcom/base": "1.0.0-beta.1"
+    "@ostdotcom/base": "1.0.0-beta.2"
   },
   "devDependencies": {
     "chai": "4.2.0",

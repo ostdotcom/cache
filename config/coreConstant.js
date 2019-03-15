@@ -12,14 +12,23 @@ class CoreConstant {
    * @constructor
    */
   constructor() {}
-
+  
   /**
-   * Web3 pool size
+   * Get IC Namespace
    *
-   * @returns {*}
+   * @returns {string}
    */
   get icNameSpace() {
     return 'OSTCache';
+  }
+  
+  /**
+   * Debug Enabled
+   *
+   * @returns {boolean}
+   */
+  get DEBUG_ENABLED() {
+    return process.env.OST_DEBUG_ENABLED;
   }
 }
 
