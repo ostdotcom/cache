@@ -1,7 +1,7 @@
 Cache
 ============
 [![Latest version](https://img.shields.io/npm/v/@ostdotcom/cache.svg?maxAge=3600)][npm]
-[![Travis](https://img.shields.io/travis/ostdotcom/cache.svg?maxAge=600)][travis]
+[![Build Status](https://travis-ci.org/ostdotcom/cache.svg?branch=develop)][travis]
 [![Downloads per month](https://img.shields.io/npm/dm/@ostdotcom/cache.svg?maxAge=3600)][npm]
 
 [npm]: https://www.npmjs.com/package/@ostdotcom/cache
