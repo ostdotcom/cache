@@ -4,7 +4,7 @@ const chai = require('chai'),
 
 // Load cache service
 const rootPrefix = '..',
-  openSTCacheKlass = require(rootPrefix + '/index'),
+  OSTCache = require(rootPrefix + '/index'),
   testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
 let configStrategy1;
@@ -21,7 +21,7 @@ if (testCachingEngine === 'redis') {
   // Config strategies are same as they won't change for in-memory.
 }
 
-const engineType = configStrategy1.OST_CACHING_ENGINE;
+const engineType = configStrategy1.cache.engine;
 
 function performTest(cacheObj, keySuffix) {
   describe('Cache Get ' + keySuffix, function() {
@@ -192,11 +192,11 @@ function performMultipleTest(cacheObj1, cacheObj2, keySuffix) {
   });
 }
 
-openSTCache1 = openSTCacheKlass.getInstance(configStrategy1);
-cacheImplementer1 = openSTCache1.cacheInstance;
+ostCache1 = OSTCache.getInstance(configStrategy1);
+cacheImplementer1 = ostCache1.cacheInstance;
 
-openSTCache2 = openSTCacheKlass.getInstance(configStrategy2);
-cacheImplementer2 = openSTCache2.cacheInstance;
+ostCache2 = OSTCache.getInstance(configStrategy2);
+cacheImplementer2 = ostCache2.cacheInstance;
 
 performTest(cacheImplementer1, 'ConsistentBehaviour');
 performTest(cacheImplementer1, 'InconsistentBehaviour');

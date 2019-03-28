@@ -63,5 +63,12 @@
     "http_code": "422",
     "code": "UNPROCESSABLE_ENTITY",
     "message": "Flush all Cache Keys failed."
+  },
+
+  "acquire_lock_failed": {
+    "http_code": "422",
+    "code": "UNPROCESSABLE_ENTITY",
+    "message": "Acquire Lock failed. Please try again after sometime."
   }
+
 }

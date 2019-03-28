@@ -1,43 +1,42 @@
 {
-  "name": "@openstfoundation/openst-cache",
-  "version": "1.0.6-beta.5",
-  "description": "OpenST Cache is the central cache implementation for OpenST products and can easily be plugged-in.",
+  "name": "@ostdotcom/cache",
+  "version": "1.0.6",
+  "description": "OST Cache is the central cache implementation for OST products.",
+  "main": "index.js",
+  "scripts": {
+    "start": "index.js",
+    "pre-commit": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ostdotcom/cache.git"
+  },
   "keywords": [
-    "openst",
+    "OpenST",
     "OST",
-    "simpletoken",
+    "Simple Token",
     "memcached",
     "redis",
     "cache"
   ],
-  "homepage": "https://openst.org",
-  "author": "OpenST Ltd.",
+  "author": "OST.COM LTD.",
   "license": "LGPL-3.0",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/OpenSTFoundation/openst-cache.git"
-  },
   "bugs": {
-    "url": "https://github.com/OpenSTFoundation/openst-cache/issues"
+    "url": "https://github.com/ostdotcom/cache/issues"
   },
-  "scripts": {
-    "start": "index.js",
-    "make-docs": "node_modules/.bin/jsdoc -c .jsdoc.json",
-    "pre-commit": "lint-staged"
-  },
+  "homepage": "https://github.com/ostdotcom/cache#readme",
   "dependencies": {
     "memcached": "2.2.2",
     "redis": "2.8.0",
-    "@openstfoundation/openst-base": "0.9.3-beta.6"
+    "@ostdotcom/base": "1.0.0"
   },
   "devDependencies": {
-    "chai": "4.1.2",
+    "chai": "4.2.0",
     "ink-docstrap": "1.3.2",
-    "jsdoc": "3.5.5",
-    "lint-staged": "7.2.0",
-    "mocha": "5.0.0",
+    "lint-staged": "8.0.3",
+    "mocha": "5.2.0",
     "pre-commit": "1.2.2",
-    "prettier": "1.13.7"
+    "prettier": "1.14.3"
   },
   "pre-commit": [
     "pre-commit"

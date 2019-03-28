@@ -1,6 +1,8 @@
 {
-"OST_DEFAULT_TTL": "60",
-"OST_CACHING_ENGINE": "none",
-"OST_CACHE_CONSISTENT_BEHAVIOR": "1",
-"OST_INMEMORY_CACHE_NAMESPACE": "A"
+  "cache": {
+    "engine": "none",
+    "namespace": "A",
+    "defaultTtl": "60",
+    "consistentBehavior": "1"
+  }
 }
