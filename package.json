@@ -1,6 +1,6 @@
 {
   "name": "@ostdotcom/cache",
-  "version": "1.0.6-beta.15",
+  "version": "1.0.6",
   "description": "OST Cache is the central cache implementation for OST products.",
   "main": "index.js",
   "scripts": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "memcached": "2.2.2",
     "redis": "2.8.0",
-    "@ostdotcom/base": "1.0.0-beta.2"
+    "@ostdotcom/base": "1.0.0"
   },
   "devDependencies": {
     "chai": "4.2.0",
