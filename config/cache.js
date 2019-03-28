@@ -10,24 +10,27 @@
 
 // Load internal libraries
 const rootPrefix = '..',
-  InstanceComposer = require(rootPrefix + '/instance_composer');
+  OSTBase = require('@ostdotcom/base'),
+  coreConstant = require(rootPrefix + '/config/coreConstant');
 
-const GetCacheConfigHelper = function(configStrategy, instanceComposer) {
-  const oThis = this;
+const InstanceComposer = OSTBase.InstanceComposer;
 
-  oThis.DEFAULT_TTL = configStrategy.OST_DEFAULT_TTL;
-  oThis.REDIS_HOST = configStrategy.OST_REDIS_HOST;
-  oThis.REDIS_PORT = configStrategy.OST_REDIS_PORT;
-  oThis.REDIS_PASS = configStrategy.OST_REDIS_PASS;
-  oThis.REDIS_TLS_ENABLED = configStrategy.OST_REDIS_TLS_ENABLED == '1';
-  oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
-  oThis.MEMCACHE_SERVERS = (configStrategy.OST_MEMCACHE_SERVERS || '')
-    .split(',')
-    .map(Function.prototype.call, String.prototype.trim);
+class CacheConfigHelper {
+  constructor(configStrategy, instanceComposer) {
+    const oThis = this;
 
-  oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.OST_INMEMORY_CACHE_NAMESPACE || '';
-};
+    oThis.DEFAULT_TTL = configStrategy.cache.defaultTtl;
+    oThis.REDIS_HOST = configStrategy.cache.host;
+    oThis.REDIS_PORT = configStrategy.cache.port;
+    oThis.REDIS_PASS = configStrategy.cache.password;
+    oThis.REDIS_TLS_ENABLED = configStrategy.cache.enableTsl == '1';
+    oThis.DEBUG_ENABLED = configStrategy.DEBUG_ENABLED;
+    oThis.MEMCACHE_SERVERS = (configStrategy.cache.servers || []).map(Function.prototype.call, String.prototype.trim);
 
-InstanceComposer.register(GetCacheConfigHelper, 'getCacheConfigHelper', true);
+    oThis.INMEMORY_CACHE_NAMESPACE = configStrategy.cache.namespace || '';
+  }
+}
 
-module.exports = GetCacheConfigHelper;
+InstanceComposer.registerAsObject(CacheConfigHelper, coreConstant.icNameSpace, 'CacheConfigHelper', true);
+
+module.exports = CacheConfigHelper;

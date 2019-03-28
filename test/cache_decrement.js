@@ -4,7 +4,7 @@ const chai = require('chai'),
 
 // Load cache service
 const rootPrefix = '..',
-  openSTCacheKlass = require(rootPrefix + '/index'),
+  OSTCacheKlass = require(rootPrefix + '/index'),
   testCachingEngine = process.env.TEST_CACHING_ENGINE;
 
 let configStrategy;
@@ -16,7 +16,7 @@ if (testCachingEngine == 'redis') {
   configStrategy = require(rootPrefix + '/test/env/in-memory.json');
 }
 
-const engineType = configStrategy.OST_CACHING_ENGINE;
+const engineType = configStrategy.cache.engine;
 
 function performTest(cacheObj, keySuffix) {
   describe('Cache Decrement ' + keySuffix, function() {
@@ -178,8 +178,8 @@ function performTestWhenKeyDoesNotExists(cacheObj, keySuffix) {
   }
 }
 
-openSTCache = openSTCacheKlass.getInstance(configStrategy);
-cacheImplementer = openSTCache.cacheInstance;
+ostCache = OSTCacheKlass.getInstance(configStrategy);
+cacheImplementer = ostCache.cacheInstance;
 
 performTest(cacheImplementer, 'ConsistentBehaviour');
 performTest(cacheImplementer, 'InconsistentBehaviour');
