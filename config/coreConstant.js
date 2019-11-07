@@ -1,33 +1,25 @@
-'use strict';
 /**
- * Load all the core constants.
+ * Class for core constants.
  *
- * @module config/coreConstant
+ * @class CoreConstant
  */
-
 class CoreConstant {
   /**
-   * Constructor for core constants
-   *
-   * @constructor
-   */
-  constructor() {}
-  
-  /**
-   * Get IC Namespace
+   * Returns IC namespace.
    *
    * @returns {string}
    */
   get icNameSpace() {
     return 'OSTCache';
   }
-  
+
   /**
-   * Debug Enabled
+   * Returns debug enabled or not.
    *
    * @returns {boolean}
    */
   get DEBUG_ENABLED() {
+    // eslint-disable-next-line no-process-env
     return process.env.OST_DEBUG_ENABLED;
   }
 }
