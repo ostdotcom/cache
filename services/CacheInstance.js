@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Depending on cacheEngine variable, the preferred caching engine is picked. This module acts as a
  * wrapper / factory for the cache layer. Following are the actual implementations of the cache layer methods: <br>
@@ -10,13 +8,13 @@
  *     </ul>
  *
  * @module services/CacheInstance
- * @class CacheInstance
  */
 
+const OSTBase = require('@ostdotcom/base');
+
 const rootPrefix = '..',
-  instanceMap = require(rootPrefix + '/lib/cache/existingInstance'),
-  OSTBase = require('@ostdotcom/base'),
-  coreConstant = require(rootPrefix + '/config/coreConstant');
+  coreConstants = require(rootPrefix + '/config/coreConstant'),
+  instanceMap = require(rootPrefix + '/lib/cache/existingInstance');
 
 const InstanceComposer = OSTBase.InstanceComposer;
 
@@ -25,37 +23,47 @@ require(rootPrefix + '/lib/cache/implementer/Memcached');
 require(rootPrefix + '/lib/cache/implementer/InMemory');
 
 /**
- * Constructor for Cache Engine
+ * Class for cache instance.
  *
- * @constructor
- *
+ * @class CacheInstance
  */
 class CacheInstance {
+  /**
+   * Constructor for cache instance.
+   *
+   * @param {object} configStrategy
+   * @param {object} configStrategy.cache
+   * @param {string} configStrategy.cache.engine
+   * @param {string/number} configStrategy.cache.consistentBehavior
+   * @param {object} instanceComposer
+   *
+   * @returns {cacheInstance}
+   */
   constructor(configStrategy, instanceComposer) {
     const oThis = this;
 
-    if (configStrategy.cache.engine == undefined) {
-      throw 'OST_CACHE_ENGINE parameter missing.';
+    if (configStrategy.cache.engine === undefined) {
+      throw new Error('OST_CACHE_ENGINE parameter missing.');
     }
 
     // Grab the required details from the configStrategy.
     oThis.cacheEngine = configStrategy.cache.engine;
     oThis.isConsistentBehaviour = configStrategy.cache.consistentBehavior;
 
-    // sanitize the isConsistentBehaviour
+    // Sanitize the isConsistentBehaviour variable.
     oThis.isConsistentBehaviour = oThis.isConsistentBehaviour == undefined ? true : oThis.isConsistentBehaviour != '0';
 
     // Stores the endpoint for key generation of instanceMap.
     oThis.endpointDetails = null;
 
     // Generate endpointDetails for key generation of instanceMap.
-    if (oThis.cacheEngine == 'redis') {
+    if (oThis.cacheEngine === 'redis') {
       const redisMandatoryParams = ['host', 'port', 'password', 'enableTsl'];
 
       // Check if all the mandatory connection parameters for Redis are available or not.
       for (let key = 0; key < redisMandatoryParams.length; key++) {
-        if (!configStrategy.cache.hasOwnProperty(redisMandatoryParams[key])) {
-          throw 'Redis one or more mandatory connection parameters missing.';
+        if (!Object.prototype.hasOwnProperty.call(configStrategy.cache, redisMandatoryParams[key])) {
+          throw new Error('Redis one or more mandatory connection parameters missing.');
         }
       }
 
@@ -65,9 +73,9 @@ class CacheInstance {
         configStrategy.cache.port.toString() +
         '-' +
         configStrategy.cache.enableTsl.toString();
-    } else if (oThis.cacheEngine == 'memcached') {
-      if (!configStrategy.cache.hasOwnProperty('servers')) {
-        throw 'Memcached mandatory connection parameters missing.';
+    } else if (oThis.cacheEngine === 'memcached') {
+      if (!Object.prototype.hasOwnProperty.call(configStrategy.cache, 'servers')) {
+        throw new Error('Memcached mandatory connection parameters missing.');
       }
 
       oThis.endpointDetails = configStrategy.cache.servers.join(',').toLowerCase();
@@ -82,27 +90,27 @@ class CacheInstance {
    * Fetches a cache instance if available in instanceMap. If instance is not available in
    * instanceMap, it calls createCacheInstance() to create a new cache instance.
    *
-   * @returns {cacheInstance}
+   * @param {object} instanceComposer
    *
+   * @returns {cacheInstance}
    */
   getInstance(instanceComposer) {
     const oThis = this;
 
     // Fetches the cache instance key to be used.
-    let instanceKey = oThis.getMapKey();
+    const instanceKey = oThis.getMapKey();
 
-    if (instanceMap.hasOwnProperty(instanceKey)) {
+    if (Object.prototype.hasOwnProperty.call(instanceMap, instanceKey)) {
       return instanceMap[instanceKey];
-    } else {
-      return oThis.createCacheInstance(instanceComposer);
     }
+
+    return oThis.createCacheInstance(instanceComposer);
   }
 
   /**
    * Creates the key for the instanceMap.
    *
    * @returns {string}
-   *
    */
   getMapKey() {
     const oThis = this;
@@ -114,27 +122,33 @@ class CacheInstance {
    * Creates a new cache instance if not available in instanceMap.
    *
    * @returns {cacheInstance}
-   *
    */
   createCacheInstance(instanceComposer) {
     const oThis = this;
 
     let implementerKlass = null;
-
-    if (oThis.cacheEngine == 'redis') {
-      implementerKlass = instanceComposer.getShadowedClassFor(coreConstant.icNameSpace, 'RedisCacheImplementer');
-    } else if (oThis.cacheEngine == 'memcached') {
-      implementerKlass = instanceComposer.getShadowedClassFor(coreConstant.icNameSpace, 'MemcachedCacheImplementer');
-    } else if (oThis.cacheEngine == 'none') {
-      implementerKlass = instanceComposer.getShadowedClassFor(coreConstant.icNameSpace, 'InMemoryCacheImplementer');
-    } else {
-      throw 'invalid caching engine or not defined';
+    switch (oThis.cacheEngine) {
+      case 'redis': {
+        implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'RedisCacheImplementer');
+        break;
+      }
+      case 'memcached': {
+        implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'MemcachedCacheImplementer');
+        break;
+      }
+      case 'none': {
+        implementerKlass = instanceComposer.getShadowedClassFor(coreConstants.icNameSpace, 'InMemoryCacheImplementer');
+        break;
+      }
+      default: {
+        throw new Error('invalid caching engine or not defined.');
+      }
     }
 
     const cacheInstance = new implementerKlass(oThis.isConsistentBehaviour);
 
     // Fetch the instanceKey.
-    let instanceKey = oThis.getMapKey();
+    const instanceKey = oThis.getMapKey();
 
     // Set the newly created instance in the map.
     instanceMap[instanceKey] = cacheInstance;
@@ -143,6 +157,6 @@ class CacheInstance {
   }
 }
 
-InstanceComposer.registerAsObject(CacheInstance, coreConstant.icNameSpace, 'getCacheInstance', true);
+InstanceComposer.registerAsObject(CacheInstance, coreConstants.icNameSpace, 'getCacheInstance', true);
 
 module.exports = CacheInstance;
