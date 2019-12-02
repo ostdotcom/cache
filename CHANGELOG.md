@@ -1,3 +1,6 @@
+## Cache v1.0.8-beta.1
+- Improved logging for memcached errors.
+
 ## Cache v1.0.7
 - Upgraded node version to 10.x
 - Version bump for dependencies.
