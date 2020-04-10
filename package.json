@@ -1,6 +1,6 @@
 {
   "name": "@ostdotcom/cache",
-  "version": "1.0.8-beta.4",
+  "version": "1.0.8-beta.6",
   "description": "OST Cache is the central cache implementation for OST products.",
   "main": "index.js",
   "scripts": {
